@@ -1,12 +1,12 @@
 # LLM을 활용한 코딩테스트 스터디 플랫폼, TLE
-## 2024년 상명대학교 캡스톤디자인 팀 코딩메리호의 프론트엔드 레포지토리
+## 2024년 상명대학교 캡스톤디자인 팀 코딩메리호의 Fronend 레포지토리
 
 ### Rules
 - 본인 레포에 fork
 - 기능별로 feature/(기능명) branch 생성
 - 초기 Pull 이후 npm install만 실행 (따로 모듈 설치X)
 - main에 PR 전 공지 필수
-- Package.json, packags-lock.json 파일은 PR 절대 금지
+- Package.json, packags-lock.json 파일은 PR 절대 금지!
 
 ### Git commit convention
 ✨ feat: 기능 추가, 삭제, 변경    
