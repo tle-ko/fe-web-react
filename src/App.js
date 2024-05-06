@@ -1,6 +1,8 @@
+import './index.css';
+
 function App() {
   return (
-    <div className="App">TLE에 오신 것을 환영합니다.</div>
+    <h1 className="text-3xl font-bold underline">TLE에 오신 것을 환영합니다.</h1>
   );
 }
 
