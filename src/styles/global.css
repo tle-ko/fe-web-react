@@ -41,3 +41,9 @@
     @apply cursor-pointer text-inherit border-0 tracking-m1;
   }
 }
+
+@layer components {
+  .box {
+    @apply p-10 bg-white rounded-lg border border-gray-200;
+  }
+}
