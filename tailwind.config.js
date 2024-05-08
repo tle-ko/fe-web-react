@@ -34,6 +34,9 @@ module.exports = {
           w50: 'rgba(255, 185, 2, 50)',
         }
       },
+      size: {
+        '120px': '120px',
+      },
       fontFamily: {
         cafe24: ["Cafe24Ssurround", "sans-serif"],
         pretendard: ["Pretendard-Regular", "sans-serif"],
