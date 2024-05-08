@@ -9,7 +9,7 @@ import CrewMain from '../pages/crewMain/CrewMain';
 import Main from '../pages/mainPage/Main';
 import MyPortfolio from '../pages/myPortfolio/MyPortfolio';
 import ProblemMain from '../pages/problemPage/ProblemMain';
-import ProblemDetail from '../pages/problemPage/ProblemDetaile';
+import ProblemDetail from '../pages/problemPage/ProblemDetail';
 import Signin from '../pages/signin/Signin';
 import Signup from '../pages/signup/Signup';
 
