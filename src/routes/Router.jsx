@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from '../components/Header/mainHeader';
 import AccountingSetting from '../pages/accountSetting/AccountSetting';
 import CrewCodeReview from '../pages/crewCodeReview/CrewCodeReview';
-import CrewAdmin from '../pages/crewDashboard/CrewDashAdmin';
+import CrewDashAdmin from '../pages/crewDashboard/CrewDashAdmin';
 import CrewDashHome from '../pages/crewDashboard/CrewDashHome';
 import CrewProblem from '../pages/crewDashboard/CrewDashProblem';
 import CrewMain from '../pages/crewMain/CrewMain';
@@ -15,6 +16,7 @@ import Signup from '../pages/signup/Signup';
 export default function Router() {
   return (
     <BrowserRouter>
+    <Header />
       <Routes>
         <Route path="/signin" element={<Signin />}/>
         <Route path="/signup" element={<Signup />}/>
@@ -22,14 +24,13 @@ export default function Router() {
         <Route path="/mySetting" element={<AccountingSetting />}/>
         <Route path="/codeReview" element={<CrewCodeReview />}/>
         <Route path="/crew" element={<CrewMain />}>
-          <Route path=":id" element={<Outlet />}>
-            <Route path="" element={<CrewDashHome />} />
+          <Route path="id" element={<CrewDashHome />}>
             <Route path="problems" element={<CrewProblem />} />
-            <Route path="admin" element={<CrewAdmin />} />
+            <Route path="admin" element={<CrewDashAdmin />} />
           </Route>
         </Route>
         <Route path="/Problem" element={<ProblemMain />}>
-          <Route path=":id" element={<ProblemDetail />} />
+          <Route path="problemId" element={<ProblemDetail />} />
         </Route>
         <Route path="/myPofol" element={<MyPortfolio />} />
       </Routes>
