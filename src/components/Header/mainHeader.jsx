@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import logoWhite from '../../assets/images/logo-white.svg';
 
-export default function mainHeader() {
+export default function Header() {
   return(
     <div className="w-screen h-16 top-0 left-0 fixed px-[120px] py-3
       bg-color-blue-main flex flex-row gap-16 text-white text-xl">
