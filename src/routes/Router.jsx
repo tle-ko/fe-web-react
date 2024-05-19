@@ -24,7 +24,7 @@ export default function Router() {
         <Route path="/mySetting" element={<AccountingSetting />}/>
         <Route path="/codeReview" element={<CrewCodeReview />}/>
         <Route path="/crew" element={<CrewMain />}>
-          <Route path="id" element={<CrewDashHome />}>
+          <Route path=":id" element={<CrewDashHome />}>
             <Route path="problems" element={<CrewProblem />} />
             <Route path="admin" element={<CrewDashAdmin />} />
           </Route>
