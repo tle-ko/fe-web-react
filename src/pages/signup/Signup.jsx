@@ -1,5 +1,9 @@
+import Footer from '../../components/common/footer';
+
 export default function signup(){
   return(
-    <div></div>
+    <div>
+      <Footer />
+    </div>
   )
 }
