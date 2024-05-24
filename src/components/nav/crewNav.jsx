@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function CrewNav() {
   // 현재 선택된 링크를 관리하기 위한 상태
@@ -9,6 +9,10 @@ function CrewNav() {
   const handleLinkClick = (linkName) => {
     setSelectedLink(linkName);
   };
+
+  useEffect(() => {
+    setSelectedLink('home');
+  }, []);
 
   return(
     <div className="w-screen h-16 py-3 top-[128px] left-0 fixed px-[120px] bg-white border-b border-gray-200 flex-col justify-start items-start inline-flex">
