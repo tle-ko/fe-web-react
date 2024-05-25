@@ -2,14 +2,21 @@ import { Link } from 'react-router-dom';
 import logoWhite from '../../assets/images/logo-white.svg';
 
 export default function Header() {
-  return(
-    <div className="w-screen h-16 top-0 left-0 fixed px-[120px] py-3
-      bg-color-blue-main flex flex-row gap-16 text-white text-xl">
-       <Link className="w-14" to="/"><img src={logoWhite} alt='' /></Link>
-       <div className="justify-start items-center gap-16 flex">
-        <Link className='font-cafe24' to="/problem">Problem</Link>
-        <Link className='font-cafe24' to="/crew">Crew</Link>
-       </div>
+  return (
+    <div className="w-full h-16 fixed top-0 left-0 px-4 py-3 bg-color-blue-main text-white text-xl flex items-center justify-center">
+      <div className='flex justify-between items-center w-full max-w-screen-xl px-36 gap-16'>
+        <Link className="w-14" to="/"><img src={logoWhite} alt='' /></Link>
+        <div className='flex flex-row justify-between items-center w-full'>
+          <div className="flex gap-8">
+            <Link className='font-cafe24' to="/problem">Problem</Link>
+            <Link className='font-cafe24' to="/crew">Crew</Link>
+          </div>
+          <div className='flex gap-6'>
+            <Link className="underline" to="/signin">sign in</Link>
+            <Link to="/signup">sign up</Link>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

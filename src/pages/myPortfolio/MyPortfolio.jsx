@@ -1,5 +1,9 @@
+import Footer from '../../components/common/footer';
+
 export default function myPortfolio(){
   return(
-    <div></div>
+    <div>
+      <Footer />
+    </div>
   )
 }

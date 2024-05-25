@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Outlet } from "react-router-dom";
 import useChildRoute from "../../hooks/useChildRoute";
 import useFetchData from "../../hooks/useEffectData";
+import Footer from '../../components/common/footer';
 
 export default function CrewMain(){
   // 부모div의 버튼을 클릭했을 때 자식 div만 표시되고 부모div는 사라지게
@@ -22,6 +23,7 @@ export default function CrewMain(){
             ))}   
           </div>
         )}
+        <Footer />
     </div>
   );
 }

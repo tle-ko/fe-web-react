@@ -12,12 +12,13 @@ module.exports = {
       colors: {
         white: colors.white,
         black: colors.black,
-        gray: colors.coolGray,
         'color-gray-c': '#A8B9CC',
         'color-bg': '#F8F9FA',
         'color-blue': {
           main: '#5383E8',
-          w75: '#D4E0F9',
+          w25: '#D4E0F9',
+          w50: '#A8C0F3',
+          hover : '#4171D6',
           pt: '#3776AB',
           cpp: '#3776AB',
         },
@@ -31,7 +32,7 @@ module.exports = {
         'color-green': '#03BBA3',
         'color-yellow': {
           default: '#FFB902',
-          w50: 'rgba(255, 185, 2, 50)',
+          w50: '#FFCA41',
         }
       },
       size: {
