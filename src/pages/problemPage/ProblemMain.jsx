@@ -14,30 +14,31 @@ export default function ProblemMain(){
 
   return(
     <div>
-      <div>
-        <div className="max-w-full mb-12 flex items-end justify-between">
-        <p className="text-gray-700 text-[28px] font-bold font-cafe24">나의 문제 리스트</p>
-          <Button 
-            buttonSize="formBtn"
-            colorStyle="blueWhite"
-            content="문제 등록하기"
-            onClick={() => console.log('Button clicked')}/>
-        </div>
-        <div className="mb-12 flex-col justify-start items-start gap-6 inline-flex">
-        <p className="text-gray-900 text-xl font-semibold">문제 검색</p>
-        <div className="justify-start items-center gap-3 inline-flex">
-            {/* <BsSearch className='w-4 h-4 text-gray-600' /> */}
-            <input 
-              className="w-[686px] px-6 py-4 bg-gray-200 rounded-lg"
-              placeholder="본인이 등록한 문제의 제목으로 검색해 주세요."
-            />
-          </div>
-        </div>
-      </div>
       {isChildRoute ? (
           <Outlet />
         ) : (
           <div>
+          <div>
+            <div className="max-w-full mb-12 flex items-end justify-between">
+            <p className="text-gray-700 text-[28px] font-bold font-cafe24">나의 문제 리스트</p>
+              <Button 
+                buttonSize="formBtn"
+                colorStyle="blueWhite"
+                content="문제 등록하기"
+                onClick={() => console.log('Button clicked')}/>
+            </div>
+            <div className="mb-12 flex-col justify-start items-start gap-6 inline-flex">
+            <p className="text-gray-900 text-xl font-semibold">문제 검색</p>
+            <div className="justify-start items-center gap-3 inline-flex">
+                {/* <BsSearch className='w-4 h-4 text-gray-600' /> */}
+                <input 
+                  className="w-[686px] px-6 py-4 bg-gray-200 rounded-lg"
+                  placeholder="본인이 등록한 문제의 제목으로 검색해 주세요."
+                />
+              </div>
+            </div>
+          </div>
+        
           <div className="max-w-full mb-6 flex items-center justify-between">
           <p className="text-gray-900 text-xl font-semibold">{data ? `${data.length} 문제` : 'Loading...'}</p> {/* problem 데이터에서 받아온 문제 개수를 세는 부분 */}
           <Button // 드롭다운
