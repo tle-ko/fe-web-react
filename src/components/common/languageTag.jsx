@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import PythonIcon from '../../assets/images/Python.svg';
-import JavaIcon from '../../assets/images/Java.svg';
+import PythonIcon from '../../assets/images/python.svg';
+import JavaIcon from '../../assets/images/java.svg';
 import JavaScriptIcon from '../../assets/images/JavaScript.svg'; 
-import SwiftIcon from '../../assets/images/Swift.svg';
-import CSharpIcon from '../../assets/images/CSharp.svg';
-import CIcon from '../../assets/images/C.svg';
-import KotlinIcon from '../../assets/images/Kotlin.svg';
+import SwiftIcon from '../../assets/images/swift.svg';
+import CSharpIcon from '../../assets/images/csharp.svg';
+import CIcon from '../../assets/images/c.svg';
+import KotlinIcon from '../../assets/images/kotlin.svg';
 import CPlusIcon from '../../assets/images/CPlus.svg'; 
 import PythonGreyIcon from '../../assets/images/PythonGrey.svg';
 import JavaGreyIcon from '../../assets/images/JavaGrey.svg';
