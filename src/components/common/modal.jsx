@@ -35,3 +35,10 @@ const Modal = ({ isOpen, onClose, title, content, buttonText, onButtonClick }) =
 }
 
 export default Modal;
+
+// 모달 사용 예시 (content prop 전달)
+// const content = (
+//   <div>
+//     <Input title="로그인" placeholder="정보를 입력하세요." />
+//   </div>
+// );
