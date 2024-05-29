@@ -1,7 +1,8 @@
 import React from 'react';
 import close from '../../assets/images/close.svg';
+import Button from './button';
 
-const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
+const Modal = ({ isOpen, onClose, title, content, buttonText, onButtonClick }) => {
   if (!isOpen) return null;
 
   return (
@@ -19,9 +20,12 @@ const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
               {content}
             </div>
             <div className="flex justify-center mt-16 mb-10">
-            <button onClick={onClose} className="bg-color-blue-main hover:bg-color-blue-pt text-white font-pretendard font-semibold py-1 px-4 rounded-lg h-10">
-                {buttonText}
-              </button>
+            <Button 
+              buttonSize="detailBtn"
+              colorStyle="blueWhite"
+              content={buttonText}
+              onClick={onButtonClick}
+            />
             </div>
           </div>
         </div>
