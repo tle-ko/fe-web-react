@@ -4,7 +4,7 @@
 import React, { useEffect, useRef } from 'react';
 import { EmojiButton } from '@joeattardi/emoji-button';
 
-export default function SelectEmoji() {
+export default function SelectEmoji({ title }) {
   const buttonRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -57,8 +57,9 @@ export default function SelectEmoji() {
   }, []);
 
   return (
-    <div>
-      <button className="bg-white rounded-lg border border-gray-200 w-14 h-14 mt-20" ref={buttonRef}></button>
+    <div className='flex flex-col justify-start items-start gap-2'>
+      <div className='text-gray-900 text-base font-semibold'>{title}</div>
+      <button className="bg-white rounded-lg border border-gray-200 w-14 h-14" ref={buttonRef}></button>
     </div>
   );
 }
