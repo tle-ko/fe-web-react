@@ -59,22 +59,22 @@
   }
 
   .cardGrid2 {
-    @apply divInBody grid grid-cols-2 gap-6
+    @apply divInBody grid grid-cols-2 gap-6;
   }
 
   .cardGrid3 {
-    @apply grid grid-cols-3 gap-6 mb-6
+    @apply grid grid-cols-3 gap-6 mb-6;
   }
 
   .cardGrid4 {
-    @apply grid grid-cols-4 gap-6 mb-6
+    @apply grid grid-cols-4 gap-6 mb-6;
   }
 
   .icon {
-    @apply p-0 justify-center items-center text-2xl
+    @apply p-0 justify-center items-center text-2xl;
   }
 
   .tag {
-    @apply  border-gray-500 bg-white font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm font-m cursor-pointer mr-1;
+    @apply  border-gray-500 bg-white font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm cursor-pointer mr-1;
   }
 }
