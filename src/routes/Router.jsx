@@ -30,7 +30,7 @@ export default function Router() {
           </Route>
         </Route>
         <Route path="/Problem" element={<ProblemMain />}>
-          <Route path="problemId" element={<ProblemDetail />} />
+          <Route path=":id" element={<ProblemDetail />} />
         </Route>
         <Route path="/myPofol" element={<MyPortfolio />} />
       </Routes>
