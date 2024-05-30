@@ -1,7 +1,7 @@
 export default function Input({ title, placeholder, error, accuracy }) {
   return (
-    <div className="w-80 pt-6 flex flex-col justify-start items-start gap-2">
-      <div className="text-gray-900 text-base font-semibold">{title}</div>
+    <div className="pt-6 flex flex-col justify-start items-start gap-2">
+      <div className="containerTitle">{title}</div>
       <input 
         type="text" 
         className="px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 font-medium w-full outline-none"
