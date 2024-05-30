@@ -2,31 +2,369 @@
   {
     "id": 1,
     "name": "코딩메리호",
-    "host_id": "h1",
-    "created_at": "2024-05-14",
+    "host_id": 1,
+    "created_at": "2024-05-06",
     "created_by": "host_id",
-    "icon": "spicy",
-    "allowed_languages": ["1001"],
+    "icon": "🚢",
+    "allowed_languages": ["1002"],
     "tags": ["삼성 코테 준비"],
     "in_recruiting": true,
-    "headcount": 3,
+    "headcount": 4,
     "headcount_limit": 6,
-    "requires_boj_id": false,
-    "required_boj_level": "s5"
-  },
+    "requires_boj_id": true,
+    "required_boj_level": "s5",
+    "members": [
+      {
+        "user_id": 1,
+        "group_id": 1,
+        "created_at": "2024-05-02"
+      },
+      {
+        "user_id": 2,
+        "group_id": 1,
+        "created_at": "2024-05-03"
+      },
+      {
+        "user_id": 4,
+        "group_id": 1,
+        "created_at": "2024-05-03"
+      },
+      {
+        "user_id": 5,
+        "group_id": 1,
+        "created_at": "2024-05-03"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 1,
+        "start_date": "2024-05-01",
+        "end_date": "2024-05-05",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 1,
+        "start_date": "2024-05-06",
+        "end_date": "2024-05-13",
+        "order": 2
+      },
+      {
+        "id": 3,
+        "group_id": 1,
+        "start_date": "2024-05-14",
+        "end_date": "2024-05-30",
+        "order": 3
+      }
+    ]
+  }
+  ,
   {
     "id": 2,
     "name": "엽기떡볶이",
-    "host_id": "h1",
+    "host_id": 2,
+    "created_at": "2024-05-01",
+    "created_by": "host_id",
+    "icon": "🌶️",
+    "allowed_languages": ["1001"],
+    "tags": ["티어 무관"],
+    "in_recruiting": true,
+    "headcount": 3,
+    "headcount_limit": 6,
+    "requires_boj_id": false,
+    "required_boj_level": "s5",
+    "members": [
+      {
+        "user_id": 1,
+        "group_id": 2,
+        "created_at": "2024-05-02"
+      },
+      {
+        "user_id": 2,
+        "group_id": 2,
+        "created_at": "2024-05-03"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 2,
+        "start_date": "2024-05-10",
+        "end_date": "2024-05-17",
+        "order": 1
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "타코야끼",
+    "host_id": 3,
     "created_at": "2024-05-14",
     "created_by": "host_id",
-    "icon": "spicy",
+    "icon": "🧆",
     "allowed_languages": ["1001"],
     "tags": ["삼성 코테 준비"],
     "in_recruiting": true,
     "headcount": 3,
     "headcount_limit": 6,
     "requires_boj_id": false,
-    "required_boj_level": "s5"
+    "required_boj_level": "s5",
+    "members": [
+      {
+        "user_id": 1,
+        "group_id": 3,
+        "created_at": "2024-05-02"
+      },
+      {
+        "user_id": 2,
+        "group_id": 3,
+        "created_at": "2024-05-03"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 3,
+        "start_date": "2024-05-10",
+        "end_date": "2024-05-17",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 3,
+        "start_date": "2024-05-18",
+        "end_date": "2024-05-25",
+        "order": 2
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "백엔드 마스터즈",
+    "host_id": 4,
+    "created_at": "2024-05-20",
+    "created_by": "host_id",
+    "icon": "💻",
+    "allowed_languages": ["1003", "1004"],
+    "tags": ["백엔드 개발", "실전 프로젝트"],
+    "in_recruiting": true,
+    "headcount": 2,
+    "headcount_limit": 5,
+    "requires_boj_id": false,
+    "required_boj_level": "..",
+    "members": [
+      {
+        "user_id": 6,
+        "group_id": 4,
+        "created_at": "2024-05-21"
+      },
+      {
+        "user_id": 7,
+        "group_id": 4,
+        "created_at": "2024-05-22"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 4,
+        "start_date": "2024-05-23",
+        "end_date": "2024-05-30",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 4,
+        "start_date": "2024-06-01",
+        "end_date": "2024-06-08",
+        "order": 2
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "알고리즘 마스터",
+    "host_id": 5,
+    "created_at": "2024-05-28",
+    "created_by": "host_id",
+    "icon": "🧠",
+    "allowed_languages": ["1002", "1003"],
+    "tags": ["알고리즘", "코딩 테스트"],
+    "in_recruiting": true,
+    "headcount": 3,
+    "headcount_limit": 5,
+    "requires_boj_id": true,
+    "required_boj_level": "s4",
+    "members": [
+      {
+        "user_id": 8,
+        "group_id": 5,
+        "created_at": "2024-05-28"
+      },
+      {
+        "user_id": 9,
+        "group_id": 5,
+        "created_at": "2024-05-29"
+      },
+      {
+        "user_id": 10,
+        "group_id": 5,
+        "created_at": "2024-05-29"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 5,
+        "start_date": "2024-06-01",
+        "end_date": "2024-06-07",
+        "order": 1
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "프론트엔드 초보자",
+    "host_id": 6,
+    "created_at": "2024-05-29",
+    "created_by": "host_id",
+    "icon": "🌐",
+    "allowed_languages": ["1001", "1004"],
+    "tags": ["프론트엔드", "초보자"],
+    "in_recruiting": true,
+    "headcount": 2,
+    "headcount_limit": 4,
+    "requires_boj_id": false,
+    "required_boj_level": "..",
+    "members": [
+      {
+        "user_id": 11,
+        "group_id": 6,
+        "created_at": "2024-05-29"
+      },
+      {
+        "user_id": 12,
+        "group_id": 6,
+        "created_at": "2024-05-29"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 6,
+        "start_date": "2024-06-01",
+        "end_date": "2024-06-05",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 6,
+        "start_date": "2024-06-06",
+        "end_date": "2024-06-10",
+        "order": 2
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "데이터 과학자",
+    "host_id": 7,
+    "created_at": "2024-05-30",
+    "created_by": "host_id",
+    "icon": "📊",
+    "allowed_languages": ["1003", "1005"],
+    "tags": ["데이터 과학", "머신러닝"],
+    "in_recruiting": true,
+    "headcount": 4,
+    "headcount_limit": 6,
+    "requires_boj_id": true,
+    "required_boj_level": "g1",
+    "members": [
+      {
+        "user_id": 13,
+        "group_id": 7,
+        "created_at": "2024-05-30"
+      },
+      {
+        "user_id": 14,
+        "group_id": 7,
+        "created_at": "2024-05-30"
+      },
+      {
+        "user_id": 15,
+        "group_id": 7,
+        "created_at": "2024-05-31"
+      },
+      {
+        "user_id": 16,
+        "group_id": 7,
+        "created_at": "2024-05-31"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 7,
+        "start_date": "2024-06-01",
+        "end_date": "2024-06-07",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 7,
+        "start_date": "2024-06-08",
+        "end_date": "2024-06-14",
+        "order": 2
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "시스템 아키텍트",
+    "host_id": 8,
+    "created_at": "2024-05-31",
+    "created_by": "host_id",
+    "icon": "🏗️",
+    "allowed_languages": ["1004", "1006"],
+    "tags": ["시스템 설계", "아키텍처"],
+    "in_recruiting": true,
+    "headcount": 3,
+    "headcount_limit": 5,
+    "requires_boj_id": false,
+    "required_boj_level": "..",
+    "members": [
+      {
+        "user_id": 17,
+        "group_id": 8,
+        "created_at": "2024-05-31"
+      },
+      {
+        "user_id": 18,
+        "group_id": 8,
+        "created_at": "2024-05-31"
+      },
+      {
+        "user_id": 19,
+        "group_id": 8,
+        "created_at": "2024-06-01"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "group_id": 8,
+        "start_date": "2024-06-01",
+        "end_date": "2024-06-05",
+        "order": 1
+      },
+      {
+        "id": 2,
+        "group_id": 8,
+        "start_date": "2024-06-06",
+        "end_date": "2024-06-10",
+        "order": 2
+      }
+    ]
   }
 ]
