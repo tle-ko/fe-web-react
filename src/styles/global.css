@@ -70,7 +70,7 @@
     @apply w-[25px] h-[25px]
   }
   .tag {
-    @apply border border-gray-500 text-gray-600 bg-white font-pretendard font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm font-medium cursor-pointer;
+    @apply  border-gray-500 bg-white font-pretendard font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm font-medium cursor-pointer mr-1;
   }
 
 }
