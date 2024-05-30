@@ -12,7 +12,7 @@ const Modal = ({ isOpen, onClose, title, content, buttonText, onButtonClick }) =
           <div className="flex justify-between items-center mt-10">
             <h2 className="text-lg font-cafe24 font-bold text-left text-[28px]">{title}</h2>
             <button onClick={onClose} className="close">
-              <img src={close} alt="close" className="w-6 h-5" />
+              <img src={close} alt="close" className="w-4 h-4" />
             </button>
           </div>
           <div className="mt-10 w-full">
