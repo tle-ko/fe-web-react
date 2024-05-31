@@ -44,10 +44,14 @@
 
 @layer components {
   .box {
-    @apply p-10 bg-white rounded-lg border border-gray-200;
+    @apply p-7 bg-white rounded-lg border border-gray-200;
   }
   .notice {
     @apply px-6 py-[13px] bg-color-yellow-w50 rounded-lg text-gray-700;
+  }
+
+  .containerTitle {
+    @apply text-gray-900 text-base font-semibold;
   }
 
   .divInBody {
@@ -55,22 +59,22 @@
   }
 
   .cardGrid2 {
-    @apply divInBody grid grid-cols-2 gap-6
+    @apply divInBody grid grid-cols-2 gap-6;
   }
 
   .cardGrid3 {
-    @apply grid grid-cols-3 gap-6
+    @apply grid grid-cols-3 gap-6 mb-6;
   }
 
   .cardGrid4 {
-    @apply grid grid-cols-4 gap-6
+    @apply grid grid-cols-4 gap-6 mb-6;
   }
 
-  .preImg {
-    @apply w-[25px] h-[25px]
+  .icon {
+    @apply p-0 justify-center items-center text-2xl;
   }
+
   .tag {
-    @apply  border-gray-500 bg-white font-pretendard font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm font-medium cursor-pointer mr-1;
+    @apply  border-gray-500 bg-white font-semibold inline-flex items-center py-1 px-3 rounded-full text-sm cursor-pointer mr-1;
   }
-
 }

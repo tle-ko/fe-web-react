@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "image_url": "https://ibb.co/VvGw3xF",
+    "email": "kdj@naver.com",
+    "password": "kdj1234",
+    "username": "김동주김",
+    "boj_id": "kdj"
+  },
+  {
+    "id": 2,
+    "image_url": "",
+    "email": "lym@naver.com",
+    "password": "lym1234",
+    "username": "이유민이유민",
+    "boj_id": "lym"
+  },
+  {
+    "id": 3,
+    "image_url": "",
+    "email": "mgh@naver.com",
+    "password": "mgh1234",
+    "username": "기홍민",
+    "boj_id": "mgh"
+  },
+  {
+    "id": 4,
+    "image_url": "",
+    "email": "kyj@naver.com",
+    "password": "kyj1234",
+    "username": "강윤진",
+    "boj_id": "kyj"
+  },
+  {
+    "id": 5,
+    "image_url": "",
+    "email": "ksy@naver.com",
+    "password": "ksy1234",
+    "username": "김서영김서",
+    "boj_id": "ksy"
+  },
+  {
+    "id": 6,
+    "image_url": "",
+    "email": "jyj@naver.com",
+    "password": "jyj1234",
+    "username": "진유조유진",
+    "boj_id": "jyj"
+  },
+  {
+    "id": 7,
+    "image_url": "",
+    "email": "phj@naver.com",
+    "password": "phj1234",
+    "username": "박현진",
+    "boj_id": "phj"
+  },
+  {
+    "id": 8,
+    "image_url": "",
+    "email": "hsk@naver.com",
+    "password": "hsk1234",
+    "username": "홍수경",
+    "boj_id": "hsk"
+  },
+  {
+    "id": 9,
+    "image_url": "",
+    "email": "ljh@naver.com",
+    "password": "ljh1234",
+    "username": "이정훈",
+    "boj_id": "ljh"
+  },
+  {
+    "id": 10,
+    "image_url": "",
+    "email": "cys@naver.com",
+    "password": "cys1234",
+    "username": "최예슬",
+    "boj_id": "cys"
+  },
+  {
+    "id": 11,
+    "image_url": "",
+    "email": "kjh@naver.com",
+    "password": "kjh1234",
+    "username": "김정현",
+    "boj_id": "kjh"
+  },
+  {
+    "id": 12,
+    "image_url": "",
+    "email": "lkh@naver.com",
+    "password": "lkh1234",
+    "username": "이경현",
+    "boj_id": "lkh"
+  },
+  {
+    "id": 13,
+    "image_url": "",
+    "email": "soh@naver.com",
+    "password": "soh1234",
+    "username": "서영호",
+    "boj_id": "soh"
+  },
+  {
+    "id": 14,
+    "image_url": "",
+    "email": "yjm@naver.com",
+    "password": "yjm1234",
+    "username": "유지민",
+    "boj_id": "yjm"
+  },
+  {
+    "id": 15,
+    "image_url": "",
+    "email": "sji@naver.com",
+    "password": "sji1234",
+    "username": "송지인",
+    "boj_id": "sji"
+  },
+  {
+    "id": 16,
+    "image_url": "",
+    "email": "kms@naver.com",
+    "password": "kms1234",
+    "username": "김민수",
+    "boj_id": "kms"
+  }
+]
