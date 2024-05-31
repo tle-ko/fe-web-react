@@ -1,7 +1,8 @@
 import React from 'react';
 import close from '../../assets/images/close.svg';
+import Button from './button';
 
-const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
+const Modal = ({ isOpen, onClose, title, content, buttonText, onButtonClick }) => {
   if (!isOpen) return null;
 
   return (
@@ -11,7 +12,7 @@ const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
           <div className="flex justify-between items-center mt-10">
             <h2 className="text-lg font-cafe24 font-bold text-left text-[28px]">{title}</h2>
             <button onClick={onClose} className="close">
-              <img src={close} alt="close" className="w-6 h-5" />
+              <img src={close} alt="close" className="w-4 h-4" />
             </button>
           </div>
           <div className="mt-10 w-full">
@@ -19,9 +20,12 @@ const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
               {content}
             </div>
             <div className="flex justify-center mt-16 mb-10">
-            <button onClick={onClose} className="bg-color-blue-main hover:bg-color-blue-pt text-white font-pretendard font-semibold py-1 px-4 rounded-lg h-10">
-                {buttonText}
-              </button>
+            <Button 
+              buttonSize="detailBtn"
+              colorStyle="blueWhite"
+              content={buttonText}
+              onClick={onButtonClick}
+            />
             </div>
           </div>
         </div>
@@ -31,3 +35,10 @@ const Modal = ({ isOpen, onClose, title, content, buttonText }) => {
 }
 
 export default Modal;
+
+// 모달 사용 예시 (content prop 전달)
+// const content = (
+//   <div>
+//     <Input title="로그인" placeholder="정보를 입력하세요." />
+//   </div>
+// );

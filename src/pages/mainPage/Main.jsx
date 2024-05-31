@@ -1,9 +1,9 @@
 import Footer from '../../components/common/footer';
 
-export default function main(){
-  return(
+export default function Main() {
+  return (
     <div>
       <Footer />
     </div>
-  )
+  );
 }

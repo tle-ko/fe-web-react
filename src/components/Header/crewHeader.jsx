@@ -1,7 +1,7 @@
 import useFetchData from "../../hooks/useEffectData";
 import exImg from "../../assets/images/lv1.svg"
 
-export default function SubHeader({ crewId }) {
+export default function CrewHeader({ crewId }) {
   // mock데이터 crewData.json url을 fetch함수로 호출해 그 응답 state로 저장
   const data = useFetchData("http://localhost:3000/data/crewData.json");
 
