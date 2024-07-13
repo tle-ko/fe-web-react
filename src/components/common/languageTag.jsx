@@ -8,7 +8,6 @@ import CIcon from '../../assets/images/c.svg';
 import KotlinIcon from '../../assets/images/kotlin.svg';
 import CPlusIcon from '../../assets/images/CPlus.svg';
 
-
 const languageIcons = {
   Python: PythonIcon,
   Java: JavaIcon,
@@ -20,7 +19,7 @@ const languageIcons = {
   "C++": CPlusIcon,
 };
 
-const LanguageTag = ({ language }) => {
+const LanguageTag = ({ language, className = "" }) => {
   const languageColor = () => {
     switch(language) {
       case 'Python':
@@ -40,23 +39,20 @@ const LanguageTag = ({ language }) => {
       case 'C++':
         return 'bg-color-blue-cpp text-gray-50';
       default:
-        return 'bg-gray-500 text-gray-50';
+        return className;  // 기본적으로 className을 적용
     }
   };
 
   return (
-    <div 
-      className={`tag ${languageColor()}`}
-    >
+    <div className={`tag ${languageColor()} px-3 py-2 rounded-[20px] justify-center items-center flex`}>
       {languageIcons[language] && (
         <img 
           src={languageIcons[language]} 
           alt={`${language} icon`} 
-          className="mr-2" 
-          style={{width: '16px', height: '16px'}} 
+          className="mr-1 w-4 h-4" 
         />
       )}
-      {language}
+      <div className="text-sm font-semibold">{language}</div>
     </div>
   );
 };
