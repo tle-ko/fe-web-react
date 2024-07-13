@@ -3,8 +3,8 @@ import logoWhite from '../../assets/images/logo-white.svg';
 
 export default function Header() {
   return (
-    <div className="w-full h-16 fixed top-0 left-0 z-10 px-4 py-3 bg-color-blue-main text-white text-xl flex items-center justify-center">
-      <div className='flex justify-between items-center w-full max-w-screen-xl px-36 gap-16'>
+    <div className="w-full h-16 fixed top-0 left-0 z-10 px-4 py-3 bg-color-blue-main text-white text-xl flex justify-center items-center">
+      <div className='w-full flex justify-between items-center px-36 gap-16'>
         <Link className="w-14" to="/"><img src={logoWhite} alt='' /></Link>
         <div className='flex flex-row justify-between items-center w-full'>
           <div className="flex gap-8">
