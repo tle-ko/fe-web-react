@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import ProblemHeader from "../../components/Header/problemHeader";
 import ProblemDetailNav from "../../components/nav/problemDetailNav";
 import ProblemAnalysis from '../../components/problemAnalysisContainer';
-import ProblemAnalysisLoading from '../../components/problemAnalysisLoading';
+import ProblemAnalysisLoading from '../../components/problemMain/problemAnalysisLoading';
 import Modal from "../../components/common/modal";
 import Input from "../../components/common/input";
 import AlertContainer from "../../components/common/alertContainer";
