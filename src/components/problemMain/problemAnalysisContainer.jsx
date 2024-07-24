@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { FaChevronLeft, FaTag } from 'react-icons/fa';
 import { RiBarChart2Fill } from 'react-icons/ri';
 import { MdAccessTimeFilled } from 'react-icons/md';
-import MathJax from './mathjax.jsx';
+import MathJax from '../mathjax.jsx';
 import ProblemAnalysisLoading from './problemAnalysisLoading.jsx';
 
 export default function ProblemAnalysisContainer({ problemId, setActiveContainer }) {
