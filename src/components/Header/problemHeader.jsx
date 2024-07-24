@@ -12,8 +12,8 @@ export default function ProblemHeader({ problemId }) {
   return (
     <div>
       {problem ? (
-        <div className="w-screen bg-white border-b border-gray-200 top-16 left-0 fixed px-[120px] py-4 flex flex-row justify-between align-center">
-          <p className="pl-[142px] font-cafe24 text-2xl">{problem.title}</p>
+        <div className="w-screen bg-white border-b border-gray-200 py-4 flex flex-row justify-between align-center">
+          <p className="px-[7.5rem] font-cafe24 text-2xl">{problem.title}</p>
         </div>
       ) : (
         <div>해당하는 문제가 없습니다.</div>
