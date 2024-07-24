@@ -26,7 +26,7 @@ module.exports = {
         'color-level2-yellow': '#FFB902',
         'color-level3-pink': '#F56CB6',
         'color-red': {
-          x: '#E84057',
+          main: '#E84057',
           java: '#E11F21'
         },
         'color-green': '#03BBA3',

@@ -1,29 +1,34 @@
 import React from 'react';
-import { Link, Outlet } from "react-router-dom";
-import useChildRoute from "../../hooks/useChildRoute";
-import useFetchData from "../../hooks/useEffectData";
 import Footer from '../../components/common/footer';
+import MyCrew from '../../components/crewMain/myCrew';
+import CrewListContainer from '../../components/crewMain/crewListContainer';
+import CreateCrew from '../../components/crewMain/createCrew';
+import { Outlet } from "react-router-dom";
+import useChildRoute from "../../hooks/useChildRoute";
 
-export default function CrewMain(){
-  // 부모div의 버튼을 클릭했을 때 자식 div만 표시되고 부모div는 사라지게
-  const isChildRoute = useChildRoute("/crew/");
-  // mock데이터 crewData.json url을 fetch함수로 호출해 그 응답 state로 저장
-  const data = useFetchData("http://localhost:3000/data/crewData.json");
+export default function CrewMain() {
+  const isChildRoute = useChildRoute("/crew/")
 
-  return(
+  // userId 임의로 설정, 나중에는 로그인된 유저의 id값으로 적용
+  const userId = 1;
+
+  return (
     <div>
       {isChildRoute ? (
-          <Outlet />
-        ) : (
-          <div className="cardGrid4">
-            {data.map((crew) => (
-              <div key={crew.id} className="box">
-                <Link to={`/crew/${crew.id}`}><button>버튼</button></Link>
-              </div>
-            ))}   
+        <Outlet />
+      ) : (
+        <div className="min-h-screen flex flex-col justify-center items-center">
+          <div className="flex-col justify-center items-center gap-12 inline-flex w-full">
+            <div className="w-full h-11 justify-between items-center gap-20 inline-flex">
+              <div className="text-gray-700 text-[1.75rem] font-bold font-cafe24">크루 둘러보기</div>
+              <CreateCrew />
+            </div>
+            <MyCrew userId={userId} />
+            <CrewListContainer />
           </div>
-        )}
-        <Footer />
+        </div>
+      )}
+      <Footer />
     </div>
   );
 }
