@@ -31,5 +31,3 @@ usage
     height="28" //height는 rem 단위로 지정, props로 안주면 auto
   />
  */
-
-  
