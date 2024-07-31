@@ -12,7 +12,7 @@ export default function CrewHeader({ crewId }) {
   return (
     <div>
     {crew ? (
-      <div className="w-screen h-16 bg-white top-16 left-0 fixed px-28 py-4 flex flex-row gap-2 items-center z-10">
+      <div className="w-screen h-16 bg-white top-16 left-0 fixed px-28 py-4 flex flex-row gap-2 items-center">
         <div className="flex justify-center items-center">
           <div className="icon flex justify-center items-center">{crew.icon}</div>
         </div>

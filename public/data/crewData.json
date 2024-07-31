@@ -34,26 +34,6 @@
         "user_id": 5,
         "group_id": 1,
         "created_at": "24-05-03"
-      },
-      {
-        "user_id": 8,
-        "group_id": 1,
-        "created_at": "24-05-03"
-      },
-      {
-        "user_id": 11,
-        "group_id": 1,
-        "created_at": "24-05-03"
-      },
-      {
-        "user_id": 13,
-        "group_id": 1,
-        "created_at": "24-05-03"
-      },
-      {
-        "user_id": 14,
-        "group_id": 1,
-        "created_at": "24-05-03"
       }
     ],
     "activities": [
@@ -62,418 +42,25 @@
         "group_id": 1,
         "start_date": "24-05-01",
         "end_date": "24-05-05",
-        "order": 1,
-        "problems": [
-          {
-            "id": 1,
-            "activity_id": 1,
-            "problem_id": 1,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 1,
-                "activity_problem_id": 1,
-                "result": "AC",
-                "content": "문제 풀이 내용",
-                "created_by": 1,
-                "created_at": "24-05-01",
-                "submission_comments": [
-                  {
-                    "id": 1,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 2,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 4,
-                    "created_at": "24-05-01"
-                  }
-                ]
-              },
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 2,
-            "activity_id": 1,
-            "problem_id": 2,
-            "order": 2,
-            "submissions": [
-              {
-                "id": 3,
-                "activity_problem_id": 2,
-                "result": "TLE",
-                "content": "문제 풀이 내용",
-                "created_by": 4,
-                "created_at": "24-05-02",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 3,
-            "activity_id": 1,
-            "problem_id": 3,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 4,
-            "activity_id": 1,
-            "problem_id": 4,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 1,
-                "activity_problem_id": 1,
-                "result": "AC",
-                "content": "문제 풀이 내용",
-                "created_by": 1,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              },
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          }
-        ]
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 1,
         "start_date": "24-05-06",
         "end_date": "24-05-13",
-        "order": 2,
-        "problems": []
+        "order": 2
       },
       {
         "id": 3,
         "group_id": 1,
         "start_date": "24-05-14",
         "end_date": "24-05-30",
-        "order": 3,
-        "problems": [
-          {
-            "id": 1,
-            "activity_id": 3,
-            "problem_id": 1,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 1,
-                "activity_problem_id": 1,
-                "result": "AC",
-                "content": "문제 풀이 내용",
-                "created_by": 1,
-                "created_at": "24-05-01",
-                "submission_comments": [
-                  {
-                    "id": 1,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 2,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 4,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 5,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 8,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 11,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 13,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 14,
-                    "created_at": "24-05-01"
-                  }
-                ]
-              },
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": [
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 4,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 5,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 13,
-                    "created_at": "24-05-01"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": 2,
-            "activity_id": 3,
-            "problem_id": 2,
-            "order": 2,
-            "submissions": [
-              {
-                "id": 3,
-                "activity_problem_id": 2,
-                "result": "TLE",
-                "content": "문제 풀이 내용",
-                "created_by": 4,
-                "created_at": "24-05-02",
-                "submission_comments": [
-                  {
-                    "id": 1,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 2,
-                    "created_at": "24-05-01"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": 3,
-            "activity_id": 3,
-            "problem_id": 3,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 4,
-            "activity_id": 3,
-            "problem_id": 4,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 1,
-                "activity_problem_id": 1,
-                "result": "AC",
-                "content": "문제 풀이 내용",
-                "created_by": 1,
-                "created_at": "24-05-01",
-                "submission_comments": [
-                  {
-                    "id": 1,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 5,
-                    "created_at": "24-05-01"
-                  },
-                  {
-                    "id": 2,
-                    "submission_id": 1,
-                    "start_line": 1,
-                    "end_line": 3,
-                    "content": "좋은 풀이입니다. 하지만 코드 스타일을 개선해보세요.",
-                    "created_by": 14,
-                    "created_at": "24-05-01"
-                  }
-                ]
-              },
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 5,
-            "activity_id": 3,
-            "problem_id": 5,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 1,
-                "activity_problem_id": 1,
-                "result": "AC",
-                "content": "문제 풀이 내용",
-                "created_by": 1,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              },
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 6,
-            "activity_id": 3,
-            "problem_id": 6,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 7,
-            "activity_id": 3,
-            "problem_id": 7,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          },
-          {
-            "id": 8,
-            "activity_id": 3,
-            "problem_id": 8,
-            "order": 1,
-            "submissions": [
-              {
-                "id": 2,
-                "activity_problem_id": 1,
-                "result": "WA",
-                "content": "문제 풀이 내용",
-                "created_by": 2,
-                "created_at": "24-05-01",
-                "submission_comments": []
-              }
-            ]
-          }
-        ]
+        "order": 3
       }
     ]
-  },
+  }
+  ,
   {
     "id": 2,
     "name": "엽기떡볶이",
@@ -507,8 +94,7 @@
         "group_id": 2,
         "start_date": "24-05-10",
         "end_date": "24-05-17",
-        "order": 1,
-        "problems": []
+        "order": 1
       }
     ]
   },
@@ -545,16 +131,14 @@
         "group_id": 3,
         "start_date": "24-05-10",
         "end_date": "24-05-17",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 3,
         "start_date": "24-05-18",
         "end_date": "24-05-25",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -596,16 +180,14 @@
         "group_id": 4,
         "start_date": "24-05-23",
         "end_date": "24-05-30",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 4,
         "start_date": "24-06-01",
         "end_date": "24-06-08",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -652,8 +234,7 @@
         "group_id": 5,
         "start_date": "24-06-01",
         "end_date": "24-06-07",
-        "order": 1,
-        "problems": []
+        "order": 1
       }
     ]
   },
@@ -695,16 +276,14 @@
         "group_id": 6,
         "start_date": "24-06-01",
         "end_date": "24-06-05",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 6,
         "start_date": "24-06-06",
         "end_date": "24-06-10",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -756,16 +335,14 @@
         "group_id": 7,
         "start_date": "24-06-01",
         "end_date": "24-06-07",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 7,
         "start_date": "24-06-08",
         "end_date": "24-06-14",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -812,16 +389,14 @@
         "group_id": 8,
         "start_date": "24-06-01",
         "end_date": "24-06-05",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 8,
         "start_date": "24-06-06",
         "end_date": "24-06-10",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -839,7 +414,6 @@
     "headcount_limit": 4,
     "requires_boj_id": false,
     "required_boj_level": "..",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 20,
@@ -863,16 +437,14 @@
         "group_id": 9,
         "start_date": "24-06-02",
         "end_date": "24-06-06",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 9,
         "start_date": "24-06-07",
         "end_date": "24-06-11",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -890,7 +462,6 @@
     "headcount_limit": 5,
     "requires_boj_id": true,
     "required_boj_level": "g2",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 22,
@@ -914,16 +485,14 @@
         "group_id": 10,
         "start_date": "24-06-03",
         "end_date": "24-06-07",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 10,
         "start_date": "24-06-08",
         "end_date": "24-06-12",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -941,7 +510,6 @@
     "headcount_limit": 4,
     "requires_boj_id": false,
     "required_boj_level": "..",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 25,
@@ -960,16 +528,14 @@
         "group_id": 11,
         "start_date": "24-06-04",
         "end_date": "24-06-08",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 11,
         "start_date": "24-06-09",
         "end_date": "24-06-13",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -987,7 +553,6 @@
     "headcount_limit": 5,
     "requires_boj_id": false,
     "required_boj_level": "..",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 27,
@@ -1011,16 +576,14 @@
         "group_id": 12,
         "start_date": "24-06-05",
         "end_date": "24-06-09",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 12,
         "start_date": "24-06-10",
         "end_date": "24-06-14",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -1038,7 +601,6 @@
     "headcount_limit": 4,
     "requires_boj_id": false,
     "required_boj_level": "..",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 30,
@@ -1057,16 +619,14 @@
         "group_id": 13,
         "start_date": "24-06-06",
         "end_date": "24-06-10",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 13,
         "start_date": "24-06-11",
         "end_date": "24-06-15",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -1084,7 +644,6 @@
     "headcount_limit": 5,
     "requires_boj_id": true,
     "required_boj_level": "g1",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 32,
@@ -1108,16 +667,14 @@
         "group_id": 14,
         "start_date": "24-06-07",
         "end_date": "24-06-11",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 14,
         "start_date": "24-06-12",
         "end_date": "24-06-16",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -1135,7 +692,6 @@
     "headcount_limit": 4,
     "requires_boj_id": false,
     "required_boj_level": "..",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 35,
@@ -1154,16 +710,14 @@
         "group_id": 15,
         "start_date": "24-06-08",
         "end_date": "24-06-12",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 15,
         "start_date": "24-06-13",
         "end_date": "24-06-17",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   },
@@ -1181,7 +735,6 @@
     "headcount_limit": 5,
     "requires_boj_id": true,
     "required_boj_level": "s1",
-    "notice": "공지사항 내용입니다.",
     "members": [
       {
         "user_id": 37,
@@ -1205,16 +758,14 @@
         "group_id": 16,
         "start_date": "24-06-09",
         "end_date": "24-06-13",
-        "order": 1,
-        "problems": []
+        "order": 1
       },
       {
         "id": 2,
         "group_id": 16,
         "start_date": "24-06-14",
         "end_date": "24-06-18",
-        "order": 2,
-        "problems": []
+        "order": 2
       }
     ]
   }
