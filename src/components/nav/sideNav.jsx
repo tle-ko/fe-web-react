@@ -1,30 +1,25 @@
-export default function SideNav({ elements }) {
+import { useEffect } from 'react';
+
+export default function SideNav({ elements, setSelectedElement, selectedElement }) {
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 첫 번째 요소를 선택하도록 설정
+    if (!selectedElement) {
+      setSelectedElement(elements[0]);
+    }
+  }, [elements, setSelectedElement, selectedElement]);
+
   return (
-    <div className="box w-3/5 flex-col justify-start items-start gap-4 inline-flex">
+    <div className="box w-1/4 h-fit flex-col justify-start items-start gap-4 inline-flex mr-4">
       {elements.map((element, index) => (
-        <div key={index} className="flex-col justify-start items-start gap-3 flex">
-          <div className="px-4 py-3 bg-white rounded justify-start items-start inline-flex">
-            <div className=" text-gray-600 text-base font-semibold">{element}</div>
+        <div key={index} 
+             className={`w-full flex-col justify-start items-start gap-3 flex cursor-pointer ${selectedElement === element ? 'bg-color-blue-w25 w-full text-blue-500 rounded' : 'text-black'}`}
+             onClick={() => setSelectedElement(element)} 
+        >
+          <div className={`px-4 py-3 rounded justify-start items-start inline-flex cursor-pointer ${selectedElement === element ? 'text-blue-500' : 'text-black'}`}>
+            <p className="text-base font-semibold">{element}</p>
           </div>
         </div>
       ))}
     </div>
-  )
+  );
 }
-
-/**
- *   // url의 crewId값을 CrewHeader에 보내주기 위해 id값 얻기
-  let { id } = useParams();
-  // SideNav에 들어갈 요소 리스트 넣기
-  // 아래는 예시로, 사용하는 nav 내용에 따라 리스트 변경하면 됨.
-  const elements = ["1주차", "2주차", "3주차", "4주차"]
-
-  return(
-    <div>
-      <CrewHeader crewId={ id } />
-      <div className="cardGrid2">
-        <SideNav elements={elements}/>
-        
-      </div>
-    </div>
- */

@@ -1,9 +1,9 @@
-import Footer from '../../components/common/footer';
+// crewDashProblem.jsx
 
-export default function crewDashProblem(){
-  return(
-    <div>
-      <Footer />
-    </div>
-  )
+import React from 'react';
+
+export default function CrewDashProblem() {
+  return (
+    <div className='box'></div>
+  );
 }
