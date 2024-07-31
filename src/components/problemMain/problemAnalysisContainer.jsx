@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { FaChevronLeft, FaTag } from 'react-icons/fa';
 import { RiBarChart2Fill } from 'react-icons/ri';
 import { MdAccessTimeFilled } from 'react-icons/md';
-import MathJax from '../mathjax.jsx';
 import ProblemAnalysisLoading from './problemAnalysisLoading.jsx';
 
 export default function ProblemAnalysisContainer({ problemId, setActiveContainer }) {
@@ -116,7 +115,7 @@ export default function ProblemAnalysisContainer({ problemId, setActiveContainer
             <MdAccessTimeFilled size="1.5rem" color="white" />
           </div>
           <div className="text-white text-xl">
-            <MathJax math={`$O(${timeComplexity})$`} />
+            <p>{`O(${timeComplexity})`}</p>
           </div>
         </div>
       </div>
