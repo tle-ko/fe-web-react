@@ -6,6 +6,7 @@ import ProblemAnalysis from '../../components/problemMain/problemAnalysisContain
 import ProblemAnalysisLoading from '../../components/problemMain/problemAnalysisLoading';
 import Modal from "../../components/common/modal";
 import Input from "../../components/common/input";
+import Textarea from "../../components/common/textarea";
 import AlertContainer from "../../components/common/alertContainer";
 import { FaChevronRight } from "react-icons/fa";
 
@@ -80,9 +81,9 @@ export default function ProblemDetail() {
         <Input title="메모리 제한" placeholder="MB" width="8.875" value={memoryLimit} onChange={(e) => handleInputChange(e, setMemoryLimit)} />
         <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요" width="21" value={url} onChange={(e) => setUrl(e.target.value)} />
       </div>
-      <Input title="문제" placeholder="문제를 작성해 주세요" height="12" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <Input title="입력" placeholder="입력 조건을 작성해 주세요" height="12" value={inputDescription} onChange={(e) => setInputDescription(e.target.value)} />
-      <Input title="출력" placeholder="출력 조건을 작성해 주세요" height="12" value={outputDescription} onChange={(e) => setOutputDescription(e.target.value)} />
+      <Textarea title="문제" placeholder="문제를 작성해 주세요" height="12" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <Textarea title="입력" placeholder="입력 조건을 작성해 주세요" height="12" value={inputDescription} onChange={(e) => setInputDescription(e.target.value)} />
+      <Textarea title="출력" placeholder="출력 조건을 작성해 주세요" height="12" value={outputDescription} onChange={(e) => setOutputDescription(e.target.value)} />
     </div>
   );
 

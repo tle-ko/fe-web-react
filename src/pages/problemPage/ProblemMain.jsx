@@ -8,6 +8,7 @@ import Dropdown from "../../components/common/dropDown";
 import Modal from "../../components/common/modal";
 import Alert from "../../components/common/alertContainer";
 import Input from "../../components/common/input";
+import Textarea from "../../components/common/textarea";
 import Pagination from '../../components/common/pagiNation';
 
 import Level1 from "../../assets/images/lv1.svg";
@@ -55,9 +56,9 @@ export default function ProblemMain() {
         <Input title="메모리 제한" placeholder="MB" width="8.875" onChange={(e) => handleInputChange(e, setMemoryLimit)} />
         <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요" width="21" onChange={(e) => setProblemUrl(e.target.value)} />
       </div>
-      <Input title="문제" placeholder="문제를 작성해 주세요" height="12" onChange={(e) => setProblemDescription(e.target.value)} />
-      <Input title="입력" placeholder="입력 조건을 작성해 주세요" height="12" onChange={(e) => setInputDescription(e.target.value)}/>
-      <Input title="출력" placeholder="출력 조건을 작성해 주세요" height="12" onChange={(e) => setOutputDescription(e.target.value)}/>
+      <Textarea title="문제" placeholder="문제를 작성해 주세요" height="12" onChange={(e) => setProblemDescription(e.target.value)} />
+      <Textarea title="입력" placeholder="입력 조건을 작성해 주세요" height="12" onChange={(e) => setInputDescription(e.target.value)}/>
+      <Textarea title="출력" placeholder="출력 조건을 작성해 주세요" height="12" onChange={(e) => setOutputDescription(e.target.value)}/>
     </div>
   );
 
