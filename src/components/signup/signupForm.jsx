@@ -1,63 +1,93 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Input from "../../components/common/input";
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
-import { MdAddAPhoto } from "react-icons/md";
+import { RiShip2Fill } from "react-icons/ri";
 
-export default function SignupForm({ currentStep, formData, onInputChange, onNextStep, onPrevStep, isValid }) {
+export default function SignupForm({ currentStep, formData, onInputChange, onNextStep, onPrevStep }) {
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [codeVerified, setCodeVerified] = useState(false);
+  const [emailButtonLabel, setEmailButtonLabel] = useState('중복확인');
+  const [codeButtonLabel, setCodeButtonLabel] = useState('인증하기');
+  const [Image, setImage] = useState("https://cdn.animaltoc.com/news/photo/202310/266_1351_4337.jpg")
+  const fileInput = useRef(null)
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const validatePassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
     return regex.test(password);
   };
 
   const validateNickname = (nickname) => {
-    return(console.log(nickname));
+    return nickname.length >= 2 && nickname.length <= 8;
   };
 
-  const validateCode = (code) => {
-    return(console.log(code))
+  const validateBojId = (bojId) => {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(bojId);
   };
 
-  const renderPasswordFeedback = () => {
-    if (!formData.password) return null;
-    
-    const isValid = validatePassword(formData.password);
-    return (
-      <div className="flex gap-2 items-center mt-4">
-        {isValid ? (
-          <>
-            <FaCircleCheck size={16} color="#5383E8"/>
-            <p className="text-color-blue-main">사용 가능한 비밀번호입니다.</p>
-          </>
-        ) : (
-          <>
-            <FaCircleExclamation size={16} color="#E84057"/>
-            <p className="text-color-red-main">8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다.</p>
-          </>
-        )}
-      </div>
-    );
+  const handleEmailVerification = () => {
+    if (validateEmail(formData.email)) {
+      setEmailVerified(true);
+      setEmailButtonLabel('사용가능');
+    } else {
+      setEmailVerified(false);
+    }
   };
 
-  const renderPasswordConfirmFeedback = () => {
-    if (!formData.confirmPassword) return null;
-    
-    const isMatch = formData.password === formData.confirmPassword;
-    return (
-      <div className="flex gap-2 items-center mt-4">
-        {isMatch ? (
-          <>
-            <FaCircleCheck size={16} color="#5383E8"/>
-            <p className="text-color-blue-main">비밀번호가 일치합니다.</p>
-          </>
-        ) : (
-          <>
-            <FaCircleExclamation size={16} color="#E84057"/>
-            <p className="text-color-red-main">비밀번호가 일치하지 않습니다.</p>
-          </>
-        )}
-      </div>
-    );
+  const handleCodeVerification = () => {
+    if (verificationCode.length === 6) {
+      setCodeVerified(true);
+      setCodeButtonLabel('인증완료');
+    } else {
+      setCodeVerified(true);
+    }
   };
+
+  const handleImageUpload = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage("https://cdn.animaltoc.com/news/photo/202310/266_1351_4337.jpg");
+    }
+  };
+
+  const handleSubmit = () => {
+    if (emailVerified && codeVerified && validatePassword(formData.password) && formData.password === formData.confirmPassword && validateNickname(formData.nickname) && validateBojId(formData.bojId)) {
+      // 서버에 폼 데이터 제출
+      console.log('Form submitted:', formData);
+    } else {
+      console.log('Form validation failed');
+    }
+  };
+
+  const renderFeedback = (isValid, validMessage, invalidMessage) => (
+    <div className="flex gap-2 items-center mt-2">
+      {isValid ? (
+        <>
+          <FaCircleCheck size={16} color="#5383E8"/>
+          <p className="text-color-blue-main">{validMessage}</p>
+        </>
+      ) : (
+        <>
+          <FaCircleExclamation size={16} color="#E84057"/>
+          <p className="text-color-red-main">{invalidMessage}</p>
+        </>
+      )}
+    </div>
+  );
 
 
   const renderStep1 = () => (
@@ -69,7 +99,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         </p>
         <div className="w-full flex flex-col gap-6">
           <div className="flex flex-col gap-6">
-              <div className="inline-flex gap-6 items-end">
+            <div>
+            <div className="inline-flex gap-6 items-end">
               <Input
                 title="이메일"
                 placeholder="이메일 입력"
@@ -77,38 +108,39 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                 width={24.125}
                 onChange={(e) => onInputChange('email', e.target.value)}
               />
-              <button className="w-full h-[50px] px-5 py-3 rounded-lg bg-color-blue-w25 hover:bg-color-blue-w50">
-              <p className="text-color-blue-main">중복확인</p>
-              </button>
-              </div>
-
-              {formData.email && (
-              <div className="flex gap-2 items-center">
-                {isValid ? (
-                  <>
-                    <FaCircleCheck size={16} color="#5383E8"/>
-                    <p className="text-color-blue-main">사용 가능한 이메일입니다.</p>
-                  </>
-                ) : (
-                  <>
-                    <FaCircleExclamation size={16} color="#E84057"/>
-                    <p className="text-color-red-main">사용 불가능한 이메일입니다.</p>
-                  </>
-                )}
-              </div>
-            )}
-
-            <div className="inline-flex gap-6 items-end">
-            <Input
-                title="이메일 인증번호"
-                placeholder="인증번호 입력"
-                width={24.125}
-                onChange={(e) => onInputChange('code', e.target.value)}
-              />
-              <button className="w-full h-[50px] px-5 py-3 rounded-lg bg-color-blue-w25 hover:bg-color-blue-w50">
-                <p className="text-color-blue-main">인증하기</p>
+              <button 
+                type="button" 
+                className="w-full h-[50px] px-5 py-3 rounded-lg bg-color-blue-w25 hover:bg-color-blue-w50 cursor-pointer text-color-blue-main"
+                onClick={handleEmailVerification}
+                disabled={emailVerified}
+              >
+              {emailButtonLabel}
               </button>
             </div>
+            {formData.email && renderFeedback(emailVerified, "사용 가능한 이메일입니다.", "사용 불가능한 이메일입니다.")}
+            </div>
+
+            <div>
+            <div className="inline-flex gap-6 items-end">
+              <Input
+                title="이메일 인증번호"
+                placeholder="인증번호 입력"
+                value={verificationCode}
+                width={24.125}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                disabled={!emailVerified}
+              />
+              <button 
+                className="w-full h-[50px] px-5 py-3 rounded-lg bg-color-blue-w25 hover:bg-color-blue-w50 cursor-pointer text-color-blue-main"
+                onClick={handleCodeVerification}
+                disabled={!emailVerified || codeVerified}
+              >
+              {codeButtonLabel}
+              </button>
+            </div>
+            {verificationCode && !codeVerified && renderFeedback(false, "", "인증번호가 올바르지 않습니다.")}
+            </div>
+
           </div>
           <div>
             <Input
@@ -118,7 +150,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.password}
               onChange={(e) => onInputChange('password', e.target.value)}
             />
-            {renderPasswordFeedback()}
+            {formData.password && renderFeedback(
+              validatePassword(formData.password),
+              "사용 가능한 비밀번호입니다.",
+              "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
+            )}
           </div>
           <div>
             <Input
@@ -128,7 +164,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.confirmPassword}
               onChange={(e) => onInputChange('confirmPassword', e.target.value)}
             />
-            {renderPasswordConfirmFeedback()}
+            {formData.confirmPassword && renderFeedback(
+              formData.password === formData.confirmPassword,
+              "비밀번호가 일치합니다.",
+              "비밀번호가 일치하지 않습니다."
+            )}
           </div>
         </div>
       </div>
@@ -139,8 +179,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     <>
       <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
         <p className="text-gray-900 text-2xl font-bold">
-        서비스 이용을 위해<br/>
-        회원님의 정보를 입력해주세요
+          서비스 이용을 위해<br/>
+          회원님의 정보를 입력해주세요
         </p>
         <div className="w-full flex flex-col gap-6">
           <div className="">
@@ -151,20 +191,10 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.nickname}
               onChange={(e) => onInputChange('nickname', e.target.value)}
             />
-            {formData.nickname && (
-              <div className="flex gap-2 items-center mt-2">
-                {isValid ? (
-                  <>
-                    <FaCircleCheck size={16} color="#5383E8"/>
-                    <p className="text-color-blue-main">사용 가능한 닉네임입니다.</p>
-                  </>
-                ) : (
-                  <>
-                    <FaCircleExclamation size={16} color="#E84057"/>
-                    <p className="text-color-red-main">사용 불가능한 닉네임입니다.</p>
-                  </>
-                )}
-              </div>
+            {formData.nickname && renderFeedback(
+              validateNickname(formData.nickname),
+              "사용 가능한 닉네임입니다.",
+              "2글자 이상 8글자 이내로 입력해주세요."
             )}
           </div>
           <div>
@@ -175,6 +205,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.bojId}
               onChange={(e) => onInputChange('bojId', e.target.value)}
             />
+            {formData.bojId && renderFeedback(
+              validateBojId(formData.bojId),
+              "올바른 형식의 아이디입니다.",
+              "영문자와 숫자만 사용 가능합니다."
+            )}
           </div>
         </div>
       </div>
@@ -182,32 +217,48 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   );
 
   const renderStep3 = () => (
-    <>
-      <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
+    <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
+      <div className="w-full flex-col justify-start items-start gap-4 inline-flex">
         <p className="text-gray-900 text-2xl font-bold">
-        서비스 이용을 위해<br/>
-        프로필 사진을 등록해주세요
+          서비스 이용을 위해<br/>
+          프로필 사진을 등록해주세요
         </p>
         <p className="text-gray-600 text-base font-normal">프로필 사진 등록은 선택이며, 미등록 시 기본 프로필 사진을 사용합니다.</p>
-        <div className="w-full flex flex-col gap-6 relative">
-          <div className="flex flex-col items-center relative"> 
-                <div className="w-32 h-32 absolute bg-gray-300 rounded-full">
-                    <div className="w-8 h-8 left-[48px] top-[48px] relative">
-                    <MdAddAPhoto size={32} color="#5383E8" />
-                    </div>
-                </div>
-                <div className="h-[33px] px-4 py-2 bg-[#5383e8]/25 rounded-lg justify-center items-center inline-flex">
-                <div className="text-center text-[#5383e8] text-sm font-semibold font-['Pretendard']">사진 등록</div>
-                </div>
-            </div>
-        </div>
       </div>
-    </>
+
+      <div className="w-full flex-col justify-center items-center gap-6 flex"> 
+        <div className="relative w-32 h-32">
+          <img src={Image} alt="profile_image" className="w-full h-full rounded-full object-cover"/>
+          <input 
+            type='file' 
+            style={{display:'none'}}
+            accept='image/jpg,image/png,image/jpeg' 
+            name='profile_img'
+            onChange={handleImageUpload}
+            ref={fileInput}
+          />
+        </div>
+        <button 
+          type="button" 
+          className="px-4 py-2 rounded-lg justify-center items-center inline-flex bg-color-blue-main hover:bg-color-blue-hover cursor-pointer text-center text-white text-sm font-semibold"
+          onClick={() => {fileInput.current.click()}}
+        >
+          사진 등록
+        </button>
+      </div>
+    </div>
   );
 
   const renderStep4 = () => (
     <>
-      <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
+      <div className="flex-col justify-center items-center gap-12 inline-flex">
+        <div className="self-stretch flex-col justify-start items-center gap-6 flex">
+            <RiShip2Fill size={128} color="#5383E8"/>
+            <div className="flex-col justify-center items-center gap-2 flex">
+              <p className="text-gray-900 text-xl font-semibold text-center">{formData.nickname}님, 가입이 완료되었습니다!<br/></p>
+              <p className="text-color-blue-main text-xl font-semibold text-center">TLE와 함께 최적의 해결책을 찾아가요😉</p>
+            </div>
+        </div>
       </div>
     </>
   );
@@ -229,7 +280,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const isStep1Valid = () => {
     return (
-      formData.email &&
+      emailVerified &&
+      codeVerified &&
       validatePassword(formData.password) &&
       formData.password === formData.confirmPassword
     );
@@ -237,7 +289,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const isStep2Valid = () => {
     return (
-      formData.nickname && formData.bojId
+      validateNickname(formData.nickname) &&
+      validateBojId(formData.bojId)
     );
   };
 
@@ -248,14 +301,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       case 2:
         return isStep2Valid();
       case 3:
-        return true; // Photo is optional
+        return true; // 사진 등록은 선택사항이므로 항상 true
+      case 4:
+        return true; // CrewMain 페이지로 이동
       default:
         return false;
     }
   };
 
   return (
-    <>
+    <div className="w-full flex flex-col gap-12">
       {renderCurrentStep()}
       <button
         className={`w-full p-4 rounded-lg justify-center items-center inline-flex ${
@@ -264,8 +319,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         onClick={onNextStep}
         disabled={!getStepValidity()}
       >
-        {currentStep === 3 ? '완료' : '다음'}
+        {currentStep === 3 ? '가입 완료' : currentStep === 4 ? '시작하기' : '다음'}
       </button>
-    </>
+    </div>
   );
 }

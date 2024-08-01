@@ -41,6 +41,8 @@ export default function Signup() {
         return formData.nickname && formData.bojId;
       case 3:
         return true;
+      case 4:
+        return true;
       default:
         return false;
     }
