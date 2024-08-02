@@ -5,13 +5,13 @@ const CodeReview = ({ activity, crew, userData, problems }) => {
   const [reviewerImages, setReviewerImages] = useState({});
 
   useEffect(() => {
-    if (crew && crew.members.length > 0) {
+    if (crew?.members?.length > 0) {
       setSelectedUserId(crew.members[0].user_id);
     }
   }, [crew]);
 
   useEffect(() => {
-    if (selectedUserId !== null) {
+    if (selectedUserId !== null && activity?.problems) {
       const reviewerImagesMap = {};
       activity.problems.forEach(problem => {
         const userSubmission = problem.submissions.find(sub => sub.created_by === selectedUserId);
@@ -36,7 +36,7 @@ const CodeReview = ({ activity, crew, userData, problems }) => {
       });
       setReviewerImages(reviewerImagesMap);
     }
-  }, [selectedUserId, userData, activity.problems]);
+  }, [selectedUserId, userData, activity?.problems]);
 
   if (!activity || !crew || !userData || !problems) return null;
 

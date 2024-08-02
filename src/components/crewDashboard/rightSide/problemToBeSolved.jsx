@@ -1,5 +1,3 @@
-// problemToBeSolved.jsx : 풀이할 문제 컴포넌트
-
 import { FiPlus } from "react-icons/fi";
 import { FaCheck } from "react-icons/fa6";
 

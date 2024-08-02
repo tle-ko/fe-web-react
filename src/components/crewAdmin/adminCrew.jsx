@@ -1,7 +1,7 @@
 /* 룸 대시보드 관리 - 사이드 네브바 - 크루 관리 */
 
 import React, { useState, useEffect } from 'react';
-import SelectEmoji from '../crewInfo/selectEmoji';
+import SelectEmoji from '../common/selectEmoji';
 import Dropdown from '../common/dropDown';
 import Input from '../common/input';
 import Button from '../common/button';
@@ -18,7 +18,7 @@ export default function AdminCrew() {
 
   useEffect(() => {
     if (crewData.data) {
-      const currentCrew = crewData.data.find(crew => crew.id === 1); // 예시로 첫 번째 크루 선택
+      const currentCrew = crewData.data.find(crew => crew.id === 1);
       setCrewName(currentCrew.name);
       setNotice(currentCrew.notice);
       setRecruiting(currentCrew.in_recruiting);
@@ -92,7 +92,7 @@ export default function AdminCrew() {
       </div>
 
       <div className="w-full flex flex-col gap-6 box">
-        <h2 className="font-cafe24 font-semi-bold text-base">공지 설정</h2>
+        <h2 className="font-bold text-lg font-cafe24">공지 설정</h2>
         <Input
           title=""
           placeholder="크루들에게 전달할 공지사항을 입력해 주세요."

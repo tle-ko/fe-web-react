@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from '../components/Header/mainHeader';
 import AccountingSetting from '../pages/accountSetting/AccountSetting';
 import CrewCodeReview from '../pages/crewCodeReview/CrewCodeReview';
-import CrewDashHome from '../pages/crewDashboard/CrewDashHome';
+import CrewDashHome from '../pages/crewDashboard/CrewDashboard';
 import CrewMain from '../pages/crewMain/CrewMain';
 import Main from '../pages/mainPage/Main';
 import MyPortfolio from '../pages/myPortfolio/MyPortfolio';
