@@ -1,11 +1,10 @@
 // crewDashHome.jsx
 
 import { useParams, Routes, Route, Navigate } from "react-router-dom";
-import CrewHeader from "../../components/Header/crewHeader";
-import CrewNav from "../../components/nav/crewNav";
+import CrewHeaderWithNav from "../../components/nav/crewHeaderWithNav";
 import CrewDashContainer from "../../components/crewDashboard/crewDashContainer";
-import CrewDashAdmin from './CrewDashAdmin';
-import CrewDashProblem from './CrewDashProblem';
+import CrewDashAdmin from '../../components/crewAdmin/crewAdminContainer';
+import CrewDashProblem from '../../components/crewProblems/crewProblemContainer';
 
 export default function CrewDashHome() {
   // url의 crewId값을 crewHeader 보내주기 위해 id값 얻기
@@ -14,8 +13,7 @@ export default function CrewDashHome() {
 
   return (
     <div>
-      <CrewHeader crewId={id} />
-      <CrewNav crewId={id} userId={userId} />
+      <CrewHeaderWithNav crewId={id} userId={userId} />
       <div className="mt-20">
         <Routes>
           <Route path="/" element={<CrewDashContainer userId={userId} />} />
