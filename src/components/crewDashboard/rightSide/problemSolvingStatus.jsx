@@ -69,7 +69,7 @@ const ProblemSolvingStatus = ({ activity, crew, userData }) => {
           </div>
         </div>
       </div>
-      {activity.problems.length > 0 ? (
+      {activity.problems && activity.problems.length > 0 ? (
         <div className={`transition-all ease-in duration-200 ${showAll ? 'max-h-full' : 'max-h-52'} overflow-hidden`}>
           <div className="min-w-full grid gap-2 text-center">
             <div className="grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-2 text-gray-400 text-sm font-light">

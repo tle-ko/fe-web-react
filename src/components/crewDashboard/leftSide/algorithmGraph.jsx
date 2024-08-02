@@ -48,9 +48,9 @@ const SolvedProbGraph = ({ crew, problems }) => {
       if (count === 0) return null; // 문제 수가 0개인 태그는 제외
       const percentage = ((count / totalProblemsCount) * 100).toFixed(1);
       const tagNameKo = problems.flatMap(problem => 
-        problem.analysis.flatMap(analysis => 
+        problem.analysis ? problem.analysis.flatMap(analysis => 
           analysis.tags.filter(t => t.key === tag).map(t => t.name_ko)
-        )
+        ) : []
       )[0] || tag;
       return {
         tag: tagNameKo,
