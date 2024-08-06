@@ -4,7 +4,7 @@ export default function Textarea({ title, placeholder, width, height, value, onC
   const textareaClassName = `px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 text-base font-medium outline-none`;
 
   return (
-    <div className={`flex flex-col justify-start items-start gap-2`}>
+    <div className={`w-full flex flex-col justify-start items-start gap-2`}>
       {title && <div className="containerTitle">{title}</div>}
       <textarea
         className={`${textareaClassName} resize-none`}
