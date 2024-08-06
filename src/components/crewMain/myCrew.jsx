@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { RiShip2Fill } from "react-icons/ri";
 import useFetchData from "../../hooks/useEffectData";
 import Button from "../common/button";
-import { FaChevronLeft } from "react-icons/fa6";
-import { FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function MyCrew({ userId }) {
   const allData = useFetchData("http://localhost:3000/data/crewData.json");
@@ -12,7 +11,7 @@ export default function MyCrew({ userId }) {
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
 
   useEffect(() => {
-    if (allData.length) {
+    if (allData?.length) {
       const myCrews = allData.filter(crew =>
         crew.members.some(member => member.user_id === userId)
       );
@@ -53,21 +52,21 @@ export default function MyCrew({ userId }) {
                 }
 
                 return (
-                  <div key={crew.id} className="box h-full">
+                  <div key={crew.id} className="box h-full whitespace-nowrap hidden-scrollbar overflow-x-auto">
                     <div className="flex-col justify-start items-start gap-6 inline-flex">
                       <div className="flex-col justify-start items-start gap-3 flex">
                         <div className="w-full flex-col justify-start items-start gap-6 flex">
                           <div className="justify-start items-center gap-2 inline-flex">
-                            <div className="text-gray-900 text-xl font-bold">{crew.icon}</div>
-                            <div className="text-gray-900 text-xl font-bold">{crew.name}</div>
+                            <p className="text-gray-900 text-xl font-bold">{crew.icon}</p>
+                            <p className="text-gray-900 text-xl font-bold">{crew.name}</p>
                           </div>
                         </div>
                         <div className="w-full justify-end items-end gap-2 inline-flex flex-wrap text-right">
                           <div className="text-color-blue-main font-semibold">{latestActivity.order}회차</div>
                           <div className="flex text-gray-700 font-medium gap-1">
-                            <div>{latestActivity.start_date}</div>
-                            <div>~</div>
-                            <div>{latestActivity.end_date}</div>
+                            <p>{latestActivity.start_date}</p>
+                            <p>~</p>
+                            <p>{latestActivity.end_date}</p>
                           </div>
                         </div>
                       </div>
