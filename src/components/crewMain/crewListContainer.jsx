@@ -1,3 +1,4 @@
+// crewListContainer.jsx
 import CrewList from "./crewList";
 import TagFilter from "./tagFilter";
 import useFetchData from "../../hooks/useEffectData";
@@ -18,12 +19,12 @@ const languageMapping = {
 };
 
 const getBojLevelTag = (level) => {
-  if (level === null) return "티어 무관";
+  if (!level) return "티어 무관";
   const tierMapping = {
     b: "브론즈 이상",
     s: "실버 이상",
     g: "골드 이상",
-    p: "플레티넘 이상",
+    p: "플래티넘 이상",
     d: "다이아 이상",
     r: "루비 이상",
     m: "마스터 이상",
@@ -50,7 +51,7 @@ export default function CrewListContainer() {
   };
 
   useEffect(() => {
-    if (crewData) {
+    if (crewData?.length) {
       const filtered = crewData.filter(crew => {
         const hasSelectedLanguage = selectedTags.languages.length === 0 || crew.allowed_languages.some(id => selectedTags.languages.includes(languageMapping[id]));
         const hasSelectedTier = selectedTags.tiers.length === 0 || selectedTags.tiers.includes(getBojLevelTag(crew.required_boj_level));
