@@ -4,9 +4,8 @@
 import React, { useEffect, useRef } from 'react';
 import { EmojiButton } from '@joeattardi/emoji-button';
 
-export default function SelectEmoji({ title }) {
+export default function SelectEmoji({ title, initialEmoji, onEmojiChange }) {
   const buttonRef = useRef(null);
-  const inputRef = useRef(null);
 
   useEffect(() => {
     const currentButton = buttonRef.current;
@@ -33,11 +32,11 @@ export default function SelectEmoji({ title }) {
     });
 
     picker.on('emoji', emoji => {
-      if (inputRef.current) {
-        inputRef.current.value += emoji.emoji; // 입력 필드에 이모지 추가
-      }
       if (currentButton) {
         currentButton.innerText = emoji.emoji; // 버튼 텍스트 변경
+      }
+      if (onEmojiChange) {
+        onEmojiChange(emoji.emoji); // 선택된 이모지를 부모 컴포넌트로 전달
       }
     });
 
@@ -49,12 +48,17 @@ export default function SelectEmoji({ title }) {
       currentButton.addEventListener('click', showPicker);
     }
 
+    // 초기 이모지 설정
+    if (currentButton && initialEmoji) {
+      currentButton.innerText = initialEmoji;
+    }
+
     return () => {
       if (currentButton) {
         currentButton.removeEventListener('click', showPicker);
       }
     };
-  }, []);
+  }, [initialEmoji, onEmojiChange]);
 
   return (
     <div className='flex flex-col justify-start items-start gap-2'>
@@ -63,5 +67,3 @@ export default function SelectEmoji({ title }) {
     </div>
   );
 }
-
-
