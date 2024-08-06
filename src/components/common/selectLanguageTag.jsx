@@ -69,7 +69,7 @@ const SelectLanguageTag = ({ language, onClick, selected }) => {
   
   return (
     <div 
-      className={`font-pretendard font-semibold inline-flex items-center py-2 px-3 rounded-full text-sm ${languageColor()} cursor-pointer`}
+      className={`font-pretendard font-semibold inline-flex items-center py-2 px-3 rounded-full text-sm ${languageColor()} cursor-pointer hidden-scrollbar overflow-x-auto`}
       onClick={onClick}
     >
       {(selected ? languageIcons : languageGreyIcons)[language] && (
@@ -80,7 +80,7 @@ const SelectLanguageTag = ({ language, onClick, selected }) => {
           style={{width: '16px', height: '16px'}} 
         />
       )}
-      {language}
+      <p className="whitespace-nowrap">{language}</p>
     </div>
   );
 };
