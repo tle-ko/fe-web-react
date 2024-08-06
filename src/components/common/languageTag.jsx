@@ -44,7 +44,7 @@ const LanguageTag = ({ language, className = "" }) => {
   };
 
   return (
-    <div className={`tag ${languageColor()} px-3 py-2 rounded-[20px] justify-center items-center flex`}>
+    <div className={`min-w-fit tag ${languageColor()} px-3 py-2 rounded-[20px] justify-center items-center flex whitespace-nowrap`}>
       {languageIcons[language] && (
         <img 
           src={languageIcons[language]} 
@@ -52,7 +52,7 @@ const LanguageTag = ({ language, className = "" }) => {
           className="mr-1 w-4 h-4" 
         />
       )}
-      <div className="text-sm font-semibold">{language}</div>
+      <p className="text-sm font-semibold whitespace-nowrap">{language}</p>
     </div>
   );
 };
