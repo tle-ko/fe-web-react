@@ -1,3 +1,4 @@
+// crewList.jsx
 import Button from "../common/button";
 import { useState, useEffect } from "react";
 import LanguageTag from "../common/languageTag";
@@ -63,6 +64,16 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
 
   return (
     <div>
+      {pageData.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p>조건에 해당되는 크루가 없어요 😓</p>
+      </div>
+      ) : (
         <div className="cardGrid3 w-full flex-col justify-start items-start">
           {pageData.map((crew) => (
             <div key={crew.id} className="box justify-center items-start gap-3">
@@ -95,9 +106,9 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
                     <div className="text-color-blue-main ">인원</div>
                     <div className="text-gray-700">{crew.headcount}명 / {crew.headcount_limit}명</div>
                   </div>
-                  <div className="w-full justify-start items-center gap-2 inline-flex text-sm">
-                    <div className="w-max text-color-blue-main">크루 태그</div>
-                    <div className="justify-start items-start gap-1 flex flex-wrap">
+                  <div className="w-full justify-start items-center gap-4 inline-flex text-sm ">
+                    <p className=" text-color-blue-main whitespace-nowrap">크루 태그</p>
+                    <div className=" justify-start items-start gap-1 flex hidden-scrollbar overflow-x-auto">
                       {crew.allowed_languages.map((languageId) => (
                         <LanguageTag key={`language-${languageId}`} language={languageMapping[languageId]} />
                       ))}
@@ -109,6 +120,7 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
             </div>
           ))}
         </div>
+      )}
     </div>
   );
 }
