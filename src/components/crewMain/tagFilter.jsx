@@ -23,9 +23,9 @@ export default function TagFilter({ onUpdateTags }) {
 
   return (
     <div>
-      <div className="w-full box flex-col justify-start items-start gap-4 inline-flex">
+      <div className="w-full box flex-col justify-start items-start gap-4 inline-flex hidden-scrollbar overflow-x-auto">
         <div className="justify-start items-center gap-6 inline-flex">
-          <div className="text-gray-700 text-sm font-semibold">사용 언어</div>
+          <div className="text-gray-700 text-sm font-semibold whitespace-nowrap">사용 언어</div>
           <div className="justify-start items-center gap-3 flex">
             {['Python', 'C', 'C#', 'C++', 'Java', 'JavaScript', 'Swift', 'Kotlin'].map(language => (
               <SelectLanguageTag 
@@ -38,7 +38,7 @@ export default function TagFilter({ onUpdateTags }) {
           </div>
         </div>
         <div className="justify-start items-center gap-6 inline-flex">
-          <div className="text-gray-700 text-sm font-semibold">백준 티어</div>
+          <div className="text-gray-700 text-sm font-semibold whitespace-nowrap">백준 티어</div>
           <div className="justify-start items-center gap-3 flex">
             {['티어 무관', '브론즈 이상', '실버 이상', '골드 이상', '플레티넘 이상', '다이아 이상', '루비 이상', '마스터 이상'].map(tier => (
               <SelectLanguageTag 
