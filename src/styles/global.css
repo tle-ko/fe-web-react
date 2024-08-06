@@ -98,4 +98,14 @@
   .tag {
     @apply  border-gray-500 bg-white font-semibold inline-flex items-center py-1 px-3 rounded-full text-gray-600 text-sm;
   }
+  
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none; /* 웹킷 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
+  }
+  
+  .hidden-scrollbar {
+    -ms-overflow-style: none;  /* 인터넷 익스플로러에서 스크롤바 숨기기 */
+    scrollbar-width: none;  /* 파이어폭스에서 스크롤바 숨기기 */
+  }
+
 }
