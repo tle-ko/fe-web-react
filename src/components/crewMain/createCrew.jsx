@@ -80,7 +80,6 @@ export default function CreateCrew() {
           <Input 
             title="" 
             placeholder="20자 이내로 입력해주세요." 
-            width="full" 
             value={crewName} 
             onChange={(e) => setCrewName(e.target.value)} 
           />
@@ -118,7 +117,7 @@ export default function CreateCrew() {
       </div>
       <div className="w-full flex flex-col justify-start items-start gap-6">
         <div className="w-full flex flex-col justify-center items-start gap-3">
-          <div className="text-gray-900 text-lg font-semibold">크루 태그 등록</div>
+          <div className="text-gray-900 text-lg font-semibold">태그 등록</div>
           <TagInput tags={tags} onAddTag={handleAddTag} onRemoveTag={handleRemoveTag} />
         </div>
         <div className="text-gray-600 text-base font-semibold">! 크루 태그는 5개 이하로 등록 가능하며, 크루의 특성을 나타내는 단어로 작성해 주세요.</div>
