@@ -1,13 +1,19 @@
-
-const Dropdown = ({ options = [], placeholder}) => {
+const Dropdown = ({ options = [], placeholder, selected, onChange }) => {
   return (
     <div className="relative text-base font-light text-gray-600">
-<select className="cursor-pointer block appearance-none w-full bg-white border border-gray-200 px-5 py-3 pr-8 rounded leading-tight 
+      <select
+        className="cursor-pointer block appearance-none w-full bg-white border border-gray-200 px-5 py-3 pr-8 rounded leading-tight 
         focus:outline-none focus:bg-white focus:border-gray-500 hover:bg-gray-50"
-        >
-        <option value="" disabled selected>{placeholder}</option>
+        value={selected} // Use value instead of selected on option
+        onChange={onChange}
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
         {options.map((option, index) => (
-          <option key={index} value={option}>{option}</option>
+          <option key={index} value={option}>
+            {option}
+          </option>
         ))}
       </select>
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
@@ -20,12 +26,3 @@ const Dropdown = ({ options = [], placeholder}) => {
 };
 
 export default Dropdown;
-
-/**
- * usage
- * 
- * <Dropdown
-      options={['브론즈 이상', '실버 이상', '골드 이상', '플레티넘 이상', '다이아 이상', '루비 이상', '마스터 이상']}
-      placeholder="선택하세요"
-    />
- */
