@@ -23,13 +23,3 @@ export default function Input({ title, placeholder, width, error, accuracy, valu
     </div>
   )
 }
-/*
-usage
-  <Input 
-    placeholder="크루 선장에게 보낼 메시지를 입력하세요."
-    width="16" //width는 rem 단위로 지정, props로 안주면 100%
-    height="28" //height는 rem 단위로 지정, props로 안주면 auto
-  />
- */
-
-  

@@ -18,6 +18,7 @@ module.exports = {
           main: '#5383E8',
           w25: '#D4E0F9',
           w50: '#A8C0F3',
+          w75: '#7EA2EE',
           hover : '#4171D6',
           pt: '#3776AB',
           cpp: '#3776AB',
