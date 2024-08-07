@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import Input from '../../components/common/input';
 import { FaCircleExclamation } from "react-icons/fa6";
-
 export default function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showWarning, setShowWarning] = useState(false);
-
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
     return passwordRegex.test(password);
   };
-
   const handleLogin = () => {
     if (!validateEmail(email) || !validatePassword(password)) {
       setShowWarning(true);
@@ -25,7 +21,6 @@ export default function Signin() {
       // 로그인 로직 추가
     }
   };
-
   return (
     <>
       <div className="flex gap-6 mt-12 mb-12">
@@ -62,7 +57,6 @@ export default function Signin() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
           <div className="flex flex-col gap-6 mt-16">
             <button
               className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-main text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
