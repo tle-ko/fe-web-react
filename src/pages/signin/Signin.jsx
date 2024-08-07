@@ -68,6 +68,10 @@ export default function Signin() {
     }
   };
 
+  const handleSignup = () => {
+    navigate('/signup');
+  };
+
   return (
     <>
       <div className="flex gap-6 mt-12 mb-12">
@@ -77,7 +81,8 @@ export default function Signin() {
               알고리즘 문제 해결 도우미<br />
               TLE와 함께 최적의 해결책을 찾아가요!
             </p>
-            <button className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-w75 text-center text-white text-lg font-semibold hover:bg-color-blue-hover">
+            <button className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-w75 text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
+            onClick={handleSignup}>
               회원가입
             </button>
           </div>
