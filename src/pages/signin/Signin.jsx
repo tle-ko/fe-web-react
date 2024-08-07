@@ -24,7 +24,7 @@ export default function Signin() {
   return (
     <>
       <div className="flex gap-6 mt-12 mb-12">
-        <div className="relative w-1/2 pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between">
+        <div className="relative w-1/2 pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[36rem]">
           <div className="w-fit flex flex-col gap-6">
             <p className="text-gray-50 text-2xl font-extrabold">
               알고리즘 문제 해결 도우미<br />
@@ -38,7 +38,7 @@ export default function Signin() {
             <img src="../assets/signin/boat.svg" alt="boat" />
           </div>
         </div>
-        <div className="w-1/2 box flex flex-col gap-6">
+        <div className="w-1/2 box flex flex-col gap-6 min-w-[36rem]">
           <div className="flex flex-col gap-6">
             <p className="font-cafe24 text-gray-900 text-lg font-bold">
               로그인

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../common/button";
 import Input from "../common/input";
 import Modal from "../common/modal";
-import SelectEmoji from "../crewInfo/selectEmoji";
+import SelectEmoji from "../common/selectEmoji";
 import SelectLanguageTag from "../common/selectLanguageTag";
 import Dropdown from "../common/dropDown";
 import TagInput from "../common/tagInput";
