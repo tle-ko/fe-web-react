@@ -1,13 +1,12 @@
+// CreateCrew.jsx
 import { useState } from "react";
 import Button from "../common/button";
 import Input from "../common/input";
 import Modal from "../common/modal";
 import SelectEmoji from "../common/selectEmoji";
-import SelectLanguageTag from "../common/selectLanguageTag";
 import Dropdown from "../common/dropDown";
-import TagInput from "../common/tagInput";
 import AlertContainer from "../common/alertContainer";
-import TierSlide from "../common/tierSlide";
+import TagDetailContent from '../common/tagDetailContent';
 
 export default function CreateCrew() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,34 +93,15 @@ export default function CreateCrew() {
           />
         </div>
       </div>
-      <div className="w-full">
-        <TierSlide 
-          value={tierValue} 
-          onChange={handleTierChange} 
-        />
-      </div>
-      <div className="flex flex-col justify-center items-start gap-3">
-        <div className="flex flex-col justify-center items-start gap-3">
-          <div className="text-gray-900 text-lg font-semibold">사용 언어</div>
-          <div className="flex justify-start items-start gap-3 flex-wrap">
-            {['Python', 'C', 'C#', 'C++', 'Java', 'JavaScript', 'Swift', 'Kotlin'].map((language) => (
-              <SelectLanguageTag
-                key={language}
-                language={language}
-                onClick={() => handleLanguageClick(language)}
-                selected={selectedLanguages.includes(language)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="w-full flex flex-col justify-start items-start gap-6">
-        <div className="w-full flex flex-col justify-center items-start gap-3">
-          <div className="text-gray-900 text-lg font-semibold">태그 등록</div>
-          <TagInput tags={tags} onAddTag={handleAddTag} onRemoveTag={handleRemoveTag} />
-        </div>
-        <div className="text-gray-600 text-base font-semibold">! 크루 태그는 5개 이하로 등록 가능하며, 크루의 특성을 나타내는 단어로 작성해 주세요.</div>
-      </div>
+      <TagDetailContent
+        tempTierValue={tierValue}
+        handleTierChange={handleTierChange}
+        selectedLanguages={selectedLanguages}
+        handleLanguageClick={handleLanguageClick}
+        tags={tags}
+        handleAddTag={handleAddTag}
+        handleRemoveTag={handleRemoveTag}
+      />
     </div>
   );
 
