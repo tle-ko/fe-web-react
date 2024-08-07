@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiPlus } from "react-icons/fi";
 import { FiMinus } from "react-icons/fi";
-
-const tiers = [
-  "티어 무관", "브론즈 5", "브론즈 4", "브론즈 3", "브론즈 2", "브론즈 1",
-  "실버 5", "실버 4", "실버 3", "실버 2", "실버 1",
-  "골드 5", "골드 4", "골드 3", "골드 2", "골드 1",
-  "플래티넘 5", "플래티넘 4", "플래티넘 3", "플래티넘 2", "플래티넘 1",
-  "다이아몬드 5", "다이아몬드 4", "다이아몬드 3", "다이아몬드 2", "다이아몬드 1",
-  "루비 5", "루비 4", "루비 3", "루비 2", "루비 1"
-];
+import { tiers } from '../../utils';
 
 const tierColors = {
   "티어 무관": "rgb(45, 45, 45)",
@@ -17,11 +9,12 @@ const tierColors = {
   "실버": "rgb(73, 101, 128)",
   "골드": "rgb(249, 165, 24)",
   "플래티넘": "rgb(80, 243, 183)",
-  "다이아몬드": "rgb(76, 204, 254)",
+  "다이아몬드": "rgb(76, 204,254)",
   "루비": "rgb(255, 48, 113)"
 };
 
 const getTierColor = (tier) => {
+  if (!tier) return "rgb(45, 45, 45)";
   const tierKey = tier.split(" ")[0]; // 티어명을 기준으로 색상 결정
   return tierColors[tierKey] || "rgb(45, 45, 45)"; // 기본값: 티어 무관 색상
 };
@@ -108,7 +101,3 @@ const TierSlide = ({ value, onChange }) => {
 };
 
 export default TierSlide;
-
-/**
- * 
- */
