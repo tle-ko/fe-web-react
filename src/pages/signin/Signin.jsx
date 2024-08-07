@@ -1,26 +1,73 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
 import { FaCircleExclamation } from "react-icons/fa6";
+
+const client = axios.create({
+  withCredentials: true,
+  baseURL: "http://timelimitexceeded.kr",
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+
 export default function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showWarning, setShowWarning] = useState(false);
+  const navigate = useNavigate();
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
     return passwordRegex.test(password);
   };
-  const handleLogin = () => {
+
+  const handleLogin = async () => {
     if (!validateEmail(email) || !validatePassword(password)) {
       setShowWarning(true);
-    } else {
-      setShowWarning(false);
-      // 로그인 로직 추가
+      return;
+    }
+
+    setShowWarning(false);
+
+    try {
+      const response = await client.post('/api/v1/auth/signin', {
+        email,
+        password
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 200) {
+        console.log('로그인 성공:', response.data);
+        navigate('/crew');
+      }
+    } catch (error) {
+      setShowWarning(true);
+      console.error('로그인 실패:', error);
+      if (error.response) {
+        // 서버가 응답했지만 상태 코드가 2xx 범위에 있지 않음
+        console.error('응답 데이터:', error.response.data);
+        console.error('응답 상태:', error.response.status);
+        console.error('응답 헤더:', error.response.headers);
+      } else if (error.request) {
+        // 요청이 만들어졌지만 응답을 받지 못함
+        console.error('요청 데이터:', error.request);
+      } else {
+        // 요청을 설정하는 동안 오류가 발생함
+        console.error('오류 메시지:', error.message);
+      }
     }
   };
+
   return (
     <>
       <div className="flex gap-6 mt-12 mb-12">
