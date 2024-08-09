@@ -1,4 +1,4 @@
-// crewDashHome.jsx
+// crewDashboard.jsx
 
 import { useParams, Routes, Route, Navigate } from "react-router-dom";
 import CrewHeaderWithNav from "../../components/nav/crewHeaderWithNav";
@@ -17,7 +17,7 @@ export default function CrewDashHome() {
       <div className="mt-20">
         <Routes>
           <Route path="/" element={<CrewDashContainer userId={userId} />} />
-          <Route path="problems" element={<CrewDashProblem />} />
+          <Route path="problems" element={<CrewDashProblem userId={userId} />} />
           <Route path="admin" element={<CrewDashAdmin />} />
           <Route path="*" element={<Navigate to="." />} />  {/* 기본 경로로 리다이렉트 */}
         </Routes>
