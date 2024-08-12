@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
+import PasswordInput from '../../components/signup/passwordInput';
 import { FaCircleExclamation } from "react-icons/fa6";
-
-const client = axios.create({
-  withCredentials: true,
-  baseURL: "http://timelimitexceeded.kr",
-  headers: {
-    "Content-Type": "application/json"
-  }
-});
+import { client } from '../../utils';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showWarning, setShowWarning] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        handleLogin();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [email, password]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,15 +61,12 @@ export default function Signin() {
       setShowWarning(true);
       console.error('로그인 실패:', error);
       if (error.response) {
-        // 서버가 응답했지만 상태 코드가 2xx 범위에 있지 않음
         console.error('응답 데이터:', error.response.data);
         console.error('응답 상태:', error.response.status);
         console.error('응답 헤더:', error.response.headers);
       } else if (error.request) {
-        // 요청이 만들어졌지만 응답을 받지 못함
         console.error('요청 데이터:', error.request);
       } else {
-        // 요청을 설정하는 동안 오류가 발생함
         console.error('오류 메시지:', error.message);
       }
     }
@@ -101,7 +105,7 @@ export default function Signin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Input
+            <PasswordInput
               title="비밀번호"
               type="password"
               placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
