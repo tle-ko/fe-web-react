@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Step from "../../components/signup/signupStep";
 import Form from "../../components/signup/signupForm";
+import { client } from '../../utils';
 
 export default function Signup() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     email: '',
+    profile_image : null,
+    username: '',
     password: '',
-    confirmPassword: '',
-    nickname: '',
-    bojId: '',
-    image: null
+    boj_username: '',
+    verification_token: '',
   });
 
   const handleInputChange = (name, value) => {
@@ -39,13 +40,38 @@ export default function Signup() {
     }
   };
 
-  const handleSubmit = () => {
-    if (formData.email && formData.password && formData.confirmPassword && formData.nickname && formData.bojId) {
-      console.log('Form submitted:', formData);
-      alert('가입이 완료되었습니다!');
+  const handleSubmit = async () => {
+    if (formData.email && formData.password && formData.verification_token && formData.username && formData.boj_username) {
+      try {
+        console.log('Submitting form with data:', formData); // 폼 데이터 출력
+        const response = await client.post('api/v1/auth/signup', {
+          email: formData.email,
+          username: formData.username,
+          password: formData.password,
+          boj_username: formData.boj_username,
+          verification_token: formData.verification_token,
+        });
+  
+        if (response.status === 200) {
+          console.log('Form submitted successfully:', response.data);
+          console.log('Form submitted:', formData);
+          alert('가입이 완료되었어요!');
+        } else {
+          console.log('Form submission failed:', response.statusText);
+          alert('폼 제출에 실패했습니다!');
+        }
+      } catch (error) {
+        if (error.response && error.response.data) {
+          console.log('Form submission error:', error.response.data);
+          alert(`폼 제출 중 오류가 발생했습니다: ${error.response.data}`);
+        } else {
+          console.log('Form submission error:', error);
+          alert('폼 제출 중 오류가 발생했습니다!');
+        }
+      }
     } else {
       console.log('Form validation failed');
-      alert('폼 검증에 실패했습니다. 모든 필드를 올바르게 입력했는지 확인하세요.');
+      alert('폼 검증에 실패했습니다!');
     }
   };
 

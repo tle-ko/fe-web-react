@@ -1,26 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
+import PasswordInput from '../../components/signup/passwordInput';
 import { FaCircleExclamation } from "react-icons/fa6";
+import { client } from '../../utils';
+
 export default function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showWarning, setShowWarning] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        handleLogin();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [email, password]);
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
     return passwordRegex.test(password);
   };
-  const handleLogin = () => {
+
+  const handleLogin = async () => {
     if (!validateEmail(email) || !validatePassword(password)) {
       setShowWarning(true);
-    } else {
-      setShowWarning(false);
-      // 로그인 로직 추가
+      return;
+    }
+
+    setShowWarning(false);
+
+    try {
+      const response = await client.post('/api/v1/auth/signin', {
+        email,
+        password
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 200) {
+        console.log('로그인 성공:', response.data);
+        navigate('/crew');
+      }
+    } catch (error) {
+      setShowWarning(true);
+      console.error('로그인 실패:', error);
+      if (error.response) {
+        console.error('응답 데이터:', error.response.data);
+        console.error('응답 상태:', error.response.status);
+        console.error('응답 헤더:', error.response.headers);
+      } else if (error.request) {
+        console.error('요청 데이터:', error.request);
+      } else {
+        console.error('오류 메시지:', error.message);
+      }
     }
   };
+
+  const handleSignup = () => {
+    navigate('/signup');
+  };
+
   return (
     <>
       <div className="flex gap-6 mt-12 mb-12">
@@ -30,7 +85,8 @@ export default function Signin() {
               알고리즘 문제 해결 도우미<br />
               TLE와 함께 최적의 해결책을 찾아가요!
             </p>
-            <button className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-w75 text-center text-white text-lg font-semibold hover:bg-color-blue-hover">
+            <button className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-w75 text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
+            onClick={handleSignup}>
               회원가입
             </button>
           </div>
@@ -49,7 +105,7 @@ export default function Signin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Input
+            <PasswordInput
               title="비밀번호"
               type="password"
               placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
