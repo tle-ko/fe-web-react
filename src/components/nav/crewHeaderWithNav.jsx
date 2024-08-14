@@ -21,13 +21,19 @@ function CrewHeaderWithNav({ crewId, userId }) {
     }
   }, [data, crewId]);
 
+  useEffect(() => {
+    const storedLink = localStorage.getItem('selectedLink');
+    if (storedLink) {
+      setSelectedLink(storedLink);
+    } else {
+      setSelectedLink('home');
+    }
+  }, []);
+
   const handleLinkClick = (linkName) => {
     setSelectedLink(linkName);
+    localStorage.setItem('selectedLink', linkName);
   };
-
-  useEffect(() => {
-    setSelectedLink('home');
-  }, []);
 
   const basePath = location.pathname.split('/').slice(0, 3).join('/');
 
@@ -43,26 +49,26 @@ function CrewHeaderWithNav({ crewId, userId }) {
           </div>
           <div className="w-full h-16 py-3 px-28 bg-white border-b border-gray-200 flex justify-start items-center gap-1">
             <Link
-              className={`${selectedLink === 'home' ? 'bg-color-blue-w25' : 'bg-gray-50'} px-4 py-3 rounded justify-center items-center flex`}
+              className={`${selectedLink === 'home' ? 'bg-color-blue-w25 text-blue-500' : 'bg-gray-50 text-gray-600 hover:text-blue-500'} px-4 py-3 rounded justify-center items-center flex hover:bg-color-blue-w25`}
               to={basePath}
               onClick={() => handleLinkClick('home')}
             >
-              <p className={`${selectedLink === 'home' ? 'text-blue-500' : 'text-gray-600'} w-8 text-center text-sm font-semibold`}>홈</p>
+              <p className="w-8 text-center text-sm font-semibold">홈</p>
             </Link>
             <Link
-              className={`${selectedLink === 'problem' ? 'bg-color-blue-w25' : 'bg-gray-50'} px-4 py-3 rounded justify-center items-center flex`}
+              className={`${selectedLink === 'problem' ? 'bg-color-blue-w25 text-blue-500' : 'bg-gray-50 text-gray-600 hover:text-blue-500'} px-4 py-3 rounded justify-center items-center flex hover:bg-color-blue-w25`}
               to={`${basePath}/problems`}
               onClick={() => handleLinkClick('problem')}
             >
-              <p className={`${selectedLink === 'problem' ? 'text-blue-500' : 'text-gray-600'} w-8 text-center text-sm font-semibold`}>문제</p>
+              <p className="w-8 text-center text-sm font-semibold">문제</p>
             </Link>
             {userId === hostId && (
               <Link
-                className={`${selectedLink === 'admin' ? 'bg-color-blue-w25' : 'bg-gray-50'} px-4 py-3 rounded justify-center items-center flex`}
+                className={`${selectedLink === 'admin' ? 'bg-color-blue-w25 text-blue-500' : 'bg-gray-50 text-gray-600 hover:text-blue-500'} px-4 py-3 rounded justify-center items-center flex hover:bg-color-blue-w25`}
                 to={`${basePath}/admin`}
                 onClick={() => handleLinkClick('admin')}
               >
-                <p className={`${selectedLink === 'admin' ? 'text-blue-500' : 'text-gray-600'} w-8 text-center text-sm font-semibold`}>관리</p>
+                <p className="w-8 text-center text-sm font-semibold">관리</p>
               </Link>
             )}
           </div>
