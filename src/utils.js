@@ -1,4 +1,14 @@
 // utils.js
+import axios from 'axios';
+
+export const client = axios.create({
+  withCredentials: true,
+  baseURL: "http://tle-kr.com/",
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+
 export const languageMapping = {
   1005: 'Java',
   1001: 'C',
@@ -35,3 +45,4 @@ export const getBojLevelTag = (level) => {
   const tier = tierMapping[division];
   return tier ? `${tier} ${tierNumber} 이상` : "티어 무관";
 };
+
