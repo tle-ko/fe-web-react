@@ -1,7 +1,7 @@
 //util.js
 
 import axios from 'axios';
-import { getToken } from './login';
+import { getToken } from './auth';
 
 export const client = axios.create({
   withCredentials: true,

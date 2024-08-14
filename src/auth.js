@@ -1,4 +1,4 @@
-// login.js
+// auth.js
 
 // 토큰을 로컬 스토리지에 저장
 export const setToken = (token) => {

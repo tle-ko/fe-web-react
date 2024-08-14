@@ -6,7 +6,7 @@ import Input from '../../components/common/input';
 import PasswordInput from '../../components/signup/passwordInput';
 import { FaCircleExclamation } from "react-icons/fa6";
 import { client } from '../../utils';
-import { setToken } from '../../login';
+import { setToken } from '../../auth';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
