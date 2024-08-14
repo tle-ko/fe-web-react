@@ -1,3 +1,5 @@
+//Signup.jsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Step from "../../components/signup/signupStep";
@@ -9,7 +11,7 @@ export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     email: '',
-    profile_image : null,
+    profile_image: null,
     username: '',
     password: '',
     boj_username: '',
@@ -40,25 +42,43 @@ export default function Signup() {
     }
   };
 
+  const getStepValidity = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.email && formData.password;
+      case 2:
+        return formData.username && formData.boj_username;
+      case 3:
+        return true;
+      case 4:
+        return true;
+      case 5:
+        return true;
+      default:
+        return false;
+    }
+  };
+
   const handleSubmit = async () => {
-    if (formData.email && formData.password && formData.verification_token && formData.username && formData.boj_username) {
+    const isFormValid = getStepValidity();
+
+    if (isFormValid) {
       try {
-        console.log('Submitting form with data:', formData); // 폼 데이터 출력
-        const response = await client.post('api/v1/auth/signup', {
-          email: formData.email,
-          username: formData.username,
-          password: formData.password,
-          boj_username: formData.boj_username,
-          verification_token: formData.verification_token,
-        });
-  
-        if (response.status === 200) {
+        console.log('Submitting form with data:', formData);
+
+        const { email, username, password, boj_username, verification_token, profile_image } = formData;
+        const submitData = { email, username, password, boj_username, verification_token };
+
+        if (profile_image) {
+          submitData.profile_image = profile_image;
+        }
+
+        const response = await client.post('api/v1/auth/signup', submitData);
+
+        if (response.status === 201) {
           console.log('Form submitted successfully:', response.data);
-          console.log('Form submitted:', formData);
-          alert('가입이 완료되었어요!');
         } else {
           console.log('Form submission failed:', response.statusText);
-          alert('폼 제출에 실패했습니다!');
         }
       } catch (error) {
         if (error.response && error.response.data) {
@@ -86,6 +106,7 @@ export default function Signup() {
           onNextStep={handleNextStep}
           onPrevStep={handlePrevStep}
           handleSubmit={handleSubmit} 
+          getStepValidity={getStepValidity}
         />
       </div>
     </div>

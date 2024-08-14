@@ -1,13 +1,30 @@
-// utils.js
+//util.js
+
 import axios from 'axios';
+import { getToken } from './login';
 
 export const client = axios.create({
   withCredentials: true,
-  baseURL: "http://tle-kr.com/",
+  baseURL: "http://tle-kr.com",
   headers: {
     "Content-Type": "application/json"
   }
 });
+
+// 요청 인터셉터를 추가하여 모든 요청에 토큰을 포함시킵니다.
+client.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 
 export const languageMapping = {
   1005: 'Java',

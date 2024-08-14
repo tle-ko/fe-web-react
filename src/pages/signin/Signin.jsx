@@ -1,9 +1,12 @@
+//Signin.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
 import PasswordInput from '../../components/signup/passwordInput';
 import { FaCircleExclamation } from "react-icons/fa6";
 import { client } from '../../utils';
+import { setToken } from '../../login';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
@@ -14,17 +17,17 @@ export default function Signin() {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
-        handleLogin();
+        document.querySelector('form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }
     };
-
+  
     window.addEventListener('keydown', handleKeyDown);
-
+  
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [email, password]);
-
+  }, []);
+  
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -54,6 +57,8 @@ export default function Signin() {
       });
 
       if (response.status === 200) {
+        const { access_token } = response.data;
+        setToken(access_token);
         console.log('로그인 성공:', response.data);
         navigate('/crew');
       }
@@ -95,28 +100,26 @@ export default function Signin() {
           </div>
         </div>
         <div className="w-1/2 box flex flex-col gap-6 min-w-[36rem]">
-          <div className="flex flex-col gap-6">
-            <p className="font-cafe24 text-gray-900 text-lg font-bold">
-              로그인
-            </p>
-            <Input
-              title="아이디"
-              placeholder="이메일 입력"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <PasswordInput
-              title="비밀번호"
-              type="password"
-              placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-6">
+          <p className="font-cafe24 text-gray-900 text-lg font-bold">
+            로그인
+          </p>
+          <Input
+            title="아이디"
+            placeholder="이메일 입력"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <PasswordInput
+            title="비밀번호"
+            placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <div className="flex flex-col gap-6 mt-16">
             <button
+              type="submit"
               className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-main text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
-              onClick={handleLogin}
             >
               로그인
             </button>
@@ -129,7 +132,8 @@ export default function Signin() {
               </div>
             )}
           </div>
-        </div>
+        </form>
+      </div>
       </div>
     </>
   );

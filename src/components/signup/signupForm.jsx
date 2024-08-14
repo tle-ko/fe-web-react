@@ -1,3 +1,5 @@
+//signupForm.jsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import Input from "../../components/common/input";
 import PasswordInput from "./passwordInput";   
@@ -10,7 +12,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const [verificationCode, setVerificationCode] = useState('');
   const [codeVerified, setCodeVerified] = useState(false);
   const [codeButtonLabel, setCodeButtonLabel] = useState('인증번호 발송');
-  const [CodeColor, setCodeButtonColor] = useState('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
+  const [codeColor, setCodeButtonColor] = useState('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
+  const [codeCursor, setCodeCursor] = useState('cursor-pointer');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [usernameVerified, setUsernameVerified] = useState(false);
   const [Image, setImage] = useState("https://picsum.photos/250/250");
@@ -124,7 +127,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const handleVerificationCodeChange = (e) => {
     const code = e.target.value.toUpperCase();
     setVerificationCode(code);
-    onInputChange('verificationCode', code);
   };
 
   const handleCodeInputChange = () => {
@@ -132,12 +134,20 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       alert("이메일을 입력해주세요!");
       return;
     }
-
+  
     if (emailVerified) {
       sendValidateCode(formData.email);
       setCodeButtonLabel('인증번호 재발송');
     }
   };
+  
+  useEffect(() => {
+    if (codeVerified) {
+      setCodeButtonLabel('인증완료');
+      setCodeButtonColor('bg-gray-200 text-white');
+      setCodeCursor('cursor-not-allowed disabled');
+    }
+  }, [codeVerified]);
 
   const checkUsernameAvailability = async (username) => {
     try {
@@ -174,7 +184,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       const reader = new FileReader();
       reader.onload = () => {
           setImage(reader.result);
-          onInputChange('image', reader.result);
+          onInputChange('profile_image', reader.result);
       };
       reader.readAsDataURL(file);
     } else {
@@ -217,7 +227,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                   onChange={(e) => onInputChange('email', e.target.value)}
                 />
               </div>
-              {formData.email && renderFeedback(emailVerified, "사용 가능한 이메일입니다.", "사용 불가능한 이메일입니다.")}
+              {formData.email && renderFeedback(emailVerified, "사용 가능한 이메일입니다.", "사용 불가능한 이메일입니다. 다시 입력해주세요.")}
             </div>
   
             <div>
@@ -232,16 +242,17 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                   style={{ textTransform: 'uppercase' }}
                 />
                 <button 
-                  className={`w-44 h-[50px] px-5 py-3 rounded-lg whitespace-nowrap cursor-pointer ${CodeColor}`}
+                  className={`w-44 h-[50px] px-5 py-3 rounded-lg whitespace-nowrap ${codeCursor} ${codeColor}`}
                   onClick={handleCodeInputChange}
                   disabled={!emailVerified || codeVerified}
                 >
                   {codeButtonLabel}
                 </button>
               </div>
-              {verificationCode && renderFeedback(codeVerified, "인증번호가 확인되었습니다.", "인증번호가 올바르지 않습니다.")}
+              {verificationCode && renderFeedback(codeVerified, "인증번호가 확인되었습니다.", "인증번호가 올바르지 않습니다. 다시 입력해주세요.")}
             </div>
           </div>
+          <form className="flex flex-col gap-6">
           <div>
             <PasswordInput
               title="비밀번호"
@@ -267,9 +278,10 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
             {confirmPassword && renderFeedback(
               formData.password === confirmPassword,
               "비밀번호가 일치합니다.",
-              "비밀번호가 일치하지 않습니다."
+              "비밀번호가 일치하지 않습니다. 다시 입력해주세요."
             )}
           </div>
+          </form>
         </div>
       </div>
     </>
@@ -290,11 +302,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.username}
               onChange={(e) => onInputChange('username', e.target.value)}
             />
-            {formData.username && renderFeedback(
-              validateUsername(formData.username),
-              "사용 가능한 닉네임입니다.",
-              "2글자 이상 8글자 이내로 입력해주세요."
-            )}
+          {formData.username && renderFeedback(
+            usernameVerified,
+            "사용 가능한 닉네임입니다.",
+            "사용 불가능한 닉네임입니다. 다시 입력해주세요."
+          )}
             </div>
           <div>
             <Input
@@ -306,7 +318,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
             {formData.boj_username && renderFeedback(
               validateBojUsername(formData.boj_username),
               "올바른 형식의 아이디입니다.",
-              "영문자와 숫자만 사용 가능합니다."
+              "영문자와 숫자만 사용 가능합니다. 다시 입력해주세요."
             )}
           </div>
         </div>
@@ -383,6 +395,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       </div>
     </>
   );
+
   const renderStep5 = () => (
     <>
       <div className="flex-col justify-center items-center gap-12 inline-flex">
