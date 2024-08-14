@@ -1,10 +1,8 @@
-// 이모지 선택 컴포넌트 (라이브러리 사용하므로 npm install 필요)
-// 선택된 이모지 데이터를 api로 보내는 코드 추가 필요
-
+// selectEmoji.jsx
 import React, { useEffect, useRef } from 'react';
 import { EmojiButton } from '@joeattardi/emoji-button';
 
-export default function SelectEmoji({ title, initialEmoji, onEmojiChange }) {
+export default function SelectEmoji({ title, initialEmoji, onEmojiChange, disabled }) {
   const buttonRef = useRef(null);
 
   useEffect(() => {
@@ -41,7 +39,9 @@ export default function SelectEmoji({ title, initialEmoji, onEmojiChange }) {
     });
 
     const showPicker = () => {
-      picker.togglePicker(currentButton);
+      if (!disabled) {
+        picker.togglePicker(currentButton);
+      }
     };
 
     if (currentButton) {
@@ -58,12 +58,12 @@ export default function SelectEmoji({ title, initialEmoji, onEmojiChange }) {
         currentButton.removeEventListener('click', showPicker);
       }
     };
-  }, [initialEmoji, onEmojiChange]);
+  }, [initialEmoji, onEmojiChange, disabled]);
 
   return (
     <div className='flex flex-col justify-start items-start gap-2'>
       <div className='text-gray-900 text-base font-semibold'>{title}</div>
-      <button className="bg-white rounded-lg border border-gray-200 w-14 h-14" ref={buttonRef}></button>
+      <button className={`bg-white rounded-lg border border-gray-200 w-14 h-14 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`} ref={buttonRef}></button>
     </div>
   );
 }

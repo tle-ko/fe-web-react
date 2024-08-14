@@ -28,6 +28,8 @@ export default function AdminCrew() {
   const [isTierModalOpen, setIsTierModalOpen] = useState(false);
   const [isEndActivityModalOpen, setIsEndActivityModalOpen] = useState(false);
   const [tempTierValue, setTempTierValue] = useState(0);
+  const [isEditingInfo, setIsEditingInfo] = useState(false);
+  const [isEditingNotice, setIsEditingNotice] = useState(false);
 
   useEffect(() => {
     if (crewData.length > 0) {
@@ -48,10 +50,14 @@ export default function AdminCrew() {
     }
   }, [crewData, id]);
 
-  const handleUpdate = () => {
-    setTierValue(tempTierValue);
-    alert('정보가 수정되었습니다.');
-    setIsTierModalOpen(false);
+  const handleUpdateInfo = () => {
+    setIsEditingInfo(false);
+    alert('정보가 수정되었어요.');
+  };
+
+  const handleUpdateNotice = () => {
+    setIsEditingNotice(false);
+    alert('공지사항이 수정되었어요.');
   };
 
   const handleEmojiChange = setIcon;
@@ -98,27 +104,27 @@ export default function AdminCrew() {
       <section className="box flex flex-col gap-6">
         <h2 className="font-bold text-lg font-cafe24">정보 설정</h2>
         <div className="flex flex-col gap-6">
-          <SelectEmoji title="크루 이모지" initialEmoji={icon} onEmojiChange={handleEmojiChange} />
-          <Input title="크루 이름" placeholder="20자 이내로 입력해주세요." width="50%" value={crewName} onChange={(e) => setCrewName(e.target.value)} />
+          <SelectEmoji title="크루 이모지" initialEmoji={icon} onEmojiChange={handleEmojiChange} disabled={!isEditingInfo} />
+          <Input title="크루 이름" placeholder="20자 이내로 입력해주세요." width="50%" value={crewName} onChange={(e) => setCrewName(e.target.value)} readOnly={!isEditingInfo} />
           <div className="w-1/2 flex flex-col gap-2">
             <p className="containerTitle">모집 여부</p>
-            <Dropdown options={['모집중', '모집마감']} placeholder="선택하세요" selected={recruiting ? '모집중' : '모집마감'} onChange={(e) => setRecruiting(e.target.value === '모집중')} />
+            <Dropdown options={['모집중', '모집마감']} placeholder="선택하세요" selected={recruiting ? '모집중' : '모집마감'} onChange={(e) => setRecruiting(e.target.value === '모집중')} disabled={!isEditingInfo} />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
             <p className="containerTitle">모집 인원</p>
-            <Dropdown options={Array.from({ length: 8 }, (_, i) => (i + 1).toString())} placeholder="선택하세요" selected={headcountLimit.toString()} onChange={(e) => setHeadcountLimit(Number(e.target.value))} />
+            <Dropdown options={Array.from({ length: 8 }, (_, i) => (i + 1).toString())} placeholder="선택하세요" selected={headcountLimit.toString()} onChange={(e) => setHeadcountLimit(Number(e.target.value))} disabled={!isEditingInfo} />
           </div>
         </div>
         <div className="w-full flex justify-end">
-          <Button buttonSize="detailBtn" colorStyle="whiteBlack" content="수정" onClick={handleUpdate} />
+          <Button buttonSize="detailBtn" colorStyle={isEditingInfo ? 'blueWhite' : 'whiteBlack'} content={isEditingInfo ? '저장' : '수정'} onClick={isEditingInfo ? handleUpdateInfo : () => setIsEditingInfo(true)} />
         </div>
       </section>
 
       <section className="box flex flex-col gap-6">
         <h2 className="font-bold text-lg font-cafe24">공지 설정</h2>
-        <Input title="" placeholder="크루들에게 전달할 공지사항을 입력해 주세요." value={notice} onChange={(e) => setNotice(e.target.value)} />
+        <Input title="" placeholder="크루들에게 전달할 공지사항을 입력해 주세요." value={notice} onChange={(e) => setNotice(e.target.value)} readOnly={!isEditingNotice} />
         <div className="w-full flex justify-end">
-          <Button buttonSize="detailBtn" colorStyle="whiteBlack" content="수정" onClick={handleUpdate} />
+          <Button buttonSize="detailBtn" colorStyle={isEditingNotice ? 'blueWhite' : 'whiteBlack'} content={isEditingNotice ? '저장' : '수정'} onClick={isEditingNotice ? handleUpdateNotice : () => setIsEditingNotice(true)} />
         </div>
       </section>
 
@@ -165,7 +171,7 @@ export default function AdminCrew() {
           />
         }
         buttonText="수정"
-        onButtonClick={handleUpdate}
+        onButtonClick={handleUpdateInfo}
       />
 
       <Modal 

@@ -1,6 +1,7 @@
+// input.jsx
 import React from 'react';
 
-export default function Input({ title, placeholder, width, error, accuracy, value, onChange, type }) {
+export default function Input({ title, placeholder, width, error, accuracy, value, onChange, type, readOnly }) {
   const inputClassName = `px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 text-base font-medium outline-none`;
 
   return (
@@ -15,11 +16,12 @@ export default function Input({ title, placeholder, width, error, accuracy, valu
           width: width ? (isNaN(width) ? width : `${width}rem`) : '100%' 
         }}
         value={value}
-        onChange={onChange}
+        onChange={readOnly ? undefined : onChange}
         type={type}
+        readOnly={readOnly}
       />
       {error && <div className="text-rose-500 text-sm font-semibold">{error}</div>}
       {accuracy && <div className="text-teal-500 text-sm font-semibold">{accuracy}</div>}
     </div>
-  )
+  );
 }
