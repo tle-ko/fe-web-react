@@ -5,6 +5,7 @@ import ProblemList from './problemList';
 import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
 import { client } from '../../utils';
+import { getToken } from '../../auth';
 
 export default function ProblemListContainer() {
     const isChildRoute = useChildRoute("/problem/");
