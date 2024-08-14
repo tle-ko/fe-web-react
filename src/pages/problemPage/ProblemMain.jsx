@@ -3,8 +3,8 @@ import { Outlet } from "react-router-dom";
 import useChildRoute from "../../hooks/useChildRoute";
 import Footer from '../../components/common/footer';
 import Button from "../../components/common/button";
-import ProblemListContainer from '../../components/problemMain/problemListContainer'; // 경로 수정
-import SubmitProblemModal from '../../components/problemMain/submitProblemModal'; // 경로 수정
+import ProblemListContainer from '../../components/problemMain/problemListContainer'; 
+import SubmitProblemModal from '../../components/problemMain/submitProblemModal'; 
 
 export default function ProblemMain() {
   const isChildRoute = useChildRoute("/problem/");
@@ -23,7 +23,7 @@ export default function ProblemMain() {
         <Outlet />
       ) : (
         <>
-          <div className="max-w-full mb-12 flex items-end justify-between">
+          <div className="min-w-[29rem] mb-12 flex items-end justify-between">
             <h2 className="text-gray-700 text-[1.75rem] font-bold font-cafe24">나의 문제 리스트</h2>
             <Button
               buttonSize="formBtn"

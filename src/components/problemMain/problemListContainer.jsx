@@ -1,34 +1,57 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import useChildRoute from "../../hooks/useChildRoute";
-import useFetchData from '../../hooks/useFetchData';
 import ProblemList from './problemList';
 import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
+import { client } from '../../utils';
 
 export default function ProblemListContainer() {
     const isChildRoute = useChildRoute("/problem/");
-    const { data: problemData, loading } = useFetchData("http://timelimitexceeded.kr/api/v1/problems/search");
     const [pageIndex, setPageIndex] = useState(0);
-    const numOfPage = 16;
     const [currentData, setCurrentData] = useState([]);
+    const [problemData, setProblemData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const numOfPage = 16;
 
     const handlePageChange = (index) => {
       setPageIndex(index - 1);
     };
 
+    const consonant = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+
     const getConsonant = (str) => {
-        return str.split('').map((char) => {
-          const code = char.charCodeAt(0) - 44032;
-          if (code < 0 || code > 11171) return char;
-          return consonant[Math.floor(code / 588)];
-        }).join('');
-      };
+      return str.split('').map((char) => {
+        const code = char.charCodeAt(0) - 44032;
+        if (code < 0 || code > 11171) return char;
+        return consonant[Math.floor(code / 588)];
+      }).join('');
+    };
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProblemCount, setFilteredProblemCount] = useState(0);
-    const consonant = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
     const [selectedOption, setSelectedOption] = useState("최신순");
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await client.get('api/v1/problems/search', {
+            withCredentials: true
+          });
+          if (response.status === 200) {
+            setProblemData(response.data);
+          } else {
+            console.error('Failed to fetch problem data:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error fetching problem data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      fetchData();
+    }, []);
 
     useEffect(() => {
         if (!problemData) return;
@@ -63,7 +86,7 @@ export default function ProblemListContainer() {
         const start = pageIndex * numOfPage;
         const end = start + numOfPage;
         setCurrentData(sortedFilteredData.slice(start, end));
-      }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption, getConsonant]);
+      }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption]);
     
     return(
         <div>
@@ -71,23 +94,23 @@ export default function ProblemListContainer() {
           <Outlet />
         ) : (
         <>
-            <div>
-            <div className="mb-12 flex-col justify-start items-start gap-6 inline-flex">
-            <p className="text-gray-900 text-xl font-semibold">문제 검색</p>
-            <input
-            className="w-[42.875rem] px-6 py-4 bg-gray-200 rounded-lg"
-            placeholder="본인이 등록한 문제의 제목으로 검색해 주세요."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div className="min-w-[29rem]">
+              <div className="w-full mb-12 flex-col justify-start items-start gap-6 inline-flex">
+              <p className="text-gray-900 text-xl font-semibold">문제 검색</p>
+              <input
+              className="w-1/2 min-w-fit px-6 py-4 bg-gray-200 rounded-lg"
+              placeholder="본인이 등록한 문제의 제목으로 검색해 주세요."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              </div>
             </div>
-            </div>
-            <div className="max-w-full mb-6 flex items-center justify-between">
-            <p className="text-gray-900 text-xl font-semibold">{loading ? 'Loading...' : `${filteredProblemCount} 문제`}</p>
-            <Dropdown options={["최신순", "낮은순", "높은순"]}
-            placeholder={"최신순"}
-            onChange={(option) => setSelectedOption(option)}
-            />
+            <div className="min-w-[29rem] w-full mb-6 flex items-center justify-between">
+              <p className="text-gray-900 text-xl font-semibold">{loading ? 'Loading...' : `${filteredProblemCount} 문제`}</p>
+              <Dropdown options={["최신순", "낮은순", "높은순"]}
+              placeholder={"최신순"}
+              onChange={(option) => setSelectedOption(option)}
+              />
             </div>
             <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
             <Pagination

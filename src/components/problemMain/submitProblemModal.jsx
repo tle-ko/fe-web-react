@@ -38,10 +38,16 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   const formContent = (
     <div className="w-full flex flex-col gap-10 mt-10">
       <Input title="문제 제목" placeholder="제목을 작성해 주세요" onChange={(e) => setTitle(e.target.value)}/>
-      <div className="w-full flex flex-wrap items-start gap-6">
+      <div className="w-full inline-flex flex-wrap items-start gap-6">
+        <div className="w-fit">
         <Input title="시간 제한" placeholder="초" width="8.875" onChange={(e) => handleInputChange(e, setTimeLimit)} />
+        </div>
+        <div className="w-fit">
         <Input title="메모리 제한" placeholder="MB" width="8.875" onChange={(e) => handleInputChange(e, setMemoryLimit)} />
+        </div>
+        <div className="w-fit">
         <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요" width="21" onChange={(e) => setProblemUrl(e.target.value)} />
+        </div>
       </div>
       <Textarea title="문제" placeholder="문제를 작성해 주세요" height="12" onChange={(e) => setProblemDescription(e.target.value)} />
       <Textarea title="입력" placeholder="입력 조건을 작성해 주세요" height="12" onChange={(e) => setInputDescription(e.target.value)}/>
