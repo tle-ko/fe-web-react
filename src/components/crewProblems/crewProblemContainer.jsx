@@ -120,9 +120,9 @@ const CrewDashProblem = ({ userId }) => {
           selectedElement={activityId}
         />
       )}
-      <div className="flex-1 cardGrid3 mb-16">
-        {problemsData.length > 0 ? (
-          problemsData.map((problem) => {
+      {problemsData.length > 0 ? (
+        <div className="flex-1 cardGrid3 mb-16">
+          {problemsData.map((problem) => {
             const lastSubmittedDate = problem.submissions ? getLastSubmissionDate(problem.submissions) : null;
             return (
               <div key={problem.id} className="box flex-col justify-between items-start inline-flex gap-6 overflow-x-auto">
@@ -167,25 +167,20 @@ const CrewDashProblem = ({ userId }) => {
                 </div>
               </div>
             );
-          })
-        ) : (
-          <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
-            <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            </div>
-            <p>선장님이 해당 회차에 문제를 등록하지 않았어요 😓</p>
+          })}
         </div>
-        )}
-      </div>
+      ) : (
+        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 flex-1 mt-24">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p>선장님이 해당 회차에 문제를 등록하지 않았어요 😓</p>
+        </div>
+      )}
     </div>
   );
 };
 
 export default CrewDashProblem;
-
-
-
-
-
