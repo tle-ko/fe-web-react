@@ -88,9 +88,22 @@
   }
 
   .cardGrid4 {
-    @apply grid grid-cols-4 gap-6 mb-6;
+    @apply grid gap-6 mb-6;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   }
 
+  @screen md {
+    .cardGrid4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @screen lg {
+    .cardGrid4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
   .problemGrid3 {
     @apply grid grid-cols-3 gap-x-10 gap-y-1 auto-rows-fr bg-gray-100 whitespace-nowrap overflow-x-auto;
   }
