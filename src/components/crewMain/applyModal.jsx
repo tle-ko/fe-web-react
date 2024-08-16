@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from "react";
 import Modal from "../common/modal";
 import LanguageTag from "../common/languageTag";
 import AlertContainer from "../common/alertContainer";
-import { useState, useEffect } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import Textarea from "../common/textarea";
 
@@ -18,19 +18,6 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
     setShowAlert(true);
     onApply();
   };
-
-  const [latestActivity, setLatestActivity] = useState({});
-
-  useEffect(() => {
-    if (crew) {
-      const sortedActivities = crew.activities.sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
-      setLatestActivity(sortedActivities[0]);
-    }
-  }, [crew]);
-
-  if (!crew) {
-    return null; 
-  }
 
   const alertContent = (
     <AlertContainer 
@@ -49,14 +36,14 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
         <div className="pb-3 border-b border-gray-200 flex-col justify-start items-start gap-6 inline-flex">
           <div className="text-gray-900 text-lg font-bold">현재 진행 회차</div>
           <div className="pr-2 justify-start items-center gap-2 inline-flex">
-            <div className="text-gray-900 text-base font-semibold">{crew.activities.length}회차</div>
-            <div className="text-gray-900 text-base font-medium">{latestActivity?.start_date} ~ {latestActivity?.end_date}</div>
+            <div className="text-gray-900 text-base font-semibold">{crew.latest_activity.name}</div>
+            <div className="text-gray-900 text-base font-medium">{crew.latest_activity.date_start_at ? crew.latest_activity.date_start_at.split('T')[0] : "시작일 없음"} ~ {crew.latest_activity.date_end_at ? crew.latest_activity.date_end_at.split('T')[0] : "종료일 없음"}</div>
           </div>
         </div>
         <div className="pr-2 pb-3 border-b border-gray-200 flex-col justify-start items-start gap-3 inline-flex">
           <div className=" text-gray-900 text-lg font-bold">현재 인원</div>
           <div className="justify-start items-center gap-2 inline-flex">
-            {Array.from({ length: crew.members.length }).map((_, index) => (
+            {Array.from({ length: crew.members.count }).map((_, index) => (
               <FaCircleUser key={index} className="w-8 h-8 text-gray-500" />
             ))}
           </div>
@@ -65,12 +52,20 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
       <div className="pr-2 pb-3 border-b border-gray-200 flex-col justify-start items-start gap-3 flex">
         <div className="text-gray-900 text-lg font-bold">크루 태그</div>
         <div className="justify-start items-center gap-2 inline-flex flex-wrap">
-          {crew.allowed_languages.map((languageId, index) => (
-            <LanguageTag key={index} language={languageMapping[languageId]} />
+          {crew.tags
+            .filter(tag => tag.type === "language")
+            .map((tag, index) => (
+              <LanguageTag key={index} language={tag.name} />
           ))}
-          <LanguageTag language={getBojLevelTag(crew.required_boj_level)} className="tag border bg-gray-600 text-white" />
-          {crew.tags.map((tag, index) => (
-            <LanguageTag key={index} language={tag} className="bg-white text-gray-600 border border-gray-600" />
+          {crew.tags
+            .filter(tag => tag.type === "level")
+            .map((tag, index) => (
+              <LanguageTag key={index} language={tag.name} className="tag border bg-gray-600 text-white" />
+          ))}
+          {crew.tags
+            .filter(tag => tag.type === "custom")
+            .map((tag, index) => (
+              <LanguageTag key={index} language={tag.name} className="bg-white text-gray-600 border border-gray-600" />
           ))}
         </div>
       </div>
@@ -96,29 +91,3 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
     />
   );
 }
-
-const languageMapping = {
-  1005: 'Java',
-  1001: 'C',
-  1003: 'Python',
-  1004: 'C++',
-  1009: 'C#',
-  1010: 'JavaScript',
-  1013: 'Swift',
-  1008: 'Kotlin',
-};
-
-const getBojLevelTag = (level) => {
-  if (level === null) return "티어 무관";
-  const tierMapping = {
-    b: "브론즈 이상",
-    s: "실버 이상",
-    g: "골드 이상",
-    p: "플래티넘 이상",
-    d: "다이아 이상",
-    r: "루비 이상",
-    m: "마스터 이상",
-  };
-  const tier = tierMapping[level[0]];
-  return tier || "티어 무관";
-};
