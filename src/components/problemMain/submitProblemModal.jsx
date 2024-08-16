@@ -16,6 +16,16 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   const [inputDescription, setInputDescription] = useState('');
   const [outputDescription, setOutputDescription] = useState('');
 
+  const isValidUrl = (url) => {
+    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name and extension
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(url);
+  };
+
   const handleInputChange = (e, setState) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
@@ -26,13 +36,18 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   };
 
   const handleRegisterProblem = async() => {
-    const requiredFields = [title, timeLimit, memoryLimit, problemDescription, inputDescription, outputDescription];
+    const requiredFields = [title, timeLimit, memoryLimit, problemDescription, inputDescription, outputDescription]; // 문제 URL은 선택 항목
     const allFieldsFilled = requiredFields.every(field => field.trim() !== '');
 
     if (!allFieldsFilled) {
       alert('모든 필수 항목을 작성해 주세요!');
       return;
     } 
+
+    if (problemUrl && !isValidUrl(problemUrl)) {
+      alert('유효한 URL을 입력해 주세요!');
+      return;
+    }
 
     const problemData = {
       title,
@@ -55,7 +70,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
         setShowAlert(true);
         onSubmit(problemData);
       } else {
-        console.log('문제 제출 중 오류가 발생했습니다:', response.statusText);
+        console.log('문제 등록 중 오류가 발생했습니다:', response.statusText);
       }
     } catch (error) {
       alert(`문제 등록 중 오류가 발생했습니다: ${error.message}`);
@@ -87,7 +102,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
     </div>
   );
 
-  const alertContent = <Alert type="check" content="문제가 등록되었습니다." buttonContent="확인" />;
+  const alertContent = <Alert type="check" content="문제가 등록되었습니다." />;
 
   return (
     <Modal
