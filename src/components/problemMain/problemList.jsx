@@ -11,6 +11,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(data);
     setLoading(!data || data.length === 0);
   }, [data]);
 
@@ -27,9 +28,9 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
 
   return (
       <>
+      <div className="min-w-[29rem] cardGrid4 mb-16">
         {data.slice(pageIndex * numOfPage, (pageIndex + 1) * numOfPage).map((problem) => (
-          <div className="min-w-[29rem] cardGrid4 mb-16" key={problem.id}>
-          <div className="box flex-col justify-start items-start inline-flex gap-6">
+          <div className="box flex-col justify-start items-start inline-flex gap-6" key={problem.id}>
             <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
               <img
                 className='w-6 h-8'
@@ -54,8 +55,9 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
               </Link>
             </div>
           </div>
-          </div>
-        ))}ç
+
+        ))}
+                  </div>
       </>
   );
 }
