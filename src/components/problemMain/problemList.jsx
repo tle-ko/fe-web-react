@@ -30,7 +30,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
       <>
       <div className="min-w-[29rem] cardGrid4 mb-16">
         {data.slice(pageIndex * numOfPage, (pageIndex + 1) * numOfPage).map((problem) => (
-          <div className="box flex-col justify-start items-start inline-flex gap-6" key={problem.id}>
+          <div className="box min-w-60 flex-col justify-start items-start inline-flex gap-6" key={problem.id}>
             <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
               <img
                 className='w-6 h-8'
@@ -50,7 +50,6 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
                   buttonSize="detailBtn"
                   colorStyle="whiteBlack"
                   content="문제 상세"
-                  onClick={() => console.log('Button clicked')}
                 />
               </Link>
             </div>
