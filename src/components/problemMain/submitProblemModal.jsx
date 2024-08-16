@@ -4,6 +4,8 @@ import Alert from "../../components/common/alertContainer";
 import Input from "../../components/common/input";
 import Textarea from "../../components/common/textarea";
 
+import {client} from "../../utils";
+
 export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   const [showAlert, setShowAlert] = useState(false);
   const [title, setTitle] = useState('');
@@ -23,16 +25,46 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
     }
   };
 
-  const handleRegisterProblem = () => {
-    const requiredFields = [title, timeLimit, memoryLimit, problemUrl, problemDescription, inputDescription, outputDescription];
+  const handleRegisterProblem = async() => {
+    const requiredFields = [title, timeLimit, memoryLimit, problemDescription, inputDescription, outputDescription];
     const allFieldsFilled = requiredFields.every(field => field.trim() !== '');
 
     if (!allFieldsFilled) {
-      alert('모든 필수 항목을 작성해 주세요');
-    } else {
-      setShowAlert(true);
-      onSubmit({ title, timeLimit, memoryLimit, problemUrl, problemDescription, inputDescription, outputDescription });
+      alert('모든 필수 항목을 작성해 주세요!');
+      return;
+    } 
+
+    const problemData = {
+      title,
+      link: problemUrl,
+      description: problemDescription,
+      input_description: inputDescription,
+      output_description: outputDescription,
+      memory_limit_megabyte: parseInt(memoryLimit, 10),
+      time_limit_second: parseInt(timeLimit, 10),
+    };
+
+    try {
+      const response = await client.post('/api/v1/problems/', problemData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        setShowAlert(true);
+        onSubmit(problemData);
+      } else {
+        console.log('문제 제출 중 오류가 발생했습니다:', response.statusText);
+      }
+    } catch (error) {
+      alert(`문제 등록 중 오류가 발생했습니다: ${error.message}`);
     }
+  };
+
+  const handleClose = () => {
+    onClose();
+    window.location.reload();
   };
 
   const formContent = (
@@ -46,7 +78,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
         <Input title="메모리 제한" placeholder="MB" width="8.875" onChange={(e) => handleInputChange(e, setMemoryLimit)} />
         </div>
         <div className="w-fit">
-        <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요" width="21" onChange={(e) => setProblemUrl(e.target.value)} />
+        <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요 (선택)" width="21" onChange={(e) => setProblemUrl(e.target.value)} />
         </div>
       </div>
       <Textarea title="문제" placeholder="문제를 작성해 주세요" height="12" onChange={(e) => setProblemDescription(e.target.value)} />
@@ -55,15 +87,15 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
     </div>
   );
 
-  const alertContent = <Alert type="check" content="문제가 등록되었습니다." />;
+  const alertContent = <Alert type="check" content="문제가 등록되었습니다." buttonContent="확인" />;
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title="문제 등록하기"
       content={showAlert ? alertContent : formContent}
-      buttonText="문제 등록하기"
+      buttonText={showAlert ? "" : "문제 등록하기"}
       onButtonClick={handleRegisterProblem}
     />
   );

@@ -14,7 +14,6 @@ export default function ProblemMain() {
   const handleCloseModal = () => setIsModalOpen(false);
   const handleSubmit = (problemData) => {
     console.log('Problem submitted:', problemData);
-    handleCloseModal();
   };
 
   return (
