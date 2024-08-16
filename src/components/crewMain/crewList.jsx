@@ -1,50 +1,80 @@
-// crewList.jsx
+import React, { useState, useEffect } from "react";
 import Button from "../common/button";
-import { useState, useEffect } from "react";
 import LanguageTag from "../common/languageTag";
 import ApplyModal from "./applyModal";
+import { client } from "../../utils";
 
-const languageMapping = {
-  1005: 'Java',
-  1001: 'C',
-  1003: 'Python',
-  1004: 'C++',
-  1009: 'C#',
-  1010: 'JavaScript',
-  1013: 'Swift',
-  1008: 'Kotlin',
-};
-
-const getBojLevelTag = (level) => {
-  if (level === null) return "티어 무관";
-  const tierMapping = {
-    b: "브론즈 이상",
-    s: "실버 이상",
-    g: "골드 이상",
-    p: "플래티넘 이상",
-    d: "다이아 이상",
-    r: "루비 이상",
-    m: "마스터 이상",
-  };
-  const tier = tierMapping[level[0]];
-  return tier || "티어 무관";
-};
-
-export default function CrewList({ data, pageIndex, numOfPage, userData }) {
+export default function CrewList({ pageIndex, numOfPage, filters }) {
+  const [crews, setCrews] = useState([]);
+  const [filteredCrews, setFilteredCrews] = useState([]);
   const [pageData, setPageData] = useState([]);
   const [modalStates, setModalStates] = useState({});
+  const [selectedCrew, setSelectedCrew] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await client.get('api/v1/crews/recruiting', {
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          setCrews(response.data);
+        } else {
+          console.error('Failed to fetch crew data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching crew data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const safeFilters = {
+      languages: filters?.languages || [],
+      tiers: filters?.tiers || [],
+    };
+
+    const doesTierMatch = (crewTier, selectedTiers) => {
+      if (selectedTiers.length === 0) return true;
+
+      const tierMapping = {
+        '브론즈': '브론즈 이상',
+        '실버': '실버 이상',
+        '골드': '골드 이상',
+        '플레티넘': '플래티넘 이상',
+        '다이아': '다이아 이상',
+        '루비': '루비 이상',
+        '마스터': '마스터 이상'
+      };
+
+      return selectedTiers.some(selectedTier => {
+        const baseTier = crewTier.split(' ')[0];
+        return tierMapping[baseTier] === selectedTier;
+      });
+    };
+
+    const filtered = crews.filter(crew => {
+      const matchesLanguage = safeFilters.languages.length === 0 || crew.tags.some(tag => tag.type === 'language' && safeFilters.languages.includes(tag.name));
+      const matchesTier = safeFilters.tiers.length === 0 || crew.tags.some(tag => tag.type === 'level' && doesTierMatch(tag.name, safeFilters.tiers));
+      return matchesLanguage && matchesTier;
+    });
+
+    setFilteredCrews(filtered);
+  }, [crews, filters]);
 
   useEffect(() => {
     const startIndex = pageIndex * numOfPage;
     const endIndex = startIndex + numOfPage;
-    setPageData(data.slice(startIndex, endIndex));
+    setPageData(filteredCrews.slice(startIndex, endIndex));
 
-    // Initialize modal states
-    const initialModalStates = data.reduce((acc, crew) => ({ ...acc, [crew.id]: false }), {});
+    const initialModalStates = filteredCrews.reduce((acc, crew) => ({ ...acc, [crew.id]: false }), {});
     setModalStates(initialModalStates);
-  }, [data, pageIndex, numOfPage]);
+  }, [filteredCrews, pageIndex, numOfPage]);
 
   const handleOpenModal = (crewId) => {
+    setSelectedCrew(crews.find(crew => crew.id === crewId));
     setModalStates((prevState) => ({
       ...prevState,
       [crewId]: true,
@@ -59,12 +89,14 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
   };
 
   const handleApply = () => {
-    // 신청 처리 로직
+    // 신청 처리 로직 (예: API 호출)
+    console.log("크루 신청이 완료되었습니다.");
+    handleCloseModal(selectedCrew.id);
   };
 
   return (
     <div>
-      {pageData.length === 0 ? (
+      {filteredCrews.length === 0 || pageData.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
@@ -72,7 +104,7 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
           </div>
           <p>조건에 해당되는 크루가 없어요 😓</p>
-      </div>
+        </div>
       ) : (
         <div className="cardGrid3 w-full flex-col justify-start items-start">
           {pageData.map((crew) => (
@@ -95,8 +127,7 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
                         isOpen={modalStates[crew.id]}
                         onClose={() => handleCloseModal(crew.id)}
                         onApply={handleApply}
-                        crew={crew}
-                        userData={userData}
+                        crew={selectedCrew}
                       />
                     )}
                   </div>
@@ -104,15 +135,21 @@ export default function CrewList({ data, pageIndex, numOfPage, userData }) {
                 <div className="w-full flex-col justify-center items-start gap-4 flex">
                   <div className="justify-start items-center gap-3 inline-flex text-sm">
                     <div className="text-color-blue-main ">인원</div>
-                    <div className="text-gray-700">{crew.headcount}명 / {crew.headcount_limit}명</div>
+                    <div className="text-gray-700">{crew.members.count}명 / {crew.members.max_count}명</div>
                   </div>
                   <div className="w-full justify-start items-center gap-4 inline-flex text-sm ">
                     <p className=" text-color-blue-main whitespace-nowrap">크루 태그</p>
                     <div className=" justify-start items-start gap-1 flex hidden-scrollbar overflow-x-auto">
-                      {crew.allowed_languages.map((languageId) => (
-                        <LanguageTag key={`language-${languageId}`} language={languageMapping[languageId]} />
+                      {crew.tags
+                        .filter(tag => tag.type === "language")
+                        .map((tag) => (
+                          <LanguageTag key={tag.key} language={tag.name} />
                       ))}
-                      <LanguageTag language={getBojLevelTag(crew.required_boj_level)} className="tag border" />
+                      {crew.tags
+                        .filter(tag => tag.type === "level")
+                        .map((tag) => (
+                          <LanguageTag key={tag.name} language={tag.name} className="tag border" />
+                      ))}
                     </div>
                   </div>
                 </div>

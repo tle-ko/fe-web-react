@@ -9,9 +9,6 @@ import useChildRoute from "../../hooks/useChildRoute";
 export default function CrewMain() {
   const isChildRoute = useChildRoute("/crew/")
 
-  // userId 임의로 설정, 나중에는 로그인된 유저의 id값으로 적용
-  const userId = 1;
-
   return (
     <div>
       {isChildRoute ? (
@@ -23,7 +20,7 @@ export default function CrewMain() {
               <div className="text-gray-700 text-[1.75rem] font-bold font-cafe24">크루 둘러보기</div>
               <CreateCrew />
             </div>
-            <MyCrew userId={userId} />
+            <MyCrew />
             <CrewListContainer />
           </div>
         </div>
