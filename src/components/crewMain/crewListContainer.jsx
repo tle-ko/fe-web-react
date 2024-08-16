@@ -1,46 +1,37 @@
-// crewListContainer.jsx
 import CrewList from "./crewList";
 import TagFilter from "./tagFilter";
-import useFetchData from "../../hooks/useEffectData";
 import Pagination from "../../components/common/pagiNation";
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import useChildRoute from "../../hooks/useChildRoute";
-
-const languageMapping = {
-  1005: 'Java',
-  1001: 'C',
-  1003: 'Python',
-  1004: 'C++',
-  1009: 'C#',
-  1010: 'JavaScript',
-  1013: 'Swift',
-  1008: 'Kotlin',
-};
-
-const getBojLevelTag = (level) => {
-  if (!level) return "티어 무관";
-  const tierMapping = {
-    b: "브론즈 이상",
-    s: "실버 이상",
-    g: "골드 이상",
-    p: "플래티넘 이상",
-    d: "다이아 이상",
-    r: "루비 이상",
-    m: "마스터 이상",
-  };
-  const tier = tierMapping[level[0]];
-  return tier || "티어 무관";
-};
+import { client } from "../../utils";
 
 export default function CrewListContainer() {
   const isChildRoute = useChildRoute("/crew/");
-  const crewData = useFetchData("http://localhost:3000/data/crewData.json");
-  const userData = useFetchData("http://localhost:3000/data/userData.json");
+  const [crews, setCrews] = useState([]);
+  const [filteredCrews, setFilteredCrews] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const numOfPage = 12;
   const [selectedTags, setSelectedTags] = useState({ languages: [], tiers: [] });
-  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await client.get('api/v1/crews/recruiting', {
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          setCrews(response.data);
+          setFilteredCrews(response.data); // 초기에는 모든 크루를 표시
+        } else {
+          console.error('Failed to fetch crew data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching crew data:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handlePageChange = (index) => {
     setPageIndex(index - 1);
@@ -51,22 +42,20 @@ export default function CrewListContainer() {
   };
 
   useEffect(() => {
-    if (crewData?.length) {
-      const filtered = crewData.filter(crew => {
-        const hasSelectedLanguage = selectedTags.languages.length === 0 || crew.allowed_languages.some(id => selectedTags.languages.includes(languageMapping[id]));
-        const hasSelectedTier = selectedTags.tiers.length === 0 || selectedTags.tiers.includes(getBojLevelTag(crew.required_boj_level));
-        return hasSelectedLanguage && hasSelectedTier;
+    const filtered = crews.filter(crew => {
+      const matchesLanguage = selectedTags.languages.length === 0 || crew.tags.some(tag => tag.type === 'language' && selectedTags.languages.includes(tag.name));
+      const matchesTier = selectedTags.tiers.length === 0 || crew.tags.some(tag => {
+        if (tag.type === 'level') {
+          const crewTier = tag.name.split(' ')[0];
+          return selectedTags.tiers.includes(`${crewTier} 이상`);
+        }
+        return false;
       });
+      return matchesLanguage && matchesTier;
+    });
 
-      filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-      setFilteredData(filtered);
-    }
-  }, [crewData, selectedTags]);
-
-  if (!crewData || !userData) {
-    return <div>Loading...</div>;
-  }
+    setFilteredCrews(filtered);
+  }, [crews, selectedTags]);
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -76,9 +65,9 @@ export default function CrewListContainer() {
         <>
           <div className="containerTitle">크루 목록</div>
           <TagFilter onUpdateTags={handleUpdateTags} />
-          <CrewList data={filteredData} pageIndex={pageIndex} numOfPage={numOfPage} userData={userData} />
+          <CrewList data={filteredCrews} pageIndex={pageIndex} numOfPage={numOfPage} />
           <Pagination 
-            totalPage={Math.ceil(filteredData.length / numOfPage)} 
+            totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
             currentPage={pageIndex + 1} 
             setCurrentPage={handlePageChange} 
           />
