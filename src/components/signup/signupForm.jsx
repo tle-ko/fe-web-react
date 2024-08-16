@@ -179,17 +179,10 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   }, [formData.username]);
 
   const handleImageUpload = (e) => {
-    if (e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-          setImage(reader.result);
-          onInputChange('profile_image', reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImage("https://cdn.animaltoc.com/news/photo/202310/266_1351_4337.jpg");
-      onInputChange('image', null);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+      onInputChange('profile_image', file);
     }
   };
 
