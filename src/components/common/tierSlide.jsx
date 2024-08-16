@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiPlus } from "react-icons/fi";
-import { FiMinus } from "react-icons/fi";
+import { FiPlus, FiMinus } from "react-icons/fi";
 import { tiers } from '../../utils';
 
 const tierColors = {
@@ -15,8 +14,8 @@ const tierColors = {
 
 const getTierColor = (tier) => {
   if (!tier) return "rgb(45, 45, 45)";
-  const tierKey = tier.split(" ")[0]; // 티어명을 기준으로 색상 결정
-  return tierColors[tierKey] || "rgb(45, 45, 45)"; // 기본값: 티어 무관 색상
+  const tierKey = tier.split(" ")[0];
+  return tierColors[tierKey] || "rgb(45, 45, 45)";
 };
 
 const TierSlide = ({ value, onChange }) => {
@@ -31,23 +30,19 @@ const TierSlide = ({ value, onChange }) => {
 
   const handleIncrement = () => {
     if (currentValue < tiers.length - 1) {
-      setCurrentValue(prev => {
-        const newValue = prev + 1;
-        onChange(newValue);
-        return newValue;
-      });
+      setCurrentValue(prev => prev + 1);
     }
   };
 
   const handleDecrement = () => {
     if (currentValue > 0) {
-      setCurrentValue(prev => {
-        const newValue = prev - 1;
-        onChange(newValue);
-        return newValue;
-      });
+      setCurrentValue(prev => prev - 1);
     }
   };
+
+  useEffect(() => {
+    onChange(currentValue); // 렌더링 이후에 상태 업데이트
+  }, [currentValue, onChange]);
 
   useEffect(() => {
     if (sliderRef.current) {
