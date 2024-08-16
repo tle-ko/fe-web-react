@@ -19,8 +19,8 @@ const Modal = ({ isOpen, onClose, title, content, buttonText, onButtonClick }) =
 
   return (
     <div className="fixed inset-0 bg-[rgba(33,37,41,0.5)] z-50 flex justify-center items-center">
-      <div className="box w-3/4 relative max-h-[90vh] overflow-y-auto">
-        <div className="mx-[4.875rem] my-6">
+      <div className="box w-3/4 relative min-w-72 max-h-[90vh] overflow-y-auto">
+        <div className="min-w-72 mx-8 my-6">
           <div className="flex flex-row justify-between items-center">
             <h2 className="text-2xl font-cafe24 font-bold text-left">{title}</h2>
             <button onClick={onClose} className="close">
