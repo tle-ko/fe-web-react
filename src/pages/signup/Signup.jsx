@@ -1,5 +1,3 @@
-//Signup.jsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Step from "../../components/signup/signupStep";
@@ -61,20 +59,28 @@ export default function Signup() {
 
   const handleSubmit = async () => {
     const isFormValid = getStepValidity();
-
+  
     if (isFormValid) {
       try {
-        console.log('Submitting form with data:', formData);
-
         const { email, username, password, boj_username, verification_token, profile_image } = formData;
-        const submitData = { email, username, password, boj_username, verification_token };
-
+        const submitData = new FormData();
+  
+        submitData.append('email', email);
+        submitData.append('username', username);
+        submitData.append('password', password);
+        submitData.append('boj_username', boj_username);
+        submitData.append('verification_token', verification_token);
+  
         if (profile_image) {
-          submitData.profile_image = profile_image;
+          submitData.append('profile_image', profile_image);
         }
-
-        const response = await client.post('api/v1/auth/signup', submitData);
-
+  
+        const response = await client.post('api/v1/auth/signup', submitData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
         if (response.status === 201) {
           console.log('Form submitted successfully:', response.data);
         } else {

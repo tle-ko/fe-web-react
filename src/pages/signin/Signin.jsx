@@ -1,12 +1,10 @@
-//Signin.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
 import PasswordInput from '../../components/signup/passwordInput';
 import { FaCircleExclamation } from "react-icons/fa6";
 import { client } from '../../utils';
-import { setToken } from '../../auth';
+import { setToken, setUserInfo } from '../../auth';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
@@ -52,15 +50,17 @@ export default function Signin() {
         password
       }, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=UTF-8"
         }
       });
 
       if (response.status === 200) {
-        const { access_token } = response.data;
+        const { access_token, username, profile_image } = response.data;
         setToken(access_token);
+        setUserInfo(username, profile_image);
         console.log('로그인 성공:', response.data);
         navigate('/crew');
+        window.location.reload();
       }
     } catch (error) {
       setShowWarning(true);
@@ -126,7 +126,7 @@ export default function Signin() {
             {showWarning && (
               <div className="inline-flex justify-start items-center gap-2">
                 <FaCircleExclamation color="#e84057"/>
-                <p className="text-[#e84057] text-base">
+                <p className="text-color-red-main text-base">
                   아이디 또는 비밀번호를 다시 확인해주세요.
                 </p>
               </div>
