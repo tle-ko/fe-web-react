@@ -1,4 +1,3 @@
-// dropDown.jsx
 import React from 'react';
 
 const Dropdown = ({ options = [], placeholder, selected, onChange, disabled }) => {
@@ -7,8 +6,8 @@ const Dropdown = ({ options = [], placeholder, selected, onChange, disabled }) =
       <select
         className="cursor-pointer block appearance-none w-full bg-white border border-gray-200 px-5 py-3 pr-8 rounded leading-tight 
         focus:outline-none focus:bg-white focus:border-gray-500 hover:bg-gray-50"
-        value={selected} // Use value instead of selected on option
-        onChange={disabled ? undefined : onChange}
+        value={selected || ''} // Use empty string as fallback
+        onChange={disabled ? undefined : (e) => onChange(e.target.value)}
         disabled={disabled}
       >
         <option value="" disabled>
