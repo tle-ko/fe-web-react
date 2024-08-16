@@ -23,7 +23,7 @@ export default function Header() {
 
   const handleLogout = () => {
     removeToken(); 
-    window.location('/');
+    window.location.href = '/';
   }
 
   return (
