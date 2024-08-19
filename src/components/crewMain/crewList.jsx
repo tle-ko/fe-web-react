@@ -88,10 +88,26 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
     }));
   };
 
-  const handleApply = () => {
-    // 신청 처리 로직 (예: API 호출)
-    console.log("크루 신청이 완료되었습니다.");
-    handleCloseModal(selectedCrew.id);
+  const handleApply = async (message) => {
+    if (!selectedCrew) return;
+
+    try {
+      const response = await client.post(`/api/v1/crews/${selectedCrew.id}/apply`, { message }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        console.log("크루 신청이 완료되었습니다.");
+        handleCloseModal(selectedCrew.id);
+      } else {
+        console.error('Failed to apply for the crew:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error applying for the crew:', error);
+    }
   };
 
   return (
