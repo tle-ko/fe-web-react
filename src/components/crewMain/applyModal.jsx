@@ -6,17 +6,19 @@ import { FaCircleUser } from "react-icons/fa6";
 import Textarea from "../common/textarea";
 
 export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
+  const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
-      setShowAlert(false); // 모달이 닫힐 때 showAlert 초기화
+      setShowAlert(false);
+      setMessage(""); // 모달이 닫힐 때 메시지 초기화
     }
   }, [isOpen]);
 
   const signUpCrew = () => {
     setShowAlert(true);
-    onApply();
+    onApply(message);
   };
 
   const alertContent = (
@@ -74,6 +76,8 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
         <Textarea 
           placeholder="크루 선장에게 보낼 메시지를 입력하세요."
           height="8"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <div className="text-gray-600 text-sm">! 크루 가입 신청 시 선장에게 이메일이 전송되며, 승인 결과를 이메일로 발송해 드립니다.</div>
       </div>
