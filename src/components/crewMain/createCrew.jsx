@@ -1,4 +1,3 @@
-// CreateCrew.jsx
 import { useState } from "react";
 import Button from "../common/button";
 import Input from "../common/input";
@@ -7,6 +6,7 @@ import SelectEmoji from "../common/selectEmoji";
 import Dropdown from "../common/dropDown";
 import AlertContainer from "../common/alertContainer";
 import TagDetailContent from '../common/tagDetailContent';
+import { client } from "../../utils";
 
 export default function CreateCrew() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +16,7 @@ export default function CreateCrew() {
   const [crewName, setCrewName] = useState("");
   const [memberCount, setMemberCount] = useState(null);
   const [tierValue, setTierValue] = useState(0);
+  const [selectedEmoji, setSelectedEmoji] = useState("🚢");
 
   const handleOpenModal = () => {
     setSelectedLanguages([]);
@@ -30,8 +31,36 @@ export default function CreateCrew() {
     setIsModalOpen(false);
   };
 
-  const handleCreateCrew = () => {
-    setShowAlert(true);
+  const handleCreateCrew = async () => {
+    const crewData = {
+      icon: selectedEmoji,
+      name: crewName,
+      max_members: parseInt(memberCount, 10),
+      languages: selectedLanguages.map(lang => lang.toLowerCase()),
+      min_boj_level: tierValue,
+      custom_tags: tags,
+      notice: "", // 필요시 추가 입력 필드
+      is_recruiting: true,
+      is_active: true,
+      created_by: {}, // 필요시 사용자 데이터 추가
+    };
+
+    try {
+      const response = await client.post('/api/v1/crews/', crewData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        setShowAlert(true);
+        // 추가적으로, 생성된 크루 데이터를 사용하여 필요한 작업을 수행할 수 있습니다.
+      } else {
+        console.log('크루 생성 중 오류가 발생했습니다:', response.statusText);
+      }
+    } catch (error) {
+      alert(`크루 생성 중 오류가 발생했습니다: ${error.message}`);
+    }
   };
 
   const handleLanguageClick = (language) => {
@@ -71,7 +100,10 @@ export default function CreateCrew() {
     <div className="w-full flex flex-col justify-start items-start gap-6 mt-10">
       <div className="flex flex-col justify-start items-start gap-3">
         <div className="text-gray-900 text-lg font-semibold">크루 이모지 선택</div>
-        <SelectEmoji />
+        <SelectEmoji 
+          initialEmoji={selectedEmoji} 
+          onEmojiChange={setSelectedEmoji} 
+        />
       </div>
       <div className="w-full flex justify-start gap-6">
         <div className="w-2/3 flex flex-col justify-start items-start gap-3">
@@ -86,10 +118,10 @@ export default function CreateCrew() {
         <div className="flex flex-col justify-start items-start gap-3">
           <div className="text-gray-900 text-lg font-semibold">참여 인원</div>
           <Dropdown
-            options={[...Array(8).keys()].map((i) => `${i + 1}명`)}
+            options={[...Array(8).keys()].map((i) => `${i + 1}`)}
             placeholder="선택하세요"
             selected={memberCount}
-            onChange={(value) => setMemberCount(value)}
+            onChange={(e) => setMemberCount(e.target.value)}
           />
         </div>
       </div>
