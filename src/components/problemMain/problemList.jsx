@@ -11,7 +11,6 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(data);
     setLoading(!data || data.length === 0);
   }, [data]);
 
