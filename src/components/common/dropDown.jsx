@@ -6,8 +6,8 @@ const Dropdown = ({ options = [], placeholder, selected, onChange, disabled }) =
       <select
         className="cursor-pointer block appearance-none w-full bg-white border border-gray-200 px-5 py-3 pr-8 rounded leading-tight 
         focus:outline-none focus:bg-white focus:border-gray-500 hover:bg-gray-50"
-        value={selected || ''} // Use empty string as fallback
-        onChange={disabled ? undefined : (e) => onChange(e.target.value)}
+        value={selected || ""}
+        onChange={disabled ? undefined : onChange}
         disabled={disabled}
       >
         <option value="" disabled>
