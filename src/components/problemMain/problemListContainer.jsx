@@ -103,7 +103,7 @@ export default function ProblemListContainer() {
                 options={["최신순", "낮은순", "높은순"]}
                 placeholder={"최신순"}
                 selected={selectedOption}
-                onChange={(option) => setSelectedOption(option)}
+                onChange={(e) => setSelectedOption(e.target.value)}
               />
             </div>
             <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
