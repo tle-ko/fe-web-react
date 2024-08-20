@@ -5,7 +5,6 @@ import ProblemList from './problemList';
 import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
 import { client } from '../../utils';
-import { getToken } from '../../auth';
 
 export default function ProblemListContainer() {
     const isChildRoute = useChildRoute("/problem/");
@@ -69,19 +68,11 @@ export default function ProblemListContainer() {
     
         let sortedFilteredData = [...filteredData];
         if (selectedOption === "최신순") {
-          sortedFilteredData.sort((a, b) => b.id - a.id);
+          sortedFilteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         } else if (selectedOption === "낮은순") {
-          sortedFilteredData.sort((a, b) => {
-            const difficultyA = a.difficulty.value;
-            const difficultyB = b.difficulty.value;
-            return difficultyA - difficultyB;
-          });
+          sortedFilteredData.sort((a, b) => a.difficulty.value - b.difficulty.value);
         } else if (selectedOption === "높은순") {
-          sortedFilteredData.sort((a, b) => {
-            const difficultyA = a.difficulty.value;
-            const difficultyB = b.difficulty.value;
-            return difficultyB - difficultyA;
-          });
+          sortedFilteredData.sort((a, b) => b.difficulty.value - a.difficulty.value);
         }
     
         const start = pageIndex * numOfPage;
@@ -108,9 +99,11 @@ export default function ProblemListContainer() {
             </div>
             <div className="min-w-[29rem] w-full mb-6 flex items-center justify-between">
               <p className="text-gray-900 text-xl font-semibold">{loading ? 'Loading...' : `${filteredProblemCount} 문제`}</p>
-              <Dropdown options={["최신순", "낮은순", "높은순"]}
-              placeholder={"최신순"}
-              onChange={(option) => setSelectedOption(option)}
+              <Dropdown 
+                options={["최신순", "낮은순", "높은순"]}
+                placeholder={"최신순"}
+                selected={selectedOption}
+                onChange={(option) => setSelectedOption(option)}
               />
             </div>
             <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
