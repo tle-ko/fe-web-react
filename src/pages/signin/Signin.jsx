@@ -83,8 +83,8 @@ export default function Signin() {
 
   return (
     <>
-      <div className="flex gap-6 mt-12 mb-12">
-        <div className="relative w-1/2 pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[36rem]">
+      <div className="cardGrid2 mb-12">
+        <div className="relative pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[32rem]">
           <div className="w-fit flex flex-col gap-6">
             <p className="text-gray-50 text-2xl font-extrabold">
               알고리즘 문제 해결 도우미<br />
@@ -95,11 +95,11 @@ export default function Signin() {
               회원가입
             </button>
           </div>
-          <div className="relative mt-12 left-48 max-w-80">
+          <div className="relative mt-12 left-44 max-w-72">
             <img src="../assets/signin/boat.svg" alt="boat" />
           </div>
         </div>
-        <div className="w-1/2 box flex flex-col gap-6 min-w-[36rem]">
+        <div className="box flex flex-col gap-6 min-w-[32rem]">
         <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-6">
           <p className="font-cafe24 text-gray-900 text-lg font-bold">
             로그인
