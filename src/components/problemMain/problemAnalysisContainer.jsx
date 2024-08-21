@@ -8,6 +8,7 @@ import ProblemAnalysisLoading from './problemAnalysisLoading.jsx';
 export default function ProblemAnalysisContainer({ problemId, setActiveContainer }) {
   const { id } = useParams(); // 현재 URL에서 문제 ID 가져오기
   const [analysisData, setAnalysisData] = useState(null); // 문제 데이터를 저장할 상태
+  const [visibleHintCard, setVisibleHintCard] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +70,10 @@ export default function ProblemAnalysisContainer({ problemId, setActiveContainer
   // 힌트 관련
   const hint = analysisData.length > 0 ? analysisData[0].hint : [];
 
+  const toggleHintVisibility = (index) => {
+    setVisibleHintCard(visibleHintCard === index ? null : index); // 같은 힌트를 클릭하면 닫기
+  };
+
   return (
     <div className="flex mt-24 gap-10 w-full items-start">
       <button className="flex flex-col items-center gap-4 cursor-pointer group"
@@ -121,14 +126,25 @@ export default function ProblemAnalysisContainer({ problemId, setActiveContainer
       </div>
       
       {/* 문제 힌트 컨테이너 */}
+      {/* 문제 힌트 컨테이너 */}
       <div className="flex flex-col items-start gap-6 w-2/3">
         <p className="text-gray-900 text-xl font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
-          {hint.map((hintItem, index) => (
-              <div className="box w-full flex flex-row gap-2" key={index}>
-                <p className="text-xl">💡</p>
-                <p className="text-gray-600 text-base font-semibold">{hintItem}</p>
-              </div>
-          ))}
+        {hint.map((hintItem, index) => (
+          <div
+            className="box w-full flex flex-row gap-2 cursor-pointer"
+            key={index}
+            onClick={() => toggleHintVisibility(index)}
+          >
+            <p className="text-xl">💡</p>
+            <div
+              className={`flex-1 text-gray-600 text-base font-semibold p-4 rounded-lg transition-all duration-300 ${
+                visibleHintCard === index ? 'bg-white text-gray-900' : 'bg-gray-300 text-transparent'
+              }`}
+            >
+              {hintItem}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

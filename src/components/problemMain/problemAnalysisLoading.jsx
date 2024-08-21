@@ -71,7 +71,7 @@ export default function ProblemAnalysisLoading({setActiveContainer}) {
                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
                 </div>
-                <p className="text-center text-gray-500 text-base">AI가 분석을 진행하고 있어요! 조금만 기다려 주세요💞</p>
+                <p className="text-center text-gray-500">AI가 분석을 진행하고 있어요! 조금만 기다려 주세요💞</p>
             </div>
         </div>
       </div>
