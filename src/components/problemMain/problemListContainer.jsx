@@ -98,7 +98,7 @@ export default function ProblemListContainer() {
               </div>
             </div>
             <div className="min-w-[29rem] w-full mb-6 flex items-center justify-between">
-              <p className="text-gray-900 text-xl font-semibold">{loading ? 'Loading...' : `${filteredProblemCount} 문제`}</p>
+              <p className="text-gray-900 text-xl font-semibold">{loading ? '데이터를 불러오는 중이에요!' : `${filteredProblemCount} 문제`}</p>
               <Dropdown 
                 options={["최신순", "낮은순", "높은순"]}
                 placeholder={"최신순"}

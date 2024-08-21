@@ -56,6 +56,27 @@
       "created_at": "24-05-03"
     }
   ],
+  "apply": [
+     {
+      "id": 1,
+      "user_id": 30,
+      "group_id": 1,
+      "apply_at": "24-08-13T12:34:59",
+      "boj_level": "골드 4",
+      "message": "저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요",
+      "is_required": null
+     },
+     {
+      "id": 2,
+      "user_id": 15,
+      "group_id": 1,
+      "apply_at": "24-08-19T14:34:59",
+      "boj_level": "실버 3",
+      "message": "저 안 받아주시면 3대가 망함",
+      "is_required": true
+     }
+  ]
+  ,
   "activities": [
     {
       "id": 1,
