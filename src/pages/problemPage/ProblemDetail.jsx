@@ -45,7 +45,7 @@ export default function ProblemDetail() {
   };
 
   if (!problemData) {
-    return <div>Loading...</div>;
+    return <div>데이터를 불러오는 중이에요!</div>;
   }
 
   return (

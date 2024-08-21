@@ -22,7 +22,7 @@ export default function ProblemAnalysisContainer({ problemId, setActiveContainer
 
   // 데이터 로딩 중 처리
   if (analysisData === null) {
-    return <div>Loading...</div>;
+    return <div>데이터를 불러오는 중이에요!</div>;
   }
 
   // 데이터가 없는 경우 처리
