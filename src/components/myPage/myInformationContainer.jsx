@@ -20,7 +20,7 @@ export default function MyInformationContainer(formData, onInputChange) {
     <div className='w-full flex flex-col gap-6 justify-start items-start'>
       <p className='boxTitle'>내 정보 설정</p>
 
-      <div className='w-full flex flex-col items-end'>
+      <div className='w-full flex flex-col items-end gap-6'>
       <div className='w-full flex flex-col gap-6 justify-start items-start'>
         <div className='flex flex-col gap-3'>
         <p className='w-fit containerTitle'>프로필 사진</p>
@@ -66,7 +66,7 @@ export default function MyInformationContainer(formData, onInputChange) {
         value=''
         width={20}
         />
-        <p className='text-base-14 text-gray-600'>티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
+        <p className='text-base-14 text-gray-600'>! 티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
       </div>
       </div>
       <Button

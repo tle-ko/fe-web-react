@@ -126,6 +126,23 @@
     @apply grid grid-cols-3 gap-x-10 gap-y-1 auto-rows-fr bg-gray-100 whitespace-nowrap overflow-x-auto;
   }
 
+  .MainGrid1to3 {
+    @apply grid gap-y-6;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @screen md {
+      .MainGrid1to3 {
+          grid-template-columns: repeat(1, 1fr);
+      }
+  }
+
+  @screen lg {
+      .MainGrid1to3 {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+      }
+  }
 
   .icon {
     @apply p-0 justify-center items-center text-2xl;

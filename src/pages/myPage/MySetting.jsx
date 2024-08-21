@@ -27,13 +27,15 @@ export default function MySetting(){
 
   return(
     <>
-      <div className="w-full flex flex-row gap-6">
-        <SideNav 
-          elements={elements} // 객체 배열 전달
-          setSelectedElement={setSelectedElement} 
-          selectedElement={selectedElement} 
-        />
-        <div className='box w-3/4'>
+      <div className="w-full MainGrid1to3">
+        <div className='col-span-1'>
+          <SideNav 
+            elements={elements} // 객체 배열 전달
+            setSelectedElement={setSelectedElement} 
+            selectedElement={selectedElement} 
+          />
+        </div>
+        <div className='col-span-3 box min-w-fit'>
         {renderContent()}
         </div>
       </div>
