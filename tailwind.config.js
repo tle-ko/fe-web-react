@@ -45,9 +45,26 @@ module.exports = {
       },
       letterSpacing: {
         m1: '-0.0625rem',
-      }
+      },
+      fontSize: {
+        'base-sm': '14px',
+        'base-md': '16px',
+        'base-lg': '18px',
+      },
     },
+    screens: {
+      'sm': '640px',
+
+      'md': '768px',
+
+      'lg': '1024px',
+
+      'xl': '1280px',
+
+      '2xl': '1536px',
+    }
   },
+  variants: {},
   plugins: [],
 }
 
