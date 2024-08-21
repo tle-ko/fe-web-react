@@ -73,10 +73,10 @@ export default function Header() {
               {dropdownVisible && (
                 <div className="absolute top-full mt-2 p-4 bg-white opacity-90 border-color-gray-200 flex flex-col justify-start rounded-xl">
                   <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
-                  to="/portfolio">
+                  to="/myPortfolio">
                     마이 포트폴리오</Link>
                   <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
-                  to="/setting">
+                  to="/myPage">
                     마이 페이지</Link>
                   <Link className="text-gray-600 text-sm p-2 underline whitespace-nowrap hover:text-color-blue-main"
                   onClick={handleLogout}>

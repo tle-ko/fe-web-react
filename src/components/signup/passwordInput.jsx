@@ -13,7 +13,7 @@ export default function PasswordInput({ title, placeholder, width, value, onChan
   return (
     <div className={`w-full flex flex-col justify-start items-start gap-2`}>
       {title && <div className="containerTitle">{title}</div>}
-      <div className="relative w-full">
+      <div className="relative w-fit">
         <input
           className={`${inputClassName}`}
           placeholder={placeholder}
