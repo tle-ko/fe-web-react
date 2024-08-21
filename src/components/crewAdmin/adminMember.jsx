@@ -68,13 +68,13 @@ export default function AdminMember() {
                   <img src={currentUser?.image_url} alt="" className="w-12 h-12 rounded-full" />
                   <div className="w-72 flex flex-col gap-4 text-gray-900">
                     <p className="text-base font-bold">{currentUser?.username}</p>
-                    <div className="flex justify-between font-medium">
+                    <div className="flex gap-4 font-medium">
                       <p>신청 시각</p>
                       <div className="flex gap-1">
                         <p>{formattedDate}</p>
                       </div>
                     </div>
-                    <div className="flex justify-between font-medium">
+                    <div className="flex gap-4 font-medium">
                       <p>백준 티어</p>
                       <p>{applyData.boj_level}</p>
                     </div>
