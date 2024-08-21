@@ -97,7 +97,7 @@ export default function AdminCrew() {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  if (crewData.length === 0) return <div>Loading...</div>;
+  if (crewData.length === 0) return <div>데이터를 불러오는 중이에요!</div>;
 
   return (
     <div className="w-4/5 flex flex-col gap-6">
