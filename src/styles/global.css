@@ -18,7 +18,7 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-sm 2xl:text-base-md;
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-15 2xl:text-base-16;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
@@ -73,6 +73,10 @@
 
   .containerTitle {
     @apply text-gray-900 text-base font-bold;
+  }
+
+  .boxTitle {
+    @apply text-gray-900 text-lg font-bold font-cafe24;
   }
 
   .divInBody {
