@@ -47,9 +47,14 @@ module.exports = {
         m1: '-0.0625rem',
       },
       fontSize: {
-        'base-sm': '14px',
-        'base-md': '16px',
-        'base-lg': '18px',
+        'base-14': '14px',
+        'base-15': '15px',
+        'base-16': '16px',
+        'base-l8': '18px',
+        'base-20': '20px',
+        'base-24': '24px',
+        'base-28': '28px',
+        'base-32': '32px',
       },
     },
     screens: {
