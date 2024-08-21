@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../common/button";
 import Level1 from "../../assets/images/lv1.svg";
@@ -8,12 +7,6 @@ import Leveln from "../../assets/images/lvN.svg";
 import { FaBookOpen } from "react-icons/fa6";
 
 export default function ProblemList({ data, pageIndex, numOfPage }) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(!data || data.length === 0);
-  }, [data]);
-
   if (!data || data.length === 0) {
     return (        
     <div className="min-w-[29rem] w-full box mb-6">
@@ -55,7 +48,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
           </div>
 
         ))}
-                  </div>
+      </div>
       </>
   );
 }

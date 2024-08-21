@@ -18,7 +18,7 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem];
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-sm 2xl:text-base-md;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
@@ -84,8 +84,22 @@
   }
 
   .cardGrid3 {
-    @apply grid grid-cols-3 gap-6 mb-6 auto-rows-fr;
+    @apply grid gap-6 mb-6;
+    grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
   }
+
+  @screen md {
+    .cardGrid3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @screen lg {
+    .cardGrid3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
 
   .cardGrid4 {
     @apply grid gap-6 mb-6;
