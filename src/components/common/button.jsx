@@ -2,14 +2,14 @@ import React from 'react';
 
 const Button = ({ buttonSize, colorStyle, content, onClick, width, disabled }) => {
   const styles = {
-    whiteBlack: "bg-gray-50 border border-gray-200 text-gray-600 text-sm hover:bg-gray-100",
-    redWhite: "bg-gray-50 border border-gray-200 text-color-red-main text-sm hover:bg-color-red-main hover:text-white",
-    whiteBlue: "bg-gray-50 border border-gray-200 text-color-blue-main text-sm hover:bg-color-blue-main hover:text-white",
-    blueWhite: "bg-color-blue-main text-white text-sm hover:bg-color-blue-hover",
-    skyBlue: "bg-color-blue-w25 text-color-blue-main hover:bg-color-blue-w50",
-    grayWhite: "bg-gray-200 text-gray-50 hover:bg-gray-300",
-    detailBtn: "px-4 py-2 text-sm",
-    formBtn: "px-4 py-3 text-lg"
+    whiteBlack: "bg-gray-50 border border-gray-200 text-gray-600 text-base-14 hover:bg-gray-100",
+    redWhite: "bg-gray-50 border border-gray-200 text-color-red-main text-base-14 hover:bg-color-red-main hover:text-white",
+    whiteBlue: "bg-gray-50 border border-gray-200 text-color-blue-main text-base-14 hover:bg-color-blue-main hover:text-white",
+    blueWhite: "bg-color-blue-main border border-color-blue-main text-white text-base-14 hover:bg-color-blue-hover",
+    skyBlue: "bg-color-blue-w25 text-color-blue-main border border-color-blue-w25 text-base-14 hover:bg-color-blue-w50",
+    grayWhite: "bg-gray-200 text-gray-50 border border-color-gray-200 text-base-14 4hover:bg-gray-300",
+    detailBtn: "px-4 py-2 text-base-14",
+    formBtn: "px-4 py-3 text-base-14"
   };
 
   // "거절 완료"와 "수락 완료" 상태에서 스타일을 고정
