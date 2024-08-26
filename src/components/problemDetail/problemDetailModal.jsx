@@ -75,7 +75,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     };
 
     try {
-      const response = await client.put(`/api/v1/problems/${problemData.id}/detail`, data, {
+      const response = await client.put(`/api/v1/problem/${problemData.id}/detail`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -118,7 +118,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
 
   const handleDelete = async () => {
     try {
-      const response = await client.delete(`/api/v1/problems/${problemData.id}/detail`, {
+      const response = await client.delete(`/api/v1/problem/${problemData.id}/detail`, {
         headers: {
           'Content-Type': 'application/json',
         },
