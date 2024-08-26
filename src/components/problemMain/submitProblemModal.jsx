@@ -55,12 +55,12 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
       description: problemDescription,
       input_description: inputDescription,
       output_description: outputDescription,
-      memory_limit_megabyte: parseInt(memoryLimit, 10),
-      time_limit_second: parseInt(timeLimit, 10),
+      memory_limit: parseInt(memoryLimit, 10),
+      time_limit: parseInt(timeLimit, 10),
     };
 
     try {
-      const response = await client.post('/api/v1/problems/', problemData, {
+      const response = await client.post('/api/v1/problem', problemData, {
         headers: {
           'Content-Type': 'application/json',
         },
