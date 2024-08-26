@@ -1,80 +1,307 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from '../common/input';
 import PasswordInput from '../signup/passwordInput';
 import Button from '../common/button';
-import { getToken } from '../../auth';
+import { client } from '../../utils';
+import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 
-export default function MyInformationContainer(formData, onInputChange) {
-  const [Image, setImage] = useState("https://picsum.photos/250/250");
+export default function MyInformationContainer() {
+  const [Image, setImage] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    username: '',
+    boj_username: '',
+    level: '',
+    profile_image: '',
+  });
+  const [password, setPassword] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [initialUsername, setInitialUsername] = useState('');
+  const [usernameVerified, setUsernameVerified] = useState(false);
+  const [bojUsernameValid, setBojUsernameValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [inputChanged, setInputChanged] = useState(false);
   const fileInput = useRef(null);
+
+  useEffect(() => {
+    client.get('api/v1/user/manage')
+      .then(response => {
+        const data = response.data;
+        console.log('User info fetched:', data);
+        setUserInfo({
+          email: data.email,
+          username: data.username,
+          boj_username: data.boj_username,
+          level: data.level,
+          profile_image: data.profile_image,
+        });
+        setImage(data.profile_image);
+        setInitialUsername(data.username);
+      })
+      .catch(error => console.error('Error fetching user info:', error));
+  }, []);
+
+  const handleInputChange = (field, value) => {
+    setUserInfo(prevState => ({
+      ...prevState,
+      [field]: value
+    }));
+    setInputChanged(true);
+
+    if (field === 'username') {
+      setUsernameVerified(false);
+    }
+  };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-      if (file) {
-        setImage(URL.createObjectURL(file));
-        onInputChange('profile_image', file);
+    if (file) {
+      setImage(URL.createObjectURL(file));
+      handleInputChange('profile_image', file);
+    }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    const { username, boj_username, profile_image } = userInfo;
+    const updateData = new FormData();
+    updateData.append('username', username);
+    updateData.append('boj_username', boj_username);
+    if (profile_image instanceof File) {
+      updateData.append('profile_image', profile_image);
+    }
+
+    client.patch('api/v1/user/manage', updateData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    };
+    })
+      .then(response => {
+        setIsEditing(false);
+        alert('정보가 성공적으로 수정되었습니다.');
+        window.location.reload();
+      })
+      .catch(error => console.error('Error updating user info:', error));
+  };
+
+  const handleProfileClick = () => {
+    if (isEditing) {
+      fileInput.current.click();
+    }
+  };
+
+  const handlePasswordChange = () => {
+    if (!validatePassword(password)) {
+      alert('비밀번호 형식이 올바르지 않습니다.');
+      return;
+    }
+
+    client.patch('api/v1/user/manage', { password })
+      .then(response => {
+        alert('비밀번호가 성공적으로 변경되었습니다.');
+        setPassword('');
+        window.location.href = '/signin';
+      })
+      .catch(error => console.error('Error changing password:', error));
+  };
+
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+    return regex.test(password);
+  };
+
+  const validateBojUsername = (boj_username) => {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(boj_username);
+  };
+
+  const checkUsernameAvailability = useCallback(async (username) => {
+    if (!username) return;
+
+    if (username === initialUsername) {
+      setUsernameVerified(true);
+      return;
+    }
+
+    try {
+      const response = await client.get('api/v1/auth/username/check', { params: { username } });
+
+      if (response.status === 200) {
+        setUsernameVerified(response.data.is_usable);
+      } else {
+        setUsernameVerified(false);
+      }
+    } catch (error) {
+      console.error('Error checking username availability:', error);
+      setUsernameVerified(false);
+    }
+  }, [initialUsername]); 
+
+  const renderUsernameFeedback = () => {
+    if (!isEditing || !inputChanged || !userInfo.username) return null;
+
+    if (userInfo.username === initialUsername) {
+      return (
+        <div className="flex gap-2 items-center mt-2">
+          <FaCircleCheck size={16} color="#5383E8"/>
+          <p className="text-color-blue-main">기존 닉네임입니다.</p>
+        </div>
+      );
+    }
+
+    return renderFeedback(
+      usernameVerified,
+      "사용 가능한 닉네임입니다.",
+      "사용 불가능한 닉네임입니다. 다시 입력해주세요."
+    );
+  };
+
+  useEffect(() => {
+    if (userInfo.username) {
+      checkUsernameAvailability(userInfo.username);
+    }
+  }, [userInfo.username, checkUsernameAvailability]);
+
+  useEffect(() => {
+    setBojUsernameValid(validateBojUsername(userInfo.boj_username));
+  }, [userInfo.boj_username]);
+
+  useEffect(() => {
+    setPasswordValid(validatePassword(password));
+  }, [password]);
+
+  const renderFeedback = (isValid, validMessage, invalidMessage) => (
+    <div className="flex gap-2 items-center mt-2">
+      {isValid ? (
+        <>
+          <FaCircleCheck size={16} color="#5383E8"/>
+          <p className="text-color-blue-main">{validMessage}</p>
+        </>
+      ) : (
+        <>
+          <FaCircleExclamation size={16} color="#E84057"/>
+          <p className="text-color-red-main">{invalidMessage}</p>
+        </>
+      )}
+    </div>
+  );
 
   return (
-    <div className='w-full flex flex-col gap-6 justify-start items-start'>
-      <p className='boxTitle'>내 정보 설정</p>
+    <div className='flex flex-col gap-6 col-span-3'>
+      <div className='box min-w-fit'>
+        <div className='w-full flex flex-col gap-6 justify-start items-start'>
+          <p className='boxTitle'>내 정보 설정</p>
+          <div className='w-full flex flex-col items-end gap-6'>
+            <div className='w-full flex flex-col gap-6 justify-start items-start'>
+              <div className='flex flex-col gap-3'>
+                <p className='w-fit containerTitle'>프로필 사진</p>
+                <img 
+                  src={Image} 
+                  alt="profile" 
+                  className="w-32 h-32 rounded-full object-cover cursor-pointer"
+                  onClick={handleProfileClick}
+                />
+                <input 
+                  type="file"
+                  className="hidden"
+                  accept='image/jpg,image/png,image/jpeg'
+                  onChange={handleImageUpload}
+                  ref={fileInput}
+                  disabled={!isEditing}
+                />
+              </div>
 
-      <div className='w-full flex flex-col items-end gap-6'>
-      <div className='w-full flex flex-col gap-6 justify-start items-start'>
-        <div className='flex flex-col gap-3'>
-        <p className='w-fit containerTitle'>프로필 사진</p>
-          <img src={Image} alt="profile" className="w-32 h-32 rounded-full object-cover"/>
-            <input 
-              type="file"
-              className="hidden"
-              accept='image/jpg,image/png,image/jpeg'
-              onChange={handleImageUpload}
-              ref={fileInput}
+              <Input
+                title='이메일'
+                value={userInfo.email || ''}
+                className='disabled cursor-not-allowed'
+                width={20}
+                readOnly
+              />
+
+            <div className="flex flex-col">
+              <Input
+                title='닉네임'
+                value={userInfo.username || ''}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                width={20}
+                placeholder={"2글자 이상 8글자 이내 입력"}
+                readOnly={!isEditing}
+              />
+              {renderUsernameFeedback()}
+            </div>
+
+              <div className="flex flex-col">
+                <Input
+                  title='백준 아이디'
+                  value={userInfo.boj_username || ''}
+                  onChange={(e) => handleInputChange('boj_username', e.target.value)}
+                  placeholder="Baekjoon Online Judge 아이디 입력"
+                  width={20}
+                  readOnly={!isEditing}
+                />
+                {isEditing && inputChanged && userInfo.boj_username && renderFeedback(
+                  bojUsernameValid,
+                  "올바른 형식의 아이디입니다.",
+                  "영문자와 숫자만 사용 가능합니다. 다시 입력해주세요."
+                )}
+              </div>
+              <div className="flex-col inline-flex gap-2">
+                <Input
+                  title='백준 티어'
+                  className='disabled cursor-not-allowed'
+                  value={userInfo.level.name || ''}
+                  width={20}
+                  readOnly
+                />
+                <p className='text-base-16 text-gray-600'>! 티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
+              </div>
+            </div>
+            <Button
+              buttonSize={'detailBtn'}
+              colorStyle={isEditing ? 'blueWhite' : 'whiteBlack'}
+              content={isEditing ? '저장' : '수정'}
+              onClick={isEditing ? handleSave : handleEdit}
             />
+          </div>
         </div>
-
-        <Input
-        title='이메일'
-        value=''
-        className='disabled cursor-not-allowed'
-        width={20}
-        />
-
-        <PasswordInput
-        title='비밀번호 변경'
-        value=''
-        width='20rem'
-        />
-
-        <Input
-        title='닉네임'
-        value=''
-        width={20}
-        />
-
-        <Input
-        title='백준 아이디'
-        value=''
-        width={20}
-        />
-
-      <div className="flex-col inline-flex gap-2">
-      <Input
-        title='백준 티어'
-        className='disabled cursor-not-allowed'
-        value=''
-        width={20}
-        />
-        <p className='text-base-14 text-gray-600'>! 티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
       </div>
-      </div>
-      <Button
-        buttonSize={'detailBtn'}
-        colorStyle={'whiteBlack'}
-        content='수정하기'
-        onClick={() => {}}
-      />
+
+      <div className='box min-w-fit'>
+        <div className='w-full flex flex-col gap-6 justify-start items-start'>
+          <p className='boxTitle'>비밀번호 변경</p>
+            <div>
+            <div className="inline-flex gap-4 items-end">              
+              <PasswordInput
+                  title="비밀번호"
+                  placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+                  type="password"
+                  width={24}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setInputChanged(true);
+                  }}
+                />
+                <div className="mb-2">
+                <Button
+                  buttonSize={'detailBtn'}
+                  colorStyle={'blueWhite'}
+                  content={'변경'}
+                  onClick={handlePasswordChange}
+                />
+                </div>
+              </div>
+              {password && inputChanged && renderFeedback(
+                passwordValid,
+                "사용 가능한 비밀번호입니다.",
+                "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
+              )}
+            </div>
+          </div>
       </div>
     </div>
   );
