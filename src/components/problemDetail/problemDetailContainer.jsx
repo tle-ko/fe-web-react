@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AnalysisContainer from './problemAnalysisContainer';
-import AnalysisLoading from './problemAnalysisLoading';
+import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
+import AnalysisLoading from '../../components/problemDetail/problemAnalysisLoading';
 import { FaChevronRight } from "react-icons/fa";
 
 export default function ProblemDetailContainer({ problemData }) {

@@ -1,3 +1,5 @@
+import { client } from './utils';
+  
   // 토큰을 로컬 스토리지에 저장  
   export const setToken = (token) => {
     localStorage.setItem('accessToken', token);
@@ -28,5 +30,6 @@
   };
 
   export const getUserProfile = () => {
-    return localStorage.getItem('profile_image');
+    const profileImage = localStorage.getItem('profile_image');
+    return profileImage ? `${client.defaults.baseURL}${profileImage}` : null;
   };
