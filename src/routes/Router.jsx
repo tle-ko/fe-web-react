@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from '../components/Header/mainHeader';
 import MyPage from '../pages/myPage/MySetting';
-import CrewCodeReview from '../pages/crewCodeReview/CrewCodeReview';
 import CrewDashHome from '../pages/crewDashboard/CrewDashboard';
 import CrewMain from '../pages/crewMain/CrewMain';
 import Main from '../pages/mainPage/Main';
@@ -20,7 +19,6 @@ export default function Router() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Main />} />
         <Route path="/myPage" element={<MyPage />} />
-        <Route path="/codeReview" element={<CrewCodeReview />} />
         <Route path="/crew" element={<CrewMain />}>
           <Route path=":id/*" element={<CrewDashHome />} />
         </Route>
