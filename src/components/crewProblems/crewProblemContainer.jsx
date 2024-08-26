@@ -148,20 +148,18 @@ const CrewDashProblem = ({ userId }) => {
                   <p className='w-full text-gray-900 text-2xl font-bold truncate'>{problem.details.title}</p>
                 </div>
                 <div className='justify-end flex gap-3 ml-auto'>
-                  <Link to={`/problem/${problem.id}`}>
+                  <Link to={`/crew/${id}/problems/${problem.id}`}>
                     <Button
                       buttonSize="detailBtn"
                       colorStyle="whiteBlack"
                       content="문제 상세"
-                      onClick={() => console.log('Detail Button clicked')}
                     />
                   </Link>
-                  <Link to={`/problem/${problem.id}`}>
+                  <Link to={`/crew/${id}/problems/${problem.id}/submit`}>
                     <Button
                       buttonSize="detailBtn"
                       colorStyle="skyBlue"
                       content="문제 제출"
-                      onClick={() => console.log('Submit Button clicked')}
                     />
                   </Link>
                 </div>
