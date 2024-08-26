@@ -18,11 +18,15 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-sm 2xl:text-base-md;
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-15 2xl:text-base-16;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
     @apply m-0 p-0;
+  }
+
+  p {
+    @apply whitespace-nowrap;
   }
   
   div {
@@ -75,12 +79,20 @@
     @apply text-gray-900 text-base font-bold;
   }
 
-  .divInBody {
-    @apply max-w-full mx-auto pt-4;
+  .boxTitle {
+    @apply text-gray-900 text-lg font-bold font-cafe24;
+  }
+  
+  .cardGrid2 {
+    @apply grid gap-y-6;
+    grid-template-columns: repeat(1, 1fr);
   }
 
-  .cardGrid2 {
-    @apply divInBody grid grid-cols-2 gap-6;
+  @screen md {
+    .cardGrid2 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
   }
 
   .cardGrid3 {
@@ -122,6 +134,23 @@
     @apply grid grid-cols-3 gap-x-10 gap-y-1 auto-rows-fr bg-gray-100 whitespace-nowrap overflow-x-auto;
   }
 
+  .MainGrid1to3 {
+    @apply grid gap-y-6;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @screen md {
+      .MainGrid1to3 {
+          grid-template-columns: repeat(1, 1fr);
+      }
+  }
+
+  @screen lg {
+      .MainGrid1to3 {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+      }
+  }
 
   .icon {
     @apply p-0 justify-center items-center text-2xl;

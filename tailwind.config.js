@@ -47,20 +47,21 @@ module.exports = {
         m1: '-0.0625rem',
       },
       fontSize: {
-        'base-sm': '14px',
-        'base-md': '16px',
-        'base-lg': '18px',
+        'base-14': ['14px', { lineHeight: '1.4' }],
+        'base-15': ['15px', { lineHeight: '1.5' }],
+        'base-16': ['16px', { lineHeight: '1.5' }],
+        'base-18': ['18px', { lineHeight: '1.6' }],
+        'base-20': ['20px', { lineHeight: '1.6' }],
+        'base-24': ['24px', { lineHeight: '1.6' }],
+        'base-28': ['28px', { lineHeight: '1.6' }],
+        'base-32': ['32px', { lineHeight: '1.6' }],
       },
     },
     screens: {
       'sm': '640px',
-
       'md': '768px',
-
       'lg': '1024px',
-
       'xl': '1280px',
-
       '2xl': '1536px',
     }
   },
