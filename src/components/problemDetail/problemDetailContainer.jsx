@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import ProblemAnalysis from '../../components/problemMain/problemAnalysisContainer';
-import ProblemAnalysisLoading from '../../components/problemMain/problemAnalysisLoading';
+import AnalysisContainer from './problemAnalysisContainer';
+import AnalysisLoading from './problemAnalysisLoading';
 import { FaChevronRight } from "react-icons/fa";
 
 export default function ProblemDetailContainer({ problemData }) {
   const [activeContainer, setActiveContainer] = useState("detail");
 
   const handleActiveContainer = () => {
+    console.log("data:", problemData);
     setActiveContainer("analysis");
   }
 
@@ -53,10 +54,10 @@ export default function ProblemDetailContainer({ problemData }) {
           </button>
         </div>
       ) : (
-        problemData.analysis && problemData.analysis.length > 0 ? (
-          <ProblemAnalysis setActiveContainer={setActiveContainer} analysisData={problemData.analysis} />
+        problemData.analysis && problemData.analysis.is_analyzed ?(
+          <AnalysisContainer setActiveContainer={setActiveContainer} analysisData={problemData.analysis} />
         ) : (
-          <ProblemAnalysisLoading setActiveContainer={setActiveContainer} />
+          <AnalysisLoading setActiveContainer={setActiveContainer} />
         )
       )}
     </>
