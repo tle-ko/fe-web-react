@@ -26,3 +26,18 @@
 .animate-scroll-up {
   animation: scrollUp 1s ease-in-out;
 }
+
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+.animate-drop-down {
+  animation: dropdown 0.3s ease-out;
+}
