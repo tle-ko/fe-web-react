@@ -141,7 +141,7 @@ export default function AdminProblem() {
   };
 
   return (
-    <div className="w-4/5 flex flex-col items-center">
+    <div className="col-span-3 flex flex-col items-center">
       {sequences.map((sequence) => (
         <div key={sequence.id} className="items-start w-full mb-4 box">
           <div className="flex flex-col justify-between items-start mb-3 w-full gap-4">
