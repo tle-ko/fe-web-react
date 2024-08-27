@@ -6,6 +6,7 @@ export default function MyCrewContainer() {
   }
 
     return (
+      <div className='col-span-3 box min-w-fit'>
       <div className='w-full flex flex-col gap-6'>
         <p className='boxTitle w-fit'>크루 가입 신청 현황</p>
         
@@ -44,6 +45,7 @@ export default function MyCrewContainer() {
         />
         </div>  
         </div> 
+      </div>
       </div>
     );
   }
