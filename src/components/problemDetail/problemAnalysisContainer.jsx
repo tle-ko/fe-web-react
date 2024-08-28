@@ -67,7 +67,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
       <div className='bg-white text-gray-900 animate-fade-in'>
         <div className='inline-flex gap-2'>
           <p className="text-base-20">💡</p>
-          {hintItem}
+          <p className="longSentence">{hintItem}</p>
         </div>
       </div>
     );

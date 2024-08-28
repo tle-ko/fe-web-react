@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logoWhite from '../../assets/images/logo-white.svg';
 import { isLoggedIn, removeToken, getUserName, getUserProfile } from '../../auth';
+import '../../styles/animation.css';
 
 export default function Header() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -71,7 +72,7 @@ export default function Header() {
                 <img className="w-9 h-9 rounded-full" src={profileImage} alt="profile"/>
               </div>
               {dropdownVisible && (
-                <div className="absolute top-full mt-2 p-4 bg-white opacity-90 border-color-gray-200 flex flex-col justify-start rounded-xl">
+                <div className="absolute top-full mt-2 p-4 bg-white opacity-90 border-color-gray-200 flex flex-col justify-start rounded-xl animate-drop-down">
                   <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
                   to="/myPortfolio">
                     마이 포트폴리오</Link>

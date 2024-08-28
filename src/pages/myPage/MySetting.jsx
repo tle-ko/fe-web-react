@@ -35,9 +35,7 @@ export default function MySetting(){
             selectedElement={selectedElement} 
           />
         </div>
-        <div className='col-span-3 box min-w-fit'>
         {renderContent()}
-        </div>
       </div>
       <Footer/>
     </>

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import AnalysisContainer from './problemAnalysisContainer';
-import AnalysisLoading from './problemAnalysisLoading';
+import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
+import AnalysisLoading from '../../components/problemDetail/problemAnalysisLoading';
 import { FaChevronRight } from "react-icons/fa";
 
 export default function ProblemDetailContainer({ problemData }) {
   const [activeContainer, setActiveContainer] = useState("detail");
 
   const handleActiveContainer = () => {
-    console.log("data:", problemData);
     setActiveContainer("analysis");
   }
 
@@ -35,15 +34,15 @@ export default function ProblemDetailContainer({ problemData }) {
             </div>
             <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">문제</p> 
-              <p className="text-gray-900 leading-7 select-text whitespace-normal">{problemData.description}</p>
+              <p className="longSentence">{problemData.description}</p>
             </div>
             <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">입력</p> 
-              <p className="text-gray-900 leading-7 select-text whitespace-normal">{problemData.input_description}</p>
+              <p className="longSentence">{problemData.input_description}</p>
             </div>
             <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">출력</p> 
-              <p className="text-gray-900 leading-7 select-text whitespace-normal">{problemData.output_description}</p>
+              <p className="longSentence">{problemData.output_description}</p>
             </div>
           </div>
           <button className="flex flex-col gap-4 cursor-pointer group" onClick={handleActiveContainer}>
