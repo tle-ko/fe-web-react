@@ -31,8 +31,8 @@ export default function MyInformationContainer() {
         setUserInfo({
           email: data.email,
           username: data.username,
-          boj_username: data.boj_username,
-          level: data.level,
+          boj_username: data.boj.username,
+          level: data.boj.level.name || '티어 확인 불가',
           profile_image: data.profile_image,
         });
         setImage(data.profile_image);
@@ -178,12 +178,12 @@ export default function MyInformationContainer() {
       {isValid ? (
         <>
           <FaCircleCheck size={16} color="#5383E8"/>
-          <p className="text-color-blue-main">{validMessage}</p>
+          <p className="text-color-blue-main whitespace-pre-wrap">{validMessage}</p>
         </>
       ) : (
         <>
           <FaCircleExclamation size={16} color="#E84057"/>
-          <p className="text-color-red-main">{invalidMessage}</p>
+          <p className="text-color-red-main whitespace-pre-wrap">{invalidMessage}</p>
         </>
       )}
     </div>
@@ -253,7 +253,7 @@ export default function MyInformationContainer() {
                 <Input
                   title='백준 티어'
                   className='disabled cursor-not-allowed'
-                  value={userInfo.level.name || ''}
+                  value={userInfo.level}
                   width={20}
                   readOnly
                 />
@@ -273,35 +273,33 @@ export default function MyInformationContainer() {
       <div className='box min-w-fit'>
         <div className='w-full flex flex-col gap-6 justify-start items-start'>
           <p className='boxTitle'>비밀번호 변경</p>
-            <div>
-            <div className="inline-flex gap-4 items-end">              
-              <PasswordInput
-                  title="비밀번호"
-                  placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
-                  type="password"
-                  width={24}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setInputChanged(true);
-                  }}
-                />
-                <div className="mb-2">
-                <Button
-                  buttonSize={'detailBtn'}
-                  colorStyle={'blueWhite'}
-                  content={'변경'}
-                  onClick={handlePasswordChange}
-                />
-                </div>
+          <div className="w-full flex flex-col gap-6 items-end">
+            <div className='w-full'>         
+                <PasswordInput
+                    title="비밀번호"
+                    placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+                    type="password"
+                    value={password}
+                    width={20}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setInputChanged(true);
+                    }}
+                  />
+                {password && inputChanged && renderFeedback(
+                  passwordValid,
+                  "사용 가능한 비밀번호입니다.",
+                  "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
+                )}
               </div>
-              {password && inputChanged && renderFeedback(
-                passwordValid,
-                "사용 가능한 비밀번호입니다.",
-                "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
-              )}
-            </div>
+              <Button
+                    buttonSize={'detailBtn'}
+                    colorStyle={'blueWhite'}
+                    content={'변경'}
+                    onClick={handlePasswordChange}
+                  />
           </div>
+        </div>
       </div>
     </div>
   );
