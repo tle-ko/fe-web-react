@@ -13,7 +13,7 @@ export default function PasswordInput({ title, placeholder, width, value, onChan
   return (
     <div className={`flex flex-col justify-start items-start gap-2`}>
       {title && <div className="containerTitle">{title}</div>}
-      <div className="relative w-full">
+      <div className="relative" style={{width: width ? (isNaN(width) ? width : `${width}rem`) : '100%' }}>
         <input
           className={`${inputClassName}`}
           placeholder={placeholder}
