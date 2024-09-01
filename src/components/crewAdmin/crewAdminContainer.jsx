@@ -30,12 +30,14 @@ export default function CrewAdmin() {
     };
 
     return (
-      <div className="w-full flex flex-row">
-        <SideNav 
-          elements={elements} // 객체 배열 전달
-          setSelectedElement={setSelectedElement} 
-          selectedElement={selectedElement} 
-        />
+      <div className="w-full MainGrid1to3">
+        <div className="col-span-1">
+          <SideNav 
+            elements={elements} // 객체 배열 전달
+            setSelectedElement={setSelectedElement} 
+            selectedElement={selectedElement} 
+          />
+        </div>
         {renderContent()} {/* 선택된 요소에 따라 렌더링 */}
       </div>
     );
