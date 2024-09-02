@@ -11,7 +11,7 @@ export default function MyInformationContainer() {
     email: '',
     username: '',
     boj_username: '',
-    level: '',
+    boj_level: '',
     profile_image: '',
   });
   const [password, setPassword] = useState('');
@@ -30,10 +30,10 @@ export default function MyInformationContainer() {
         console.log('User info fetched:', data);
         setUserInfo({
           email: data.email,
+          profile_image: data.profile_image,
           username: data.username,
           boj_username: data.boj.username,
-          level: data.boj.level.name || '티어 확인 불가',
-          profile_image: data.profile_image,
+          boj_level: data.boj.level.name || '티어 확인 불가',
         });
         setImage(data.profile_image);
         setInitialUsername(data.username);
@@ -253,7 +253,7 @@ export default function MyInformationContainer() {
                 <Input
                   title='백준 티어'
                   className='disabled cursor-not-allowed'
-                  value={userInfo.level}
+                  value={userInfo.boj_level}
                   width={20}
                   readOnly
                 />
