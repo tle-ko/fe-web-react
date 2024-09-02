@@ -60,7 +60,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const timeComplexity = analysisData.time_complexity.value;
 
   // 힌트 관련
-  const hints = analysisData.hints.split('\n\n');
+  const hints = analysisData.hints;
 
   const visibleHintContent = (index, hintItem) => {
     return (

@@ -18,8 +18,8 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
 
   useEffect(() => {
     if (problemData) {
-      setTimeLimit(problemData.time_limit.value);
-      setMemoryLimit(problemData.memory_limit.value);
+      setTimeLimit(problemData.limits.time_limit.value);
+      setMemoryLimit(problemData.limits.memory.value);
       setTitle(problemData.title);
       setProblemUrl(problemData.link);
       setProblemDescription(problemData.description);
