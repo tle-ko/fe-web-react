@@ -26,13 +26,14 @@ export default function Signup() {
   };
 
   const handleNextStep = () => {
-    if (currentStep < 4) {
-      setCurrentStep(prevStep => prevStep + 1);
-    } else if (currentStep === 4) {
-      handleSubmit();
-      setCurrentStep(prevStep => prevStep + 1);
-    } else if (currentStep === 5) {
-      navigate('/crew');
+    if (getStepValidity()) {
+      if (currentStep < 4) {
+        setCurrentStep(prevStep => prevStep + 1);
+      } else if (currentStep === 4) {
+        handleSubmit();
+      }
+    } else {
+      alert('폼 검증에 실패했습니다!');
     }
   };
 
@@ -84,7 +85,9 @@ export default function Signup() {
         });
   
         if (response.status === 201) {
-          // 회원가입이 성공적으로 완료된 후 로그인을 요청합니다.
+          alert("회원가입이 완료되었습니다!");
+  
+          // 알림 확인 후 자동 로그인을 요청
           const loginResponse = await client.post('/api/v1/auth/signin', {
             email,
             password
@@ -93,7 +96,7 @@ export default function Signup() {
               "Content-Type": "application/json; charset=UTF-8"
             }
           });
-
+  
           if (loginResponse.status === 200) {
             const { token, username, profile_image } = loginResponse.data;
             setToken(token);
