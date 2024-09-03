@@ -1,31 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useFetchData from "../../hooks/useEffectData";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { client } from "../../utils";
 
-function CrewHeaderWithNav({ crewId, userId }) {
-  // Header 상태와 데이터 가져오기
-  const data = useFetchData("http://localhost:3000/data/crewData.json");
-  const crew = data.find(crew => crew.id === parseInt(crewId, 10));
-
-  // Nav 상태와 데이터 가져오기
+function CrewHeaderWithNav() {
+  const { id } = useParams(); 
+  const [crew, setCrew] = useState(null);
   const [selectedLink, setSelectedLink] = useState('home');
-  const [hostId, setHostId] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data) {
-      const crew = data.find(crew => crew.id === parseInt(crewId, 10));
-      if (crew) {
-        setHostId(crew.host_id);
+    const fetchCrewData = async () => {
+      try {
+        const response = await client.get(`/api/v1/crew/${id}/dashboard`, {
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          setCrew(response.data);
+        } else {
+          console.error("Failed to fetch crew data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching crew data:", error);
       }
-    }
-  }, [data, crewId]);
+    };
+
+    fetchCrewData();
+  }, [id]);
 
   useEffect(() => {
     const path = location.pathname.split('/').pop();
-    setSelectedLink(path === crewId.toString() ? 'home' : path);
-  }, [location.pathname, crewId]);
+    setSelectedLink(path === id ? 'home' : path);
+  }, [location.pathname, id]);
 
   const handleLinkClick = (linkName) => {
     setSelectedLink(linkName);
@@ -58,7 +64,7 @@ function CrewHeaderWithNav({ crewId, userId }) {
             >
               <p className="w-8 text-center text-sm font-semibold">문제</p>
             </button>
-            {userId === hostId && (
+            {crew.is_captain && (
               <button
                 className={`${selectedLink === 'admin' ? 'bg-color-blue-w25 text-blue-500' : 'bg-gray-50 text-gray-600 hover:text-blue-500'} px-4 py-3 rounded justify-center items-center flex hover:bg-color-blue-w25`}
                 onClick={() => handleLinkClick('admin')}
@@ -69,7 +75,7 @@ function CrewHeaderWithNav({ crewId, userId }) {
           </div>
         </div>
       ) : (
-        <div></div>
+        <div>...크루 정보를 불러오는 중이에요.</div>
       )}
     </div>
   );
