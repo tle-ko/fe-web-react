@@ -100,7 +100,7 @@ export default function AdminCrew() {
   if (crewData.length === 0) return <div>데이터를 불러오는 중이에요!</div>;
 
   return (
-    <div className="w-4/5 flex flex-col gap-6">
+    <div className="col-span-3 flex flex-col gap-6">
       <section className="box flex flex-col gap-6">
         <h2 className="font-bold text-lg font-cafe24">정보 설정</h2>
         <div className="flex flex-col gap-6">

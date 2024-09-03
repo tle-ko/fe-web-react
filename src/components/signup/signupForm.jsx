@@ -1,10 +1,7 @@
-//signupForm.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import Input from "../../components/common/input";
 import PasswordInput from "./passwordInput";   
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
-import { RiShip2Fill } from "react-icons/ri";
 import { client } from '../../utils';
 
 export default function SignupForm({ currentStep, formData, onInputChange, onNextStep, onPrevStep }) {
@@ -41,10 +38,10 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const checkEmailAvailability = async (email) => {
     try {
-      const response = await client.get('api/v1/auth/email/check', { params: { email } });
+      const response = await client.get('api/v1/auth/usability', { params: { email } });
 
       if (response.status === 200) {
-        setEmailVerified(response.data.is_usable);
+        setEmailVerified(response.data.email.is_usable);
       } else {
         setEmailVerified(false);
       }
@@ -70,9 +67,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const sendValidateCode = async (email) => {
     try {
-      console.log('Sending verification code to:', email); 
-      const response = await client.get('api/v1/auth/email/verify', { params: { email }});
-      if (response.status === 201) {
+      const response = await client.post('api/v1/auth/verification', { email });
+      if (response.status === 200) {
         setEmailVerified(true);
         setCodeButtonLabel('인증번호 재발송');
         setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
@@ -87,14 +83,13 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   };
 
-  const getValidateCode = async (email, code) => {
+  const getValidateCode = async (email, verification_code) => {
     try {
-      console.log('Sending request to verify code:', { email, code });
-      const response = await client.post('api/v1/auth/email/verify', { email, code });
+      const response = await client.post('api/v1/auth/verification', { email, verification_code });
       if (response.status === 200) {
         alert("이메일 인증 성공!");
         setCodeVerified(true);
-        onInputChange('verification_token', response.data.token);
+        onInputChange('verification_token', response.data.verification_token);
       } else {
         alert("올바르지 않은 인증번호입니다.");
         setCodeVerified(false);
@@ -151,11 +146,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await client.get('api/v1/auth/username/check', { params: { username } });
+      const response = await client.get('api/v1/auth/usability', { params: {username} });
   
       if (response.status === 200) {
-        setUsernameVerified(response.data.is_usable);
-        console.log('Username availability:', response.data.is_usable);
+        setUsernameVerified(response.data.username.is_usable);
+        console.log('Username availability:', response.data.username.is_usable);
       } else {
         setUsernameVerified(false);
       }
@@ -389,20 +384,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     </>
   );
 
-  const renderStep5 = () => (
-    <>
-      <div className="flex-col justify-center items-center gap-12 inline-flex">
-        <div className="self-stretch flex-col justify-start items-center gap-6 flex">
-          <RiShip2Fill size={128} color="#5383E8"/>
-          <div className="flex-col justify-center items-center gap-2 flex">
-            <p className="text-gray-900 text-xl font-semibold text-center">{formData.username}님, 가입이 완료되었습니다!<br/></p>
-            <p className="text-color-blue-main text-xl font-semibold text-center">TLE와 함께 최적의 해결책을 찾아가요😉</p>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
@@ -413,8 +394,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         return renderStep3();
       case 4:
         return renderStep4();
-      case 5:
-        return renderStep5();
       default:
         return null;
     }
@@ -447,8 +426,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         return true; // 사진 등록은 선택사항이므로 항상 true
       case 4:
         return true;
-      case 5:
-        return true;
       default:
         return false;
     }
@@ -464,7 +441,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         onClick={onNextStep}
         disabled={!getStepValidity()}
       >
-        {currentStep === 4 ? '가입 완료' : currentStep === 5 ? '시작하기' : '다음'}
+        {currentStep === 4 ? '가입 완료' : '다음'}
       </button>
     </div>
   );

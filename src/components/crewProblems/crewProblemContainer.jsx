@@ -112,7 +112,8 @@ const CrewDashProblem = ({ userId }) => {
   }
 
   return (
-    <div className="flex">
+    <div className="w-full MainGrid1to3">
+      <div className="col-span-1">
       {activities.length > 0 && (
         <SideNav
           elements={activities}
@@ -120,8 +121,9 @@ const CrewDashProblem = ({ userId }) => {
           selectedElement={activityId}
         />
       )}
+      </div>
       {problemsData.length > 0 ? (
-        <div className="flex-1 cardGrid3 mb-16">
+        <div className="flex col-span-3 mb-16">
           {problemsData.map((problem) => {
             const lastSubmittedDate = problem.submissions ? getLastSubmissionDate(problem.submissions) : null;
             return (
@@ -168,7 +170,7 @@ const CrewDashProblem = ({ userId }) => {
           })}
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 flex-1 mt-24">
+        <div className="flex flex-col items-center col-span-3 gap-3 py-6 text-gray-600 flex-1 mt-24">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />

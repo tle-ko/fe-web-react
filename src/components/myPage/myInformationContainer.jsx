@@ -3,15 +3,16 @@ import Input from '../common/input';
 import PasswordInput from '../signup/passwordInput';
 import Button from '../common/button';
 import { client } from '../../utils';
+import { setUserInfo } from '../../auth';
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 
 export default function MyInformationContainer() {
   const [Image, setImage] = useState('');
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setMypageUserInfo] = useState({
     email: '',
     username: '',
     boj_username: '',
-    level: '',
+    boj_level: '',
     profile_image: '',
   });
   const [password, setPassword] = useState('');
@@ -22,18 +23,19 @@ export default function MyInformationContainer() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [inputChanged, setInputChanged] = useState(false);
   const fileInput = useRef(null);
+  const debounceTimeout = useRef(null);
 
   useEffect(() => {
     client.get('api/v1/user/manage')
       .then(response => {
         const data = response.data;
         console.log('User info fetched:', data);
-        setUserInfo({
+        setMypageUserInfo({
           email: data.email,
-          username: data.username,
-          boj_username: data.boj_username,
-          level: data.level,
           profile_image: data.profile_image,
+          username: data.username,
+          boj_username: data.boj.username,
+          boj_level: data.boj.level.name || '티어 확인 불가',
         });
         setImage(data.profile_image);
         setInitialUsername(data.username);
@@ -42,7 +44,7 @@ export default function MyInformationContainer() {
   }, []);
 
   const handleInputChange = (field, value) => {
-    setUserInfo(prevState => ({
+    setMypageUserInfo(prevState => ({
       ...prevState,
       [field]: value
     }));
@@ -82,6 +84,7 @@ export default function MyInformationContainer() {
       .then(response => {
         setIsEditing(false);
         alert('정보가 성공적으로 수정되었습니다.');
+        setUserInfo(username, profile_image instanceof File ? Image : profile_image);
         window.location.reload();
       })
       .catch(error => console.error('Error updating user info:', error));
@@ -127,10 +130,10 @@ export default function MyInformationContainer() {
     }
 
     try {
-      const response = await client.get('api/v1/auth/username/check', { params: { username } });
+      const response = await client.get('api/v1/auth/usability', { params: { username } });
 
       if (response.status === 200) {
-        setUsernameVerified(response.data.is_usable);
+        setUsernameVerified(response.data.username.is_usable);
       } else {
         setUsernameVerified(false);
       }
@@ -161,9 +164,17 @@ export default function MyInformationContainer() {
 
   useEffect(() => {
     if (userInfo.username) {
-      checkUsernameAvailability(userInfo.username);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        checkUsernameAvailability(userInfo.username);
+      }, 300);
+    } else {
+      setUsernameVerified(false);
     }
   }, [userInfo.username, checkUsernameAvailability]);
+
 
   useEffect(() => {
     setBojUsernameValid(validateBojUsername(userInfo.boj_username));
@@ -178,12 +189,12 @@ export default function MyInformationContainer() {
       {isValid ? (
         <>
           <FaCircleCheck size={16} color="#5383E8"/>
-          <p className="text-color-blue-main">{validMessage}</p>
+          <p className="text-color-blue-main whitespace-pre-wrap">{validMessage}</p>
         </>
       ) : (
         <>
           <FaCircleExclamation size={16} color="#E84057"/>
-          <p className="text-color-red-main">{invalidMessage}</p>
+          <p className="text-color-red-main whitespace-pre-wrap">{invalidMessage}</p>
         </>
       )}
     </div>
@@ -253,7 +264,7 @@ export default function MyInformationContainer() {
                 <Input
                   title='백준 티어'
                   className='disabled cursor-not-allowed'
-                  value={userInfo.level.name || ''}
+                  value={userInfo.boj_level}
                   width={20}
                   readOnly
                 />
@@ -273,35 +284,33 @@ export default function MyInformationContainer() {
       <div className='box min-w-fit'>
         <div className='w-full flex flex-col gap-6 justify-start items-start'>
           <p className='boxTitle'>비밀번호 변경</p>
-            <div>
-            <div className="inline-flex gap-4 items-end">              
-              <PasswordInput
-                  title="비밀번호"
-                  placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
-                  type="password"
-                  width={24}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setInputChanged(true);
-                  }}
-                />
-                <div className="mb-2">
-                <Button
-                  buttonSize={'detailBtn'}
-                  colorStyle={'blueWhite'}
-                  content={'변경'}
-                  onClick={handlePasswordChange}
-                />
-                </div>
+          <div className="w-full flex flex-col gap-6 items-end">
+            <div className='w-full'>         
+                <PasswordInput
+                    title="비밀번호"
+                    placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+                    type="password"
+                    value={password}
+                    width={20}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setInputChanged(true);
+                    }}
+                  />
+                {password && inputChanged && renderFeedback(
+                  passwordValid,
+                  "사용 가능한 비밀번호입니다.",
+                  "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
+                )}
               </div>
-              {password && inputChanged && renderFeedback(
-                passwordValid,
-                "사용 가능한 비밀번호입니다.",
-                "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
-              )}
-            </div>
+              <Button
+                    buttonSize={'detailBtn'}
+                    colorStyle={'blueWhite'}
+                    content={'변경'}
+                    onClick={handlePasswordChange}
+                  />
           </div>
+        </div>
       </div>
     </div>
   );
