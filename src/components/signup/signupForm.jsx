@@ -1,5 +1,3 @@
-//signupForm.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import Input from "../../components/common/input";
 import PasswordInput from "./passwordInput";   
@@ -41,10 +39,10 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const checkEmailAvailability = async (email) => {
     try {
-      const response = await client.get('api/v1/auth/email/check', { params: { email } });
+      const response = await client.get('api/v1/auth/usability', { params: { email } });
 
       if (response.status === 200) {
-        setEmailVerified(response.data.is_usable);
+        setEmailVerified(response.data.email.is_usable);
       } else {
         setEmailVerified(false);
       }
@@ -71,8 +69,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const sendValidateCode = async (email) => {
     try {
       console.log('Sending verification code to:', email); 
-      const response = await client.get('api/v1/auth/email/verify', { params: { email }});
-      if (response.status === 201) {
+      const response = await client.post('api/v1/auth/verification', { email });
+      if (response.status === 200) {
         setEmailVerified(true);
         setCodeButtonLabel('인증번호 재발송');
         setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
@@ -87,14 +85,14 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   };
 
-  const getValidateCode = async (email, code) => {
+  const getValidateCode = async (email, verification_code) => {
     try {
-      console.log('Sending request to verify code:', { email, code });
-      const response = await client.post('api/v1/auth/email/verify', { email, code });
+      console.log('Sending request to verify code:', { email, verification_code });
+      const response = await client.post('api/v1/auth/verification', { email, verification_code });
       if (response.status === 200) {
         alert("이메일 인증 성공!");
         setCodeVerified(true);
-        onInputChange('verification_token', response.data.token);
+        onInputChange('verification_token', response.data.verification_token);
       } else {
         alert("올바르지 않은 인증번호입니다.");
         setCodeVerified(false);
@@ -151,11 +149,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await client.get('api/v1/auth/username/check', { params: { username } });
+      const response = await client.get('api/v1/auth/usability', { params: {username} });
   
       if (response.status === 200) {
-        setUsernameVerified(response.data.is_usable);
-        console.log('Username availability:', response.data.is_usable);
+        setUsernameVerified(response.data.username.is_usable);
+        console.log('Username availability:', response.data.username.is_usable);
       } else {
         setUsernameVerified(false);
       }

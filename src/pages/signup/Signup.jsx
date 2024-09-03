@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Step from "../../components/signup/signupStep";
 import Form from "../../components/signup/signupForm";
 import { client } from '../../utils';
+import { setToken, setUserInfo } from '../../auth';
+
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -82,7 +84,25 @@ export default function Signup() {
         });
   
         if (response.status === 201) {
-          console.log('Form submitted successfully:', response.data);
+          // 회원가입이 성공적으로 완료된 후 로그인을 요청합니다.
+          const loginResponse = await client.post('/api/v1/auth/signin', {
+            email,
+            password
+          }, {
+            headers: {
+              "Content-Type": "application/json; charset=UTF-8"
+            }
+          });
+
+          if (loginResponse.status === 200) {
+            const { token, username, profile_image } = loginResponse.data;
+            setToken(token);
+            setUserInfo(username, profile_image);
+            navigate('/crew');
+            window.location.reload();
+          } else {
+            console.log('자동 로그인 실패:', loginResponse.statusText);
+          }
         } else {
           console.log('Form submission failed:', response.statusText);
         }
