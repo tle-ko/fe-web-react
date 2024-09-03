@@ -58,7 +58,6 @@ export default function Signin() {
         const { token, username, profile_image } = response.data;
         setToken(token);
         setUserInfo(username, profile_image);
-        console.log('로그인 성공:', response.data);
         navigate('/crew');
         window.location.reload();
       }

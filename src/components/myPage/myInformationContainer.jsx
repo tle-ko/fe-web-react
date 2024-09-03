@@ -3,11 +3,12 @@ import Input from '../common/input';
 import PasswordInput from '../signup/passwordInput';
 import Button from '../common/button';
 import { client } from '../../utils';
+import { setUserInfo } from '../../auth';
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 
 export default function MyInformationContainer() {
   const [Image, setImage] = useState('');
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setMypageUserInfo] = useState({
     email: '',
     username: '',
     boj_username: '',
@@ -22,13 +23,14 @@ export default function MyInformationContainer() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [inputChanged, setInputChanged] = useState(false);
   const fileInput = useRef(null);
+  const debounceTimeout = useRef(null);
 
   useEffect(() => {
     client.get('api/v1/user/manage')
       .then(response => {
         const data = response.data;
         console.log('User info fetched:', data);
-        setUserInfo({
+        setMypageUserInfo({
           email: data.email,
           profile_image: data.profile_image,
           username: data.username,
@@ -42,7 +44,7 @@ export default function MyInformationContainer() {
   }, []);
 
   const handleInputChange = (field, value) => {
-    setUserInfo(prevState => ({
+    setMypageUserInfo(prevState => ({
       ...prevState,
       [field]: value
     }));
@@ -82,6 +84,7 @@ export default function MyInformationContainer() {
       .then(response => {
         setIsEditing(false);
         alert('정보가 성공적으로 수정되었습니다.');
+        setUserInfo(username, profile_image instanceof File ? Image : profile_image);
         window.location.reload();
       })
       .catch(error => console.error('Error updating user info:', error));
@@ -127,10 +130,10 @@ export default function MyInformationContainer() {
     }
 
     try {
-      const response = await client.get('api/v1/auth/username/check', { params: { username } });
+      const response = await client.get('api/v1/auth/usability', { params: { username } });
 
       if (response.status === 200) {
-        setUsernameVerified(response.data.is_usable);
+        setUsernameVerified(response.data.username.is_usable);
       } else {
         setUsernameVerified(false);
       }
@@ -161,9 +164,17 @@ export default function MyInformationContainer() {
 
   useEffect(() => {
     if (userInfo.username) {
-      checkUsernameAvailability(userInfo.username);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        checkUsernameAvailability(userInfo.username);
+      }, 300);
+    } else {
+      setUsernameVerified(false);
     }
   }, [userInfo.username, checkUsernameAvailability]);
+
 
   useEffect(() => {
     setBojUsernameValid(validateBojUsername(userInfo.boj_username));
