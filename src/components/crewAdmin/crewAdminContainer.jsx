@@ -30,7 +30,7 @@ export default function CrewAdmin() {
     };
 
     return (
-      <div className="w-full flex flex-row">
+      <div className="w-full flex flex-row gap-4">
         <SideNav 
           elements={elements} // 객체 배열 전달
           setSelectedElement={setSelectedElement} 
