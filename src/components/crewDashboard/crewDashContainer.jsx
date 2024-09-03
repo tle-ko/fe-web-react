@@ -3,14 +3,36 @@ import LeftDashboard from "./leftSide/leftDashboard";
 import RightDashboard from "./rightSide/rightDashboard";
 import useFetchData from "../../hooks/useEffectData";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { client } from "../../utils";
 
 export default function CrewDashContainer({ userId }) {
   const crewData = useFetchData("http://localhost:3000/data/crewData.json");
   const userData = useFetchData("http://localhost:3000/data/userData.json");
   const problemData = useFetchData("http://localhost:3000/data/problemData.json");
-  const { id } = useParams();
 
-  const crew = crewData.find(crew => crew.id === parseInt(id));
+  const [crew, setCrew] = useState(null);
+  const { id } = useParams();
+  const crews = crewData.find(crew => crew.id === parseInt(id));
+  
+  useEffect(() => {
+    const fetchCrewData = async () => {
+      try {
+        const response = await client.get(`/api/v1/crew/${id}/dashboard`, {
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          setCrew(response.data);
+        } else {
+          console.error("Failed to fetch crew data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching crew data:", error);
+      }
+    };
+
+    fetchCrewData();
+  }, [id]);
 
   return (
     <div className="flex flex-col gap-6 mt-20">
@@ -19,10 +41,10 @@ export default function CrewDashContainer({ userId }) {
         {crew && (
           <>
             <div className="col-span-2">
-              <LeftDashboard crew={crew} userData={userData} problems={problemData} />
+              <LeftDashboard crew={crew} />
             </div>
             <div className="col-span-5">
-              <RightDashboard crew={crew} problems={problemData} userId={userId} userData={userData} />
+              <RightDashboard crew={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>
         )}

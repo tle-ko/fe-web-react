@@ -14,9 +14,7 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await client.get('api/v1/crews/recruiting', {
-          withCredentials: true
-        });
+        const response = await client.get('api/v1/crews/recruiting');
         if (response.status === 200) {
           setCrews(response.data);
         } else {
@@ -92,7 +90,7 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
     if (!selectedCrew) return;
 
     try {
-      const response = await client.post(`/api/v1/crews/${selectedCrew.id}/apply`, { message }, {
+      const response = await client.post(`/api/v1/crew/${selectedCrew.id}/apply`, { message }, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
