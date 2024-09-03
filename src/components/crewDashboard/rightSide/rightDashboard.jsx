@@ -25,7 +25,7 @@ export default function RightDashboard({ crew, userId, problems, userData }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="box px-6 py-3 w-fit flex flex-row justify-start items-center gap-4 text-lg font-bold text-gray-900">
+      <div className="box px-6 py-3 w-fit flex flex-row justify-center items-center gap-4 text-lg font-bold text-gray-900">
         <button onClick={handlePrev}><FaChevronLeft /></button>
         <div className="font-cafe24">{currentOrder}회차</div>
         <button onClick={handleNext}><FaChevronRight /></button>
