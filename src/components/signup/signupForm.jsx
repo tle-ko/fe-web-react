@@ -39,7 +39,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const checkEmailAvailability = async (email) => {
     try {
-      const response = await client.get('api/v1/auth/usability', { email });
+      const response = await client.get('api/v1/auth/usability', { params: { email } });
 
       if (response.status === 200) {
         setEmailVerified(response.data.email.is_usable);
