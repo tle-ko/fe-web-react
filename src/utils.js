@@ -5,7 +5,7 @@ import { getToken } from './auth';
 
 export const client = axios.create({
   withCredentials: true,
-  baseURL: "http://tle-kr.com",
+  baseURL: "http://api.tle-kr.com",
   headers: {
     "Content-Type": "application/json"
   }

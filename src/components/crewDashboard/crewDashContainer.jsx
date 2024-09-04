@@ -44,7 +44,7 @@ export default function CrewDashContainer({ userId }) {
               <LeftDashboard crew={crew} />
             </div>
             <div className="col-span-5">
-              <RightDashboard crew={crews} problems={problemData} userId={userId} userData={userData} />
+              <RightDashboard crew={crew} crews={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>
         )}
