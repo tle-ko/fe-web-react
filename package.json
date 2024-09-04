@@ -20,7 +20,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "deploy -d build",
     "homepage": "https://tle-kr.com/"
   },
   "eslintConfig": {
