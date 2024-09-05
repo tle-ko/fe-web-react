@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoWhite from '../../assets/images/logo-white.svg';
 import { isLoggedIn, removeToken, getUserName, getUserProfile } from '../../auth';
 import '../../styles/animation.css';
@@ -11,6 +11,7 @@ export default function Header() {
   const dropdownRef = useRef(null);
 
   const loggedIn = isLoggedIn();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loggedIn) {
@@ -25,16 +26,16 @@ export default function Header() {
 
   const handleLogout = () => {
     removeToken(); 
-    window.location.href = '/';
+    navigate('/');
   }
 
   const handleProtectedLinkClick = (event, path) => {
     if (!loggedIn) {
       event.preventDefault();
       alert("로그인이 필요해요!");
-      window.location.href = '/signin';
+      navigate('/signin');
     } else {
-      window.location.href = path;
+      navigate(path);
     }
   }
 
