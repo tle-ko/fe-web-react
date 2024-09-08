@@ -1,38 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const ProblemLevelInRound = ({ activity, problems }) => {
+const ProblemLevelGraph = ({ statistics }) => {
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
   const [problemCounts, setProblemCounts] = useState([]);
 
   useEffect(() => {
-    const difficultyCount = {};
+    // statistics가 있는지 확인
+    if (!statistics || !statistics.difficulties) return;
 
-    activity.problems.forEach(problem => {
-      const problemData = problems.find(p => p.id === problem.problem_id);
-      if (problemData && problemData.analysis && problemData.analysis.length > 0) {
-        const difficulty = problemData.analysis[0].difficulty;
-        difficultyCount[difficulty] = (difficultyCount[difficulty] || 0) + 1;
-      }
+    const newLabels = [];
+    const newProblemCounts = [];
+    let totalProblems = 0;
+
+    // statistics에서 difficulties 데이터를 사용
+    statistics.difficulties.forEach(difficultyData => {
+      newLabels.push(`Lv. ${difficultyData.difficulty}`); // 난이도 레벨
+      newProblemCounts.push(difficultyData.problem_count); // 문제 수
+      totalProblems += difficultyData.problem_count; // 전체 문제 수 계산
     });
 
-    const newProblemCounts = [];
-    const newLabels = [];
-    let totalDifficulties = 0;
-
-    for (const [difficulty, count] of Object.entries(difficultyCount)) {
-      newLabels.push(`Lv. ${difficulty}`);
-      newProblemCounts.push(count);
-      totalDifficulties += count;
-    }
-
-    const newSeries = newProblemCounts.map(count => (count / totalDifficulties) * 100);
+    // 전체 문제 수를 기반으로 각 난이도의 비율을 계산
+    const newSeries = newProblemCounts.map(count => (count / totalProblems) * 100);
 
     setSeries(newSeries);
     setLabels(newLabels);
     setProblemCounts(newProblemCounts);
-  }, [activity, problems]);
+  }, [statistics]);
 
   const chartOptions = {
     chart: {
@@ -66,9 +61,9 @@ const ProblemLevelInRound = ({ activity, problems }) => {
         <div className="text-gray-900 text-lg font-bold font-cafe24">
           <p>문제 난이도</p>
         </div>
-        <p className="text-gray-900 text-base font-normal">총 {activity.problems.length}개</p>
+        <p className="text-gray-900 text-base font-normal">총 {statistics.problem_count}개</p> {/* 총 문제 수를 statistics.problem_count로 표시 */}
       </div>
-      {activity.problems.length > 0 ? (
+      {statistics.problem_count > 0 ? (
         <div className="solved-prob-graph relative flex flex-col gap-10">
           <div className="chart-wrap">
             <div id="chart">
@@ -91,7 +86,6 @@ const ProblemLevelInRound = ({ activity, problems }) => {
               ))}
             </ul>
           </div>
-          <div id="html-dist"></div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
@@ -107,4 +101,4 @@ const ProblemLevelInRound = ({ activity, problems }) => {
   );
 };
 
-export default ProblemLevelInRound;
+export default ProblemLevelGraph;
