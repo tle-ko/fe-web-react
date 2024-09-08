@@ -1,67 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const SolvedProbGraph = ({ crew, problems }) => {
+const SolvedProbGraph = ({ crew }) => {
   const [series, setSeries] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tagData, setTagData] = useState([]);
-  const [totalProblems, setTotalProblems] = useState(0);
 
   useEffect(() => {
-    const tags = [
+    if (!crew || !crew.tags) return;
+  
+    const tagsToTrack = [
       'math', 'implementation', 'greedy', 'string', 'data_structures', 'graphs', 'dp', 'geometry'
     ];
-
-    const tagCount = tags.reduce((acc, tag) => {
+  
+    const tagCount = tagsToTrack.reduce((acc, tag) => {
       acc[tag] = 0;
       return acc;
     }, {});
-
-    let totalProblemsCount = 0;
-
-    crew.activities.forEach(activity => {
-      activity.problems.forEach(problem => {
-        const problemData = problems.find(p => p.id === problem.problem_id);
-        if (problemData) {
-          totalProblemsCount++;
-          if (problemData.analysis && problemData.analysis.length > 0) {
-            problemData.analysis[0].tags.forEach(tag => {
-              if (tagCount.hasOwnProperty(tag.key)) {
-                tagCount[tag.key]++;
-              }
-            });
-          }
-        }
-      });
+  
+    let totalTrackedProblems = 0; // 추적하는 태그들의 문제 수 합계
+  
+    // 각 태그의 problem_count를 누적하여 계산
+    crew.tags.forEach(tag => {
+      if (tagsToTrack.includes(tag.key)) {
+        tagCount[tag.key] = tag.problem_count; // 태그의 문제 수를 바로 할당
+        totalTrackedProblems += tag.problem_count; // 추적한 태그들의 문제 수 누적
+      }
     });
-
-    const maxCount = Math.max(...Object.values(tagCount));
-    const categories = tags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1));
-
-    setCategories(categories);
+  
+    // 카테고리와 시리즈 데이터 설정 (각 태그의 문제 수를 그대로 사용)
+    setCategories(tagsToTrack.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)));
     setSeries([{
       name: '태그 개수',
-      data: Object.values(tagCount).map(count => (maxCount > 0 ? (count / maxCount) * 10 : 0))
+      data: tagsToTrack.map(tag => tagCount[tag]) // 태그별 problem_count 사용
     }]);
-
-    setTagData(Object.entries(tagCount).map(([tag, count]) => {
-      if (count === 0) return null; // 문제 수가 0개인 태그는 제외
-      const percentage = ((count / totalProblemsCount) * 100).toFixed(1);
-      const tagNameKo = problems.flatMap(problem => 
-        problem.analysis ? problem.analysis.flatMap(analysis => 
-          analysis.tags.filter(t => t.key === tag).map(t => t.name_ko)
-        ) : []
-      )[0] || tag;
-      return {
-        tag: tagNameKo,
-        count,
-        percentage
-      };
-    }).filter(Boolean)); // null 값을 제외한 배열로 만듦
-
-    setTotalProblems(totalProblemsCount);
-  }, [crew, problems]);
-
+  
+    // tagData 설정 (태그 정보로 리스트 구성)
+    setTagData(crew.tags.map(tag => {
+      if (tagsToTrack.includes(tag.key)) {
+        const percentage = totalTrackedProblems > 0
+          ? ((tag.problem_count / totalTrackedProblems) * 100).toFixed(1) // 비율을 총 tracked 문제 수로 계산
+          : 0;
+        return {
+          tag: tag.label.ko, // 한글 태그명 사용
+          count: tag.problem_count,
+          percentage
+        };
+      }
+      return null;
+    }).filter(Boolean)); // null 값 제거
+  
+  }, [crew]);
+  
+  
   const chartOptions = {
     chart: {
       height: 350,
@@ -93,9 +84,9 @@ const SolvedProbGraph = ({ crew, problems }) => {
     <div className="box flex flex-col justify-start">
       <div className="flex justify-between gap-4">
         <div className="text-gray-900 text-lg font-bold font-cafe24"><p>크루 알고리즘 분석</p></div>
-        <p className="text-gray-900 text-base font-normal">총 {totalProblems}개</p>
+        <p className="text-gray-900 text-base font-normal">총 {crew.problem_count}개</p> {/* 수정: crew.problem_count 사용 */}
       </div>
-      {totalProblems > 0 ? (
+      {crew.problem_count > 0 ? (
         <div className="solved-prob-graph relative flex flex-col">
           <div className="chart-wrap">
             <div id="chart">
@@ -112,7 +103,7 @@ const SolvedProbGraph = ({ crew, problems }) => {
             </div>
             <ul>
               {tagData.map((data, index) => (
-                <li key={index} className="grid grid-cols-3 gap-4 border-b py-4 text-center text-gray-800 text-sm font-semibold">
+                <li key={index} className="grid grid-cols-3 gap-4 border-b py-4 text-center text-gray-800 text-sm font-semibold whitespace-nowrap">
                   <div>#{data.tag}</div>
                   <div>{data.count}</div>
                   <div>{data.percentage}%</div>
