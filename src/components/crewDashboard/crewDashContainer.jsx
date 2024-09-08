@@ -61,7 +61,7 @@ export default function CrewDashContainer({ userId }) {
               <LeftDashboard crew={crew} statistics={statistics} /> {/* 수정: statistics 전달 */}
             </div>
             <div className="col-span-5">
-              <RightDashboard crew={crew} crews={crews} problems={problemData} userId={userId} userData={userData} />
+              <RightDashboard crew={crew} statistics={statistics} crews={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>
         )}
