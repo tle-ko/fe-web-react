@@ -1,9 +1,9 @@
 import LanguageTag from "../../common/languageTag";
-import AlgorithmGraph from "./algorithmGraph";
 import { FaCrown } from "react-icons/fa";
 import ProfileImg from "../../../assets/images/profile.svg";
+import SolvedProbGraph from "./algorithmGraph";
 
-export default function LeftDashboard({ crew }) {
+export default function LeftDashboard({ crew, statistics }) { // statistics 추가
   if (!crew) return null;
 
   // 호스트와 나머지 멤버를 구분
@@ -55,7 +55,7 @@ export default function LeftDashboard({ crew }) {
           ))}
         </div>
       </div>
-      
+      <SolvedProbGraph crew={statistics} /> {/* SolvedProbGraph에 statistics 전달 */}
     </div>
   );
 }
