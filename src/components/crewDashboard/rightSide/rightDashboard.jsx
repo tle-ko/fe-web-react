@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import ProblemToBeSolved from "./problemToBeSolved";
 import ProblemSolvingStatus from "./problemSolvingStatus";
-import ProblemLevelInRound from "./problemLevelInRound";
+import ProblemLevelGraph from "./problemLevelGraph";
 import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
-export default function RightDashboard({ crew, crews, userId, problems, userData }) {
+export default function RightDashboard({ crew, statistics, crews, userId, problems, userData }) {
   // API 연결 부분
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
 
@@ -70,7 +70,7 @@ export default function RightDashboard({ crew, crews, userId, problems, userData
           <CodeReview activity={currentMockActivity} crew={crews} userData={userData} problems={problems} />
         </div>
         <div className="col-span-1">
-          <ProblemLevelInRound activity={currentMockActivity} problems={problems} />
+          <ProblemLevelGraph statistics={statistics} />
         </div>
       </div>
     </div>
