@@ -18,7 +18,7 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-15 2xl:text-base-16 xl:text-base-15 lg:text-base-14;
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-md 2xl:text-base xl:text-md;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
@@ -91,7 +91,7 @@
   @screen md {
     .cardGrid2 {
       grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+      gap: 1.5rem;
     }
   }
 
@@ -148,7 +148,7 @@
   @screen lg {
       .MainGrid1to3 {
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: 1.5rem;
       }
   }
 

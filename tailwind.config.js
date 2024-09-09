@@ -36,10 +36,6 @@ module.exports = {
           w50: '#FFCA41',
         }
       },
-      size: {
-        
-        '480px': '120'
-      },
       fontFamily: {
         cafe24: ["Cafe24Ssurround", "sans-serif"],
         pretendard: ["Pretendard-Regular", "sans-serif"],
@@ -48,14 +44,12 @@ module.exports = {
         m1: '-0.0625rem',
       },
       fontSize: {
-        'base-14': ['14px', { lineHeight: '1.25' }],
-        'base-15': ['15px', { lineHeight: '1.5' }],
-        'base-16': ['16px', { lineHeight: '1.5' }],
-        'base-18': ['18px', { lineHeight: '1.75' }],
-        'base-20': ['20px', { lineHeight: '1.75' }],
-        'base-24': ['24px', { lineHeight: '2' }],
-        'base-28': ['28px', { lineHeight: '2' }],
-        'base-32': ['32px', { lineHeight: '2.25' }],
+        'md': ['0.938rem', { lineHeight: '1.5' }], // 15px
+        '2xxl': ['1.75rem', { lineHeight: '2' }], // 28px
+        '3xxl': ['2rem', { lineHeight: '2.25' }], // 32px
+      },
+      spacing: {
+        '30rem': '30rem', // 반응형 최소 사이즈
       },
     },
     screens: {
