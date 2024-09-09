@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import ProblemToBeSolved from "./problemToBeSolved";
 import ProblemSolvingStatus from "./problemSolvingStatus";
-import ProblemLevelInRound from "./problemLevelInRound";
+import ProblemLevelGraph from "./problemLevelGraph";
 import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
-export default function RightDashboard({ crew, crews, userId, problems, userData }) {
+export default function RightDashboard({ crew, statistics, crews, userId, problems, userData }) {
   // API 연결 부분
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
 
   useEffect(() => {
-    if (crew && crew.activities.length > 0) {
+    if (crew && crew.activities && crew.activities.length > 0) {
       setCurrentActivityIndex(crew.activities.length - 1); // 가장 마지막 요소를 기본값으로 설정
     }
   }, [crew]);
@@ -20,10 +20,10 @@ export default function RightDashboard({ crew, crews, userId, problems, userData
   };
 
   const handleNext = () => {
-    setCurrentActivityIndex(prevIndex => Math.min(crew.activities.length - 1, prevIndex + 1));
+    if (crew && crew.activities && crew.activities.length > 0) {
+      setCurrentActivityIndex(prevIndex => Math.min(crew.activities.length - 1, prevIndex + 1));
+    }
   };
-
-  const currentActivity = crew.activities[currentActivityIndex];
 
   const formatDate = (dateString) => {
     return dateString ? dateString.split('T')[0] : "날짜 없음";
@@ -35,9 +35,12 @@ export default function RightDashboard({ crew, crews, userId, problems, userData
 
   const currentMockActivity = activities.find(activity => activity.order === currentOrder);
 
-  if (!crews) {
-    return null;
+  // crew와 crew.activities가 정의되어 있는지 확인
+  if (!crew || !crew.activities || crew.activities.length === 0) {
+    return <div>활동이 없습니다.</div>;
   }
+
+  const currentActivity = crew.activities[currentActivityIndex];
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -67,7 +70,7 @@ export default function RightDashboard({ crew, crews, userId, problems, userData
           <CodeReview activity={currentMockActivity} crew={crews} userData={userData} problems={problems} />
         </div>
         <div className="col-span-1">
-          <ProblemLevelInRound activity={currentMockActivity} problems={problems} />
+          <ProblemLevelGraph statistics={statistics} />
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
     return (
       <div className='bg-white text-gray-900 animate-fade-in'>
         <div className='inline-flex gap-2'>
-          <p className="text-base-20">💡</p>
+          <p className="text-xl">💡</p>
           <p className="longSentence">{hintItem}</p>
         </div>
       </div>
@@ -136,15 +136,15 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
             <p className="text-white text-xl font-extrabold">예측 시간 복잡도</p>
             <MdAccessTimeFilled size="1.5rem" color="white" />
           </div>
-          <div className="text-white text-base-18">
+          <div className="text-white text-lg">
             <p className='text-wrap-'>{`O(${timeComplexity})`}</p>
           </div>
         </div>
       </div>
       
       {/* 문제 힌트 컨테이너 */}
-      <div className="flex flex-col items-start gap-6 col-span-2">
-        <p className="text-gray-900 text-base-20 font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
+      <div className="flex flex-col items-start gap-6 w-2/3">
+        <p className="text-gray-900 text-xl font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
         {hints.map((hintItem, index) => (
           <div
             className="box w-full"
