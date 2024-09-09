@@ -37,7 +37,8 @@ module.exports = {
         }
       },
       size: {
-        '120px': '120px',
+        
+        '480px': '120'
       },
       fontFamily: {
         cafe24: ["Cafe24Ssurround", "sans-serif"],
@@ -47,14 +48,14 @@ module.exports = {
         m1: '-0.0625rem',
       },
       fontSize: {
-        'base-14': ['14px', { lineHeight: '1.4' }],
+        'base-14': ['14px', { lineHeight: '1.25' }],
         'base-15': ['15px', { lineHeight: '1.5' }],
         'base-16': ['16px', { lineHeight: '1.5' }],
-        'base-18': ['18px', { lineHeight: '1.6' }],
-        'base-20': ['20px', { lineHeight: '1.6' }],
-        'base-24': ['24px', { lineHeight: '1.6' }],
-        'base-28': ['28px', { lineHeight: '1.6' }],
-        'base-32': ['32px', { lineHeight: '1.6' }],
+        'base-18': ['18px', { lineHeight: '1.75' }],
+        'base-20': ['20px', { lineHeight: '1.75' }],
+        'base-24': ['24px', { lineHeight: '2' }],
+        'base-28': ['28px', { lineHeight: '2' }],
+        'base-32': ['32px', { lineHeight: '2.25' }],
       },
     },
     screens: {

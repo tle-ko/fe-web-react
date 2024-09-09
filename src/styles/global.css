@@ -18,7 +18,7 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-15 2xl:text-base-16;
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-base-15 2xl:text-base-16 xl:text-base-15 lg:text-base-14;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
@@ -115,7 +115,7 @@
 
   .cardGrid4 {
     @apply grid gap-6 mb-6;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   }
 
   @screen md {
