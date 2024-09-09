@@ -20,7 +20,7 @@ export default function SignupStep({ currentStep, onPrevStep, handleSubmit }) {
               }`}
               onClick={step === 4 ? handleSubmit : undefined}
               />
-              <div className={`text-center left-[11px] top-[4px] absolute text-base-16 font-bold ${
+              <div className={`text-center left-[11px] top-[4px] absolute text-base font-bold ${
                 step <= currentStep ? 'text-white' : 'text-color-blue-main'
               }`}>
                 {step}

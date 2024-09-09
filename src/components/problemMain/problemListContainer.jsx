@@ -86,7 +86,7 @@ export default function ProblemListContainer() {
           <Outlet />
         ) : (
         <>
-            <div className="min-w-[29rem]">
+            <div className="min-w-30rem">
               <div className="w-full mb-12 flex-col justify-start items-start gap-6 inline-flex">
               <p className="text-gray-900 text-xl font-semibold">문제 검색</p>
               <input
@@ -97,7 +97,7 @@ export default function ProblemListContainer() {
               />
               </div>
             </div>
-            <div className="min-w-[29rem] w-full mb-6 flex items-center justify-between">
+            <div className="min-w-30rem w-full mb-6 flex items-center justify-between">
               <p className="text-gray-900 text-xl font-semibold">{loading ? '데이터를 불러오는 중이에요!' : `${filteredProblemCount} 문제`}</p>
               <Dropdown 
                 options={["최신순", "낮은순", "높은순"]}
@@ -107,11 +107,13 @@ export default function ProblemListContainer() {
               />
             </div>
             <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
-            <Pagination
-            totalPage={Math.ceil(filteredProblemCount / numOfPage)}
-            currentPage={pageIndex + 1}
-            setCurrentPage={handlePageChange}
-            />
+            <div className='min-w-30rem'>
+              <Pagination
+              totalPage={Math.ceil(filteredProblemCount / numOfPage)}
+              currentPage={pageIndex + 1}
+              setCurrentPage={handlePageChange}
+              />
+            </div>
         </>
         )} 
     </div>

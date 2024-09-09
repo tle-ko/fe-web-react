@@ -9,7 +9,7 @@ import { FaBookOpen } from "react-icons/fa6";
 export default function ProblemList({ data, pageIndex, numOfPage }) {
   if (!data || data.length === 0) {
     return (        
-    <div className="min-w-[29rem] w-full box mb-6">
+    <div className="min-w-30rem w-full box mb-6">
       <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
         <FaBookOpen color="#5383E8" size="3rem" />
         <p className="text-center">아직 문제를 등록하지 않았어요🥲 <br/>문제를 추가하고 TLE와 함께 해결해 나가요!</p>
@@ -20,7 +20,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
 
   return (
       <>
-      <div className="min-w-[29rem] cardGrid4 mb-16">
+      <div className="min-w-0rem cardGrid4 mb-16">
         {data.slice(pageIndex * numOfPage, (pageIndex + 1) * numOfPage).map((problem) => (
           <div className="box min-w-60 flex-col justify-start items-start inline-flex gap-6" key={problem.id}>
             <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
