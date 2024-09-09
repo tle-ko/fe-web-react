@@ -35,7 +35,7 @@ export default function ProblemListContainer() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await client.get('api/v1/problems', {
+          const response = await client.get('api/v1/problem', {
             withCredentials: true
           });
           if (response.status === 200) {
