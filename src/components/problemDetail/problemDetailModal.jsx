@@ -75,7 +75,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     };
 
     try {
-      const response = await client.put(`/api/v1/problem/${problemData.id}/detail`, data, {
+      const response = await client.patch(`/api/v1/problem/${problemData.id}/detail`, data, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -20,9 +20,9 @@ export default function ProblemDetailContainer({ problemData }) {
   return (
     <>
       {activeContainer === "detail" ? (
-        <div className="flex mt-24 gap-6">
-          <div className="box w-full flex-col inline-flex">
-            <div className="mb-6 justify-start items-center gap-6 inline-flex">
+        <div className="flex mt-24 gap-6 min-w-100">
+          <div className="box w-full flex-col inline-flex min-w-96">
+            <div className="w-full mb-6 justify-start items-center gap-6 inline-flex">
               <div className="mb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
                 <p className="text-gray-900 text-lg font-bold">시간 제한</p>
                 <div className="inline-flex pb-3">
@@ -38,15 +38,15 @@ export default function ProblemDetailContainer({ problemData }) {
                 </div>
               </div>
             </div>
-            <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
+            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">문제</p> 
               <p className="longSentence">{description}</p>
             </div>
-            <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
+            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">입력</p> 
               <p className="longSentence">{inputDescription}</p>
             </div>
-            <div className="mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
+            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">출력</p> 
               <p className="longSentence">{outputDescription}</p>
             </div>

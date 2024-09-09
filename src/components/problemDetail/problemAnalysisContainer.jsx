@@ -100,8 +100,9 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
         <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-hover">문제<br />보기</p>
       </button>
 
+      <div className='w-full MainGrid1to3 min-w-96'>
       {/* 문제 분석 컨테이너 */}
-      <div className="flex flex-col items-start gap-6 w-1/3">
+      <div className="flex flex-col items-start gap-6 mb-6 col-span-2">
         <div className="w-full p-10 flex flex-col justify-start items-start gap-6 rounded-3xl bg-color-blue-main ">
           <div className="inline-flex items-center gap-3">
             <p className="text-white text-xl font-extrabold">알고리즘 태그</p>
@@ -156,6 +157,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
             )}
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

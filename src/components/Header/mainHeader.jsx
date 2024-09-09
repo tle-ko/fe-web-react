@@ -59,7 +59,7 @@ export default function Header() {
         <Link className="w-14" to="/"><img src={logoWhite} alt='logo' /></Link>
         <div className='flex flex-row justify-between items-center w-full'>
           <div className="flex gap-8">
-            <Link className='font-cafe24 cursor-pointer' onClick={(e) => handleProtectedLinkClick(e, '/problem')}>Problem</Link>
+            <p className='font-cafe24 cursor-pointer' onClick={(e) => handleProtectedLinkClick(e, '/problem')}>Problem</p>
             <Link className='font-cafe24' to="/crew">Crew</Link>
           </div>
 
