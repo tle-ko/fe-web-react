@@ -39,14 +39,14 @@ export default function CreateCrew() {
       languages: selectedLanguages.map(lang => lang.toLowerCase()),
       min_boj_level: tierValue,
       custom_tags: tags,
-      notice: "", // 필요시 추가 입력 필드
+      notice: "", 
       is_recruiting: true,
       is_active: true,
-      created_by: {}, // 필요시 사용자 데이터 추가
+      created_by: {}, 
     };
 
     try {
-      const response = await client.post('/api/v1/crews/', crewData, {
+      const response = await client.post('/api/v1/crew', crewData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -54,7 +54,7 @@ export default function CreateCrew() {
 
       if (response.status === 201) {
         setShowAlert(true);
-        // 추가적으로, 생성된 크루 데이터를 사용하여 필요한 작업을 수행할 수 있습니다.
+       
       } else {
         console.log('크루 생성 중 오류가 발생했습니다:', response.statusText);
       }
