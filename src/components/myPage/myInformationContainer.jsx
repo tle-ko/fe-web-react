@@ -268,7 +268,7 @@ export default function MyInformationContainer() {
                   width={20}
                   readOnly
                 />
-                <p className='text-base-16 text-gray-600'>! 티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
+                <p className='text-base text-gray-600'>! 티어는 등록된 아이디에 따라 자동으로 산출됩니다.</p>
               </div>
             </div>
             <Button

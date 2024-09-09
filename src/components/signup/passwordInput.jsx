@@ -8,7 +8,7 @@ export default function PasswordInput({ title, placeholder, width, value, onChan
     setShowPassword(!showPassword);
   };
 
-  const inputClassName = `w-full px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 text-base-16 font-medium outline-none`;
+  const inputClassName = `w-full px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 text-base font-medium outline-none`;
 
   return (
     <div className={`flex flex-col justify-start items-start gap-2`}>
