@@ -18,7 +18,7 @@
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-md 2xl:text-base xl:text-md lg:text-sm;
+    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-md 2xl:text-base xl:text-md xs:text-sm;
   }
 
   h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
