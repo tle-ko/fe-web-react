@@ -97,7 +97,7 @@
 
   .cardGrid3 {
     @apply grid gap-6 mb-6;
-    grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   }
 
   @screen md {
