@@ -9,10 +9,12 @@ import ProblemMain from '../pages/problemPage/ProblemMain';
 import ProblemDetail from '../pages/problemPage/ProblemDetail';
 import Signin from '../pages/signin/Signin';
 import Signup from '../pages/signup/Signup';
+import ScrollToTop from '../components/common/scrollTop';
 
 export default function Router() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/signin" element={<Signin />} />
