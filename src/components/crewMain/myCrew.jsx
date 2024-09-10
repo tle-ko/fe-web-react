@@ -4,13 +4,16 @@ import { RiShip2Fill } from "react-icons/ri";
 import { client } from "../../utils";
 import Button from "../common/button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import DataLoadingSpinner from "../common/dataLoadingSpinner";
 
 export default function MyCrew() {
   const [crews, setCrews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true); // 데이터를 불러오기 시작할 때 로딩 상태로 설정
       try {
         const response = await client.get('api/v1/crews/my', {
           withCredentials: true
@@ -18,10 +21,12 @@ export default function MyCrew() {
         if (response.status === 200) {
           setCrews(response.data);
         } else {
-          console.error('Failed to fetch crew data:', response.statusText);
+          console.error('크루 데이터를 불러오지 못했어요.', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching crew data:', error);
+        console.error('크루 데이터를 불러오는데 오류가 발생했어요.', error);
+      } finally {
+        setIsLoading(false); // 데이터를 불러온 후 로딩 상태 해제
       }
     };
   
@@ -47,11 +52,17 @@ export default function MyCrew() {
       <div className="w-full flex flex-col gap-5">
         <div className="containerTitle">내가 참여한 크루</div>
         <div className="w-full relative">
-          {crews.length === 0 ? (
+          {isLoading ? (
+            <div className="w-full p-20">
+              <div className="flex flex-col justify-center items-center m-10">
+                <DataLoadingSpinner />
+              </div>
+            </div>
+          ) : crews.length === 0 ? (
             <div className="w-full box">
               <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
                 <RiShip2Fill color="#5383E8" size="3rem" />
-                <p>새로운 크루에 가입해 함께 모험을 떠나보세요!</p>
+                <p>새로운 크루에 가입해 함께 모험을 떠나보세요!</p> {/* 크루 데이터가 없을 때 표시 */}
               </div>
             </div>
           ) : (
