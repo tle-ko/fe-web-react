@@ -127,7 +127,7 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
                 <div className="w-full flex justify-between items-center">
                   <div className="justify-start items-center gap-2 flex">
                     <div className="text-xl">{crew.icon}</div>
-                    <div className="containerTitle">{crew.name}</div>
+                    <div className="w-40 containerTitle truncate">{crew.name}</div>
                   </div>
                   <div>
                     <Button 

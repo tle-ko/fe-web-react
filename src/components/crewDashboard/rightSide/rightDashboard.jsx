@@ -3,7 +3,7 @@ import ProblemToBeSolved from "./problemToBeSolved";
 import ProblemSolvingStatus from "./problemSolvingStatus";
 import ProblemLevelGraph from "./problemLevelGraph";
 import CodeReview from "./codeReviewGraph";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft, FaChevronRight, FaBookOpen } from "react-icons/fa6";
 
 export default function RightDashboard({ crew, statistics, crews, userId, problems, userData }) {
   // API 연결 부분
@@ -37,7 +37,14 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
 
   // crew와 crew.activities가 정의되어 있는지 확인
   if (!crew || !crew.activities || crew.activities.length === 0) {
-    return <div>활동이 없습니다.</div>;
+    return (
+      <div className="w-full box mb-6">
+      <div className="flex flex-col items-center gap-3 py-20 text-gray-600">
+        <FaBookOpen color="#5383E8" size="3rem" />
+        <p className="text-center">아직 활동이 등록되지 않았어요 😓<br/>회차 및 문제를 추가하고 TLE와 함께 해결해 나가요!</p>
+      </div>
+    </div>
+    );
   }
 
   const currentActivity = crew.activities[currentActivityIndex];

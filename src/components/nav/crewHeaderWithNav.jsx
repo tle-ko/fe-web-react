@@ -18,10 +18,10 @@ function CrewHeaderWithNav() {
         if (response.status === 200) {
           setCrew(response.data);
         } else {
-          console.error("Failed to fetch crew data:", response.statusText);
+          console.error("크루 데이터를 불러오지 못했어요.", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching crew data:", error);
+        console.error("크루 데이터를 불러오는 데 오류가 발생했어요.", error);
       }
     };
 
@@ -36,7 +36,6 @@ function CrewHeaderWithNav() {
   const handleLinkClick = (linkName) => {
     setSelectedLink(linkName);
     navigate(linkName === 'home' ? basePath : `${basePath}/${linkName}`);
-    window.location.reload();
   };
 
   const basePath = location.pathname.split('/').slice(0, 3).join('/');
@@ -75,7 +74,10 @@ function CrewHeaderWithNav() {
           </div>
         </div>
       ) : (
-        <div>...크루 정보를 불러오는 중이에요.</div>
+        <div className="w-screen bg-white top-16 left-0 fixed z-10">
+          <div className="w-full h-16 px-28 py-4 border-b border-gray-200"></div>
+          <div className="w-full h-16 py-3 px-28 bg-white border-b border-gray-200 "></div>
+        </div>
       )}
     </div>
   );
