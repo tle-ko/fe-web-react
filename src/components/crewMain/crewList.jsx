@@ -3,6 +3,7 @@ import Button from "../common/button";
 import LanguageTag from "../common/languageTag";
 import ApplyModal from "./applyModal";
 import { client } from "../../utils";
+import DataLoadingSpinner from "../common/dataLoadingSpinner";
 
 export default function CrewList({ pageIndex, numOfPage, filters }) {
   const [crews, setCrews] = useState([]);
@@ -10,18 +11,22 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
   const [pageData, setPageData] = useState([]);
   const [modalStates, setModalStates] = useState({});
   const [selectedCrew, setSelectedCrew] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await client.get('api/v1/crews/recruiting');
         if (response.status === 200) {
           setCrews(response.data);
         } else {
-          console.error('Failed to fetch crew data:', response.statusText);
+          console.error('크루 데이터를 불러올 수 없어요.', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching crew data:', error);
+        console.error('크루 데이터를 불러오는 데 문제가 발생했어요.', error);
+      } finally {
+        setIsLoading(false); // 데이터를 불러온 후 로딩 상태 해제
       }
     };
 
@@ -105,19 +110,27 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
       }
     } catch (error) {
       console.error('Error applying for the crew:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div>
-      {filteredCrews.length === 0 || pageData.length === 0 ? (
+      {isLoading ? (
+        <div className="w-full p-20">
+          <div className="flex flex-col justify-center items-center m-10">
+            <DataLoadingSpinner /> {/* 로딩 중일 때 표시 */}
+          </div>
+        </div>
+      ) : filteredCrews.length === 0 || pageData.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
           </div>
-          <p>조건에 해당되는 크루가 없어요 😓</p>
+          <p>조건에 해당되는 크루가 없어요 😓</p> {/* 필터링된 크루가 없을 때 표시 */}
         </div>
       ) : (
         <div className="cardGrid3 w-full flex-col justify-start items-start">
@@ -174,4 +187,5 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
       )}
     </div>
   );
+  
 }
