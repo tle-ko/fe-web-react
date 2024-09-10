@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 const Notice = ({ content }) => {
   const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (!content) {
+      setIsVisible(false);
+    }
+  }, [content]);
 
   const handleClose = () => {
     setIsVisible(false);
