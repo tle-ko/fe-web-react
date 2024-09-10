@@ -47,16 +47,16 @@ export default function Main() {
 
   return (
     <div className="min-w-full absolute top-0 left-0">
-      <div className="h-[40rem] inline-flex flex-row gap-3 items-end bg-color-blue-main">
-        <p className="ml-[7.5rem] mb-[17.125rem] text-gray-50 text-4xl font-extrabold whitespace-nowrap" ref={addToSectionsRef}>알고리즘 문제 해결 도우미<br/>TLE와 함께 최적의 해결책을 찾아가요!</p>
+      <div className="w-full h-[40rem] inline-flex gap-3 items-end bg-color-blue-main pl-[7.5rem]">
+        <p className="mb-[17.125rem] text-gray-50 text-4xl font-extrabold whitespace-nowrap" ref={addToSectionsRef}>알고리즘 문제 해결 도우미<br/>TLE와 함께 최적의 해결책을 찾아가요!</p>
         <img className="w-1/2" ref={addToSectionsRef} src={CodeAndBoat} alt='CodeAndBoat'/>
       </div>
 
       <div className="inline-flex flex-col bg-white h-128 top-144 left-0 min-w-full">
-        <div className="inline-flex flex-col text-center mt-36" ref={addToSectionsRef}>
-          <div className="inline-flex flex-col text-center">
-            <h2 className="text-center text-gray-800 text-[2.5rem] font-extrabold">LLM의 힘으로 코딩 테스트의 바다를 항해해요</h2>
-            <div className="text-center text-gray-800">
+        <div className="flex flex-col text-center mt-36" ref={addToSectionsRef}>
+          <div className="flex flex-col text-center gap-6">
+            <p className="text-center text-gray-800 text-4xxl font-extrabold">LLM의 힘으로 코딩 테스트의 바다를 항해해요</p>
+            <div className="flex flex-col text-center text-gray-800">
             <p className="text-center text-xl font-bold">문제를 분석하여 알고리즘 태그 분류, 난이도 분류, 예측 시간 복잡도를 제공해요<br/></p>
             <p className="text-center text-xl font-medium">문제 등록만 해도 자동으로 분석되는 마법이 이루어집니다 🤩</p>
             </div>
@@ -108,7 +108,7 @@ export default function Main() {
         </div>
 
         <div className="mt-36 inline-flex flex-col items-center">
-            <p className="mb-12 text-center text-xl font-bold" ref={addToSectionsRef}>힌트가 더 필요하다면, AI 제공 힌트를 활용할 수 있어요 😎</p>
+            <p className="mb-12 text-center text-2xl font-bold text-gray-800" ref={addToSectionsRef}>힌트가 더 필요하다면, AI 제공 힌트를 활용할 수 있어요 😎</p>
 
           <div className="inline-flex flex-col">
             <div className="mb-6 p-10 bg-white rounded-xl border border-gray-200 justify-between items-start inline-flex" ref={addToSectionsRef}>
@@ -134,9 +134,9 @@ export default function Main() {
       </div>
 
       <div className="w-full inline-flex bg-white h-fit left-0 flex-col">
-        <div className="inline-flex flex-col items-center mt-[140px]" ref={addToSectionsRef}>
-          <h2 className="text-center text-gray-800 text-[40px] font-extrabold whitespace-nowrap">크루와 함께라면 험난한 문제도 두렵지 않습니다.</h2>
-          <div className="text-center text-gray-800">
+        <div className="flex flex-col items-center mt-[8.75rem] gap-6" ref={addToSectionsRef}>
+          <p className="text-center text-gray-800 text-4xxl font-extrabold whitespace-nowrap">크루와 함께라면 험난한 문제도 두렵지 않습니다.</p>
+          <div className="text-center text-gray-800 flex flex-col">
             <p className="text-xl font-bold">스터디 그룹 관리 기능을 통해 크루원들과 함께 성장할 수 있는 환경을 제공해요<br/></p>
             <p className="text-xl font-medium">대시보드를 통해 한 눈에 진행사항을 파악하고 코드 리뷰로 함께 성장하는 경험을 만들어가요 🌈</p>
             </div>
@@ -145,12 +145,12 @@ export default function Main() {
       </div>
 
       <div className="w-full inline-flex bg-white h-fit left-0 flex-col">
-        <div className="items-center inline-flex ml-36 mt-[140px] justify-between" ref={addToSectionsRef}>
-          <div className="flex-col mr-8">
-          <h2 className="text-left text-gray-800 text-[40px] font-extrabold whitespace-nowrap">나의 성장 기록, TLE가 함께합니다</h2>
-          <div className="text-gray-800">
-            <p className="text-xl font-bold whitespace-nowrap">문제 해결 여정이 분석되면, 나만의 포트폴리오로 성장을 증명할 수 있어요 🏃‍♂️<br/></p>
-            <p className="text-xl font-medium whitespace-nowrap">TLE는 개인의 문제 풀이 분석 정보를 제공하여 포트폴리오 제작을 돕습니다</p>
+        <div className="items-center inline-flex ml-32 mt-[8.75rem] justify-between" ref={addToSectionsRef}>
+          <div className="flex flex-col mr-8 gap-6">
+          <p className="text-left text-gray-800 text-4xxl font-extrabold whitespace-nowrap">나의 성장 기록, TLE가 함께합니다.</p>
+          <div className="flex flex-col text-gray-800">
+            <p className="text-xl font-bold">문제 해결 여정이 분석되면, 나만의 포트폴리오로 성장을 증명할 수 있어요 🏃‍♂️</p>
+            <p className="text-xl font-medium">TLE는 개인의 문제 풀이 분석 정보를 제공하여 포트폴리오 제작을 돕습니다</p>
           </div>
           </div>
         <img className="w-1/2" src={PortfolioScreen} alt="PortfolioScreen"/>
@@ -175,7 +175,7 @@ export default function Main() {
 
         <div className="mt-28 px-[7.5rem] min-w-full bottom-0">
         <div className= "w-full px-12 pt-6 pb-12 border-t items-end border-white p-6 justify-between flex">
-          <div className="flex-col justify-center items-start gap-1 inline-flex">
+          <div className="flex flex-col justify-center items-start gap-1">
               <p className="text-white text-sm font-semibold">2024년 상명대학교 컴퓨터과학전공 캡스톤디자인</p>
               <p className="text-white text-sm font-medium">코딩메리호 김동주 조유진 이유민 강윤진 김서영 민기홍</p>
           </div>
