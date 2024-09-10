@@ -1,13 +1,12 @@
-import { BeatLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 
 export default function DataLoadingSpinner() {
   return (
     <>
-        <BeatLoader
+        <ClipLoader
         color="#5383E8"
-        margin={10}
-        size={17}
-        speedMultiplier={0}
+        size={20}
+        speedMultiplier={1}
         />
     </>
   );
