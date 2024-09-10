@@ -39,11 +39,11 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
   if (!crew || !crew.activities || crew.activities.length === 0) {
     return (
       <div className="w-full box mb-6">
-      <div className="flex flex-col items-center gap-3 py-20 text-gray-600">
-        <FaBookOpen color="#5383E8" size="3rem" />
-        <p className="text-center">아직 활동이 등록되지 않았어요 😓<br/>회차 및 문제를 추가하고 TLE와 함께 해결해 나가요!</p>
+        <div className="flex flex-col items-center gap-3 py-20 text-gray-600">
+          <FaBookOpen color="#5383E8" size="3rem" />
+          <p className="text-center">아직 활동이 등록되지 않았어요 😓<br/>회차 및 문제를 추가하고 TLE와 함께 해결해 나가요!</p>
+        </div>
       </div>
-    </div>
     );
   }
 
