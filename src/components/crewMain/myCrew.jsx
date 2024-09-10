@@ -60,13 +60,13 @@ export default function MyCrew() {
                 const latestActivity = crew.latest_activity;
 
                 return (
-                  <div key={crew.id} className="box h-full whitespace-nowrap hidden-scrollbar overflow-x-auto">
+                  <div key={crew.id} className="box h-full hidden-scrollbar">
                     <div className="h-full flex-col justify-between items-start gap-6 inline-flex">
                       <div className="w-full flex-col justify-start items-start gap-3 flex">
                         <div className="w-full flex-col justify-start items-start gap-6 flex">
                           <div className="justify-start items-center gap-2 inline-flex">
                             <p className="text-gray-900 text-xl font-bold">{crew.icon}</p>
-                            <p className="text-gray-900 text-xl font-bold">{crew.name}</p>
+                            <p className="w-36 text-gray-900 text-xl font-bold truncate">{crew.name}</p>
                           </div>
                         </div>
                         <div className="w-full justify-end items-end gap-2 inline-flex flex-wrap text-right">
