@@ -44,9 +44,9 @@ export default function MyCrew() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-5">
+      <div className="w-full flex flex-col gap-5">
         <div className="containerTitle">내가 참여한 크루</div>
-        <div className="relative">
+        <div className="w-full relative">
           {crews.length === 0 ? (
             <div className="w-full box">
               <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
@@ -55,7 +55,7 @@ export default function MyCrew() {
               </div>
             </div>
           ) : (
-            <div className="cardGrid4">
+            <div className="cardGrid4 w-full">
               {crews.slice(visibleStartIndex, visibleStartIndex + 4).map((crew, index) => {
                 const latestActivity = crew.latest_activity;
 
