@@ -47,6 +47,7 @@ module.exports = {
         'md': ['0.938rem', { lineHeight: '1.5' }], // 15px
         '2xxl': ['1.75rem', { lineHeight: '2' }], // 28px
         '3xxl': ['2rem', { lineHeight: '2.25' }], // 32px
+        '4xxl': ['2.5rem', { lineHeight: '2.5' }], // 40px
       },
       spacing: {
         '30rem': '30rem', // 반응형 최소 사이즈
