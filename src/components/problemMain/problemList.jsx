@@ -12,7 +12,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
     <div className="min-w-30rem w-full box mb-6">
       <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
         <FaBookOpen color="#5383E8" size="3rem" />
-        <p className="text-center">아직 문제를 등록하지 않았어요🥲 <br/>문제를 추가하고 TLE와 함께 해결해 나가요!</p>
+        <p className="text-center">아직 문제를 등록하지 않았어요 😢<br/>문제를 추가하고 TLE와 함께 해결해 나가요!</p>
       </div>
     </div>
     );
