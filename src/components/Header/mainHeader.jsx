@@ -54,7 +54,7 @@ export default function Header() {
 
 
   return (
-    <div className="w-full h-16 fixed top-0 left-0 z-10 px-4 py-3 bg-color-blue-main text-white text-xl flex justify-center items-center min-w-[48rem]">
+    <div className="w-full h-16 fixed top-0 left-0 z-20 px-4 py-3 bg-color-blue-main text-white text-xl flex justify-center items-center min-w-[48rem]">
       <div className='w-full flex justify-between items-center px-36 gap-12'>
         <Link className="w-14" to="/"><img src={logoWhite} alt='logo' /></Link>
         <div className='flex flex-row justify-between items-center w-full'>
