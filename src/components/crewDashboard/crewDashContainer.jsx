@@ -5,6 +5,7 @@ import useFetchData from "../../hooks/useEffectData";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { client } from "../../utils";
+import DataLoadingSpinner from "../common/dataLoadingSpinner";
 
 export default function CrewDashContainer({ userId }) {
   const crewData = useFetchData("http://localhost:3000/data/crewData.json");
@@ -53,7 +54,13 @@ export default function CrewDashContainer({ userId }) {
 
   return (
     <div className="flex flex-col gap-6 mt-20">
-      {crew ? <Notice content={crew.notice} /> : <div>...크루 정보를 불러오는 중이에요.</div>}
+      {crew ? <Notice content={crew.notice} /> : 
+        // 로딩 스피너 적용
+        <div className="w-full p-20">
+          <div className="flex flex-col justify-center items-center m-10">
+            <DataLoadingSpinner />
+          </div>
+        </div>}
       <div className="w-full grid grid-cols-7 gap-6">
         {crew && statistics && ( // 추가: statistics 데이터도 있어야 렌더링
           <>
