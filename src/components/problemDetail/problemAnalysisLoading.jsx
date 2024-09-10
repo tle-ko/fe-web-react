@@ -46,7 +46,7 @@ export default function ProblemAnalysisLoading({setActiveContainer}) {
         <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-hover">문제<br />보기</p>
     </button>
 
-      <div className="w-full h-fit box p-20">
+      <div className="w-full h-fit p-10">
         <div className="flex flex-col justify-center items-center m-10">
           <LoadingSpinner />
           <p className="text-gray-900 text-lg mt-20">문제 분석을 불러오는 중이에요!</p>
