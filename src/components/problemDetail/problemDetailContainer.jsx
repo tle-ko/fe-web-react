@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
 import AnalysisLoading from '../../components/problemDetail/problemAnalysisLoading';
 import { FaChevronRight } from "react-icons/fa";
 
 export default function ProblemDetailContainer({ problemData }) {
   const [activeContainer, setActiveContainer] = useState("detail");
+  const descriptionRef = useRef(null);
+  const inputDescriptionRef = useRef(null);
+  const outputDescriptionRef = useRef(null);
+
+  useEffect(() => {
+    if (window.MathJax) {
+      window.MathJax.typesetPromise([descriptionRef.current, inputDescriptionRef.current, outputDescriptionRef.current]);
+    }
+  }, [problemData]);
 
   const handleActiveContainer = () => {
     setActiveContainer("analysis");
@@ -40,15 +49,15 @@ export default function ProblemDetailContainer({ problemData }) {
             </div>
             <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">문제</p> 
-              <p className="longSentence">{description}</p>
+              <p className="longSentence" ref={descriptionRef} dangerouslySetInnerHTML={{ __html: description }}></p>
             </div>
             <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">입력</p> 
-              <p className="longSentence">{inputDescription}</p>
+              <p className="longSentence" ref={inputDescriptionRef} dangerouslySetInnerHTML={{ __html: inputDescription }}></p>
             </div>
             <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
               <p className="text-gray-900 text-lg font-bold">출력</p> 
-              <p className="longSentence">{outputDescription}</p>
+              <p className="longSentence" ref={outputDescriptionRef} dangerouslySetInnerHTML={{ __html: outputDescription }}></p>
             </div>
           </div>
           <button className="flex flex-col gap-4 cursor-pointer group" onClick={handleActiveContainer}>

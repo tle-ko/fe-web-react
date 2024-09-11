@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronLeft, FaTag } from 'react-icons/fa';
 import { RiBarChart2Fill } from 'react-icons/ri';
 import { MdAccessTimeFilled } from 'react-icons/md';
-import AnalysisLoading from './problemAnalysisLoading.jsx';
 import Button from '../common/button.jsx';
+import AnalysisLoading from './problemAnalysisLoading.jsx';
+import DataLoadingSpinner from "../common/dataLoadingSpinner";
 import '../../styles/animation.css'
 
 export default function ProblemAnalysisContainer({ analysisData, setActiveContainer }) {
   const [visibleHintCards, setVisibleHintCards] = useState([]);
+  const timeComplexityRef = useRef(null);
+
+  useEffect(() => {
+    if (window.MathJax) {
+      window.MathJax.typesetPromise([timeComplexityRef.current]);
+    }
+  }, [analysisData]);
 
   // 데이터 로딩 중 처리
   if (!analysisData) {
-    return <div>데이터를 불러오는 중이에요!</div>;
+    return (
+      <div className="w-full p-20">
+        <div className="flex flex-col justify-center items-center m-10">
+          <DataLoadingSpinner />
+        </div>
+      </div>
+    )
   }
 
   // 데이터가 없는 경우 처리
@@ -126,25 +140,30 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
           {/* 레벨 데이터 */}
           <div className="flex flex-col items-start gap-3">
             <p className="text-white text-xl font-bold">레벨 {difficultyValue} ({difficultyText})</p>
-            <p className="text-white font-medium whitespace-normal">{difficultyDescription}</p> 
             {/* 난이도 설명 */}
+            <p className="text-white font-medium whitespace-normal">{difficultyDescription}</p> 
           </div>
         </div>
         {/* 시간 복잡도 데이터 */}
-        <div className="w-full p-10 flex flex-col justify-start items-start gap-6 rounded-3xl bg-color-blue-main ">
+        <div className="w-full p-10 flex flex-col justify-start items-start gap-3 rounded-3xl bg-color-blue-main ">
           <div className="inline-flex items-center gap-3">
             <p className="text-white text-xl font-extrabold">예측 시간 복잡도</p>
             <MdAccessTimeFilled size="1.5rem" color="white" />
           </div>
-          <div className="text-white text-lg">
-            <p className='text-wrap-'>{`O(${timeComplexity})`}</p>
-          </div>
+          <p className="text-white text-lg"
+          ref={timeComplexityRef}>
+            $$O({timeComplexity})$$
+          </p>
         </div>
       </div>
       
       {/* 문제 힌트 컨테이너 */}
-      <div className="flex flex-col items-start gap-6 w-2/3">
-        <p className="text-gray-900 text-xl font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
+      <div className="flex flex-col items-start gap-6 col-span-2">
+        <div className="flex flex-col gap-2">
+          <p className="text-gray-900 text-xl font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
+          <p className="text-gray-600 text-md">효과적인 문제 풀이를 위해 순차적으로 제공돼요</p>
+        </div>
+
         {hints.map((hintItem, index) => (
           <div
             className="box w-full"
