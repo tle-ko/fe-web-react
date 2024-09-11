@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // Import useParams
 import SelectCode from '../../components/codeReview/selectCode';
-import Footer from '../../components/common/footer';
 import ProblemHeader from '../../components/crewProblems/crewProblemHeader';
 import ReviewContainer from '../../components/codeReview/reviewContainer';
 import SubmitterHeader from '../../components/crewProblems/submitterHeader';
@@ -82,7 +81,6 @@ const CodeReview = () => {
           />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
