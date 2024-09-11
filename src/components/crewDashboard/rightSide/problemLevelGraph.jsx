@@ -29,10 +29,16 @@ const ProblemLevelGraph = ({ statistics }) => {
     setProblemCounts(newProblemCounts);
   }, [statistics]);
 
+  // 차트 렌더링 전에 데이터가 준비되었는지, 크기가 유효한지 확인
+  if (!statistics || statistics.problem_count === 0 || series.length === 0) {
+    return null; // 데이터가 없으면 차트 렌더링 중지
+  }
+
   const chartOptions = {
     chart: {
       type: 'donut',
-      fontFamily: 'inherit'
+      fontFamily: 'inherit',
+      height: 100 
     },
     labels: labels,
     legend: {
@@ -42,7 +48,7 @@ const ProblemLevelGraph = ({ statistics }) => {
       fontFamily: 'inherit'
     },
     dataLabels: {
-      enabled: false,
+      enabled: false
     },
     tooltip: {
       y: {
