@@ -22,8 +22,8 @@ export default function ProblemMain() {
         <Outlet />
       ) : (
         <>
-          <div className="min-w-30rem mb-12 flex items-end justify-between">
-            <h2 className="text-gray-700 text-2xxl font-bold font-cafe24">나의 문제 리스트</h2>
+          <div className="min-w-30rem h-11 mb-12 flex items-end justify-between">
+            <p className="text-gray-700 text-2xxl font-bold font-cafe24">나의 문제 리스트</p>
             <Button
               buttonSize="formBtn"
               colorStyle="blueWhite"

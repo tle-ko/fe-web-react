@@ -4,6 +4,7 @@ import ProblemHeader from "../../components/Header/problemHeader";
 import ProblemDetailNav from "../../components/nav/problemDetailNav";
 import ProblemDetailContainer from '../../components/problemDetail/problemDetailContainer';
 import ProblemDetailModal from '../../components/problemDetail/problemDetailModal';
+import DataLoadingSpinner from "../../components/common/dataLoadingSpinner";
 import { client } from "../../utils";
 
 export default function ProblemDetail() {
@@ -45,7 +46,13 @@ export default function ProblemDetail() {
   };
 
   if (!problemData) {
-    return <div>데이터를 불러오는 중이에요!</div>;
+    return (
+      <div className="w-full p-20">
+      <div className="flex flex-col justify-center items-center m-10">
+        <DataLoadingSpinner />
+      </div>
+      </div>
+    )
   }
 
   return (
