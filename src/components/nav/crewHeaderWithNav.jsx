@@ -34,8 +34,13 @@ function CrewHeaderWithNav() {
   }, [location.pathname, id]);
 
   const handleLinkClick = (linkName) => {
-    setSelectedLink(linkName);
-    navigate(linkName === 'home' ? basePath : `${basePath}/${linkName}`);
+    if (linkName === selectedLink) {
+      // 이미 선택된 링크를 클릭하면 동일한 URL로 navigate하여 리렌더링 유도
+      navigate(0); // 현재 URL로 새로고침
+    } else {
+      setSelectedLink(linkName);
+      navigate(linkName === 'home' ? basePath : `${basePath}/${linkName}`);
+    }
   };
 
   const basePath = location.pathname.split('/').slice(0, 3).join('/');

@@ -12,11 +12,11 @@ export default function CrewHeaderProblem({ problemId }) {
   return (
     <div>
       {problem ? (
-        <div className="w-screen h-16 bg-white top-16 left-0 fixed  py-4 flex flex-row gap-2 items-center border boerder-gray-200">
+        <div className="w-screen h-16 bg-white top-16 left-0 fixed py-4 flex flex-row gap-2 items-center border boerder-gray-200 z-10">
           <p className="px-[7.5rem] font-cafe24 text-2xl">{problem.title}</p>
         </div>
       ) : (
-        <div>해당하는 문제가 없습니다.</div>
+        <div>해당하는 문제가 없어요 😓</div>
       )}
     </div>
   )

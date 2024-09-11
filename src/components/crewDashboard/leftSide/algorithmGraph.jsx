@@ -51,8 +51,12 @@ const SolvedProbGraph = ({ crew }) => {
     }).filter(Boolean)); // null 값 제거
   
   }, [crew]);
-  
-  
+
+  // 데이터가 없는 경우 처리
+  if (!series || series.length === 0 || crew.problem_count === 0) {
+    return null; // 데이터가 없으면 차트 렌더링 중지
+  }
+
   const chartOptions = {
     chart: {
       height: 350,

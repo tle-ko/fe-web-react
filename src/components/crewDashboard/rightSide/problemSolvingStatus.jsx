@@ -47,11 +47,11 @@ const ProblemSolvingStatus = ({ activity, crew, userData }) => {
 
   return (
     <div className="box w-full flex flex-col gap-6">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <div className="text-gray-900 text-lg font-bold font-cafe24 whitespace-nowrap">
           문제 풀이 현황
         </div>
-        <div className="flex-grow flex justify-between items-center">
+        <div className="flex-grow flex flex-wrap justify-between items-center">
           <p className="text-gray-900 text-base font-normal">{activity.start_date} ~ {activity.end_date}</p>
           <div className="flex gap-6 text-gray-700 text-base font-medium">
             <div className="flex items-center gap-1">

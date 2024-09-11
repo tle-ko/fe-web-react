@@ -5,6 +5,7 @@ import CrewDashAdmin from '../../components/crewAdmin/crewAdminContainer';
 import CrewDashProblem from '../../components/crewProblems/crewProblemContainer';
 import CrewProblemDetail from '../../components/crewProblems/crewProblemDetail';
 import CrewProblemSubmit from '../../components/crewProblems/crewProblemSubmit';
+import CodeReview from "../crewProblems/CodeReview";
 
 export default function CrewDashHome() {
   let { id } = useParams();
@@ -22,6 +23,7 @@ export default function CrewDashHome() {
           <Route path="problems" element={<CrewDashProblem userId={userId} />} />
           <Route path="problems/:problemId" element={<CrewProblemDetail />} />
           <Route path="problems/:problemId/submit" element={<CrewProblemSubmit />} />
+          <Route path="problems/:problemId/submit/:submitId" element={<CodeReview />} />
           <Route path="admin" element={<CrewDashAdmin />} />
           <Route path="*" element={<Navigate to="." />} />  
         </Routes>

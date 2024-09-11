@@ -26,10 +26,10 @@ export default function CrewDashContainer({ userId }) {
         if (response.status === 200) {
           setCrew(response.data);
         } else {
-          console.error("Failed to fetch crew data:", response.statusText);
+          console.error("크루 대시보드 데이터를 불러오지 못했어요.", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching crew data:", error);
+        console.error("크루 대시보드 데이터를 불러오는데 문제가 발생했어요.", error);
       }
     };
 
@@ -41,10 +41,10 @@ export default function CrewDashContainer({ userId }) {
         if (response.status === 200) {
           setStatistics(response.data); // 추가: statistics 데이터 설정
         } else {
-          console.error("Failed to fetch statistics:", response.statusText);
+          console.error("크루 분석 데이터를 불러올 수 없어요.", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching statistics:", error);
+        console.error("크루 분석 데이터를 불러오는데 문제가 발생했어요.", error);
       }
     };
 
@@ -62,12 +62,12 @@ export default function CrewDashContainer({ userId }) {
           </div>
         </div>}
       <div className="w-full grid grid-cols-7 gap-6">
-        {crew && statistics && ( // 추가: statistics 데이터도 있어야 렌더링
+        {crew && statistics && ( 
           <>
-            <div className="col-span-2">
-              <LeftDashboard crew={crew} statistics={statistics} /> {/* 수정: statistics 전달 */}
+            <div className="col-span-2 min-w-28">
+              <LeftDashboard crew={crew} statistics={statistics} /> 
             </div>
-            <div className="col-span-5">
+            <div className="col-span-5 min-w-96">
               <RightDashboard crew={crew} statistics={statistics} crews={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>

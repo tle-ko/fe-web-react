@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from "../common/button";
 import { client } from "../../utils";
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
 export default function AdminMember() {
   const { id } = useParams(); 
@@ -10,6 +11,7 @@ export default function AdminMember() {
   const [error, setError] = useState(null); // 에러 상태 추가
 
   useEffect(() => {
+    setLoading(true);
     const fetchApplicationData = async () => {
       try {
         const response = await client.get(`/api/v1/crew/${id}/applications`, {
@@ -56,7 +58,11 @@ export default function AdminMember() {
   };
 
   if (loading) {
-    return <div className='m-4'>데이터를 불러오는 중이에요!</div>;
+    return <div className="w-full p-20">
+        <div className="flex flex-col justify-center items-center m-10">
+          <DataLoadingSpinner /> {/* 로딩 중일 때 표시 */}
+        </div>
+      </div>;
   }
 
   if (error) {

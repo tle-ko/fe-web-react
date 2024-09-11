@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const SubmitByHeader = ({ id }) => {
-  const [submitter, setSubmitter] = useState('Loading...');
+  const [submitter, setSubmitter] = useState();
 
   useEffect(() => {
     const fetchSubmitterData = async () => {
@@ -28,7 +28,7 @@ const SubmitByHeader = ({ id }) => {
   }, [id]);
 
   return (
-    <div className="w-screen h-16 bg-white top-32 left-0 fixed px-28 py-4 flex flex-row gap-2 items-center border border-gray-200">
+    <div className="w-screen h-16 bg-white top-32 left-0 fixed px-28 py-4 flex flex-row gap-2 items-center border border-gray-200 z-10">
       <div className="flex justify-center items-center">
         <div className="submitByheader text-lg flex justify-center items-center mr-5">
           {submitter}
