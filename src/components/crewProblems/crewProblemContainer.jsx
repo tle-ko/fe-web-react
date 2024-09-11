@@ -156,13 +156,19 @@ const CrewDashProblem = ({ userId }) => {
           {problemsData.map((problem) => {
             const lastSubmittedDate = problem.submissions ? getLastSubmissionDate(problem.submissions) : null;
             return (
-              <div key={problem.id} className="box flex-col justify-between items-start inline-flex gap-6 overflow-x-auto">
+              <div key={problem.id} className="box min-w-20rem flex-col justify-between items-start inline-flex gap-6 overflow-x-auto">
                 <div className="flex justify-between items-center w-full flex-wrap whitespace-nowrap">
                   <p className='text-gray-600 text-base'>문제 {problem.id}</p>
                   <p className='text-gray-600 text-sm'>
+                    {lastSubmittedDate ? 
+                      <div className="flex flex-wrap gap-1 items-center text-red-600">
+                        <span>마지막 제출 </span>
+                        <span>{lastSubmittedDate}</span>
+                      </div>
+                      : '제출 전'}
                   </p>
                 </div>
-                <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
+                <div className="w-full containerTitle justify-start items-center gap-3 inline-flex">
                   <img
                     className='w-6 h-8'
                     src={
@@ -177,7 +183,6 @@ const CrewDashProblem = ({ userId }) => {
                   />
                   <p className='w-full text-gray-900 text-2xl font-bold truncate'>{problem.details.title}</p>
                 </div>
-                <div className='justify-end flex gap-3 ml-auto'>
                 <div className='flex justify-end gap-3 ml-auto flex-wrap'>
                   <Link to={`/crew/${id}/problems/${problem.id}`}>
                     <Button
