@@ -62,12 +62,12 @@ export default function CrewDashContainer({ userId }) {
           </div>
         </div>}
       <div className="w-full grid grid-cols-7 gap-6">
-        {crew && statistics && ( // 추가: statistics 데이터도 있어야 렌더링
+        {crew && statistics && ( 
           <>
-            <div className="col-span-2">
-              <LeftDashboard crew={crew} statistics={statistics} /> {/* 수정: statistics 전달 */}
+            <div className="col-span-2 min-w-28">
+              <LeftDashboard crew={crew} statistics={statistics} /> 
             </div>
-            <div className="col-span-5">
+            <div className="col-span-5 min-w-96">
               <RightDashboard crew={crew} statistics={statistics} crews={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>
