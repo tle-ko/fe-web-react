@@ -55,9 +55,9 @@ export default function Signin() {
       });
 
       if (response.status === 200) {
-        const { token, username, profile_image } = response.data;
+        const { token, id, username, profile_image } = response.data;
         setToken(token);
-        setUserInfo(username, profile_image);
+        setUserInfo(id, username, profile_image);
         navigate('/crew');
         window.location.reload();
       }
