@@ -21,7 +21,7 @@ const Button = ({ buttonSize, colorStyle, content, onClick, width, disabled }) =
   }
 
   // 버튼 크기와 색상 스타일 결합
-  const buttonClass = `${styles[buttonSize]} ${fixedStyle || styles[colorStyle]} rounded-lg flex justify-center items-center font-semibold w-${width} whitespace-nowrap transition duration-300 ease-in-out`;
+  const buttonClass = `${styles[buttonSize]} ${fixedStyle || styles[colorStyle]} rounded-lg flex justify-center items-center font-semibold w-${width} whitespace-nowrap`;
 
   return (
     <button className={buttonClass} onClick={disabled ? undefined : onClick} disabled={disabled}>

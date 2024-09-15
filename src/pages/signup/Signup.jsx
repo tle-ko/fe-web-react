@@ -5,6 +5,7 @@ import Form from "../../components/signup/signupForm";
 import { client } from '../../utils';
 import { setToken, setUserInfo } from '../../auth';
 
+const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -53,8 +54,6 @@ export default function Signup() {
         return true;
       case 4:
         return true;
-      case 5:
-        return true;
       default:
         return false;
     }
@@ -76,27 +75,32 @@ export default function Signup() {
   
         if (profile_image) {
           submitData.append('profile_image', profile_image);
+        } else {
+          // 기본 이미지를 Blob으로 변환하여 추가
+          const response = await fetch(defaultProfileImage);
+          const blob = await response.blob();
+          submitData.append('profile_image', blob, 'default-profile-image.png');
         }
-  
+
         const response = await client.post('api/v1/auth/signup', submitData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-  
+
         if (response.status === 201) {
-          alert("회원가입이 완료되었습니다!");
-  
+          alert("회원가입이 완료되었어요!");
+
           // 알림 확인 후 자동 로그인을 요청
           const loginResponse = await client.post('/api/v1/auth/signin', {
-            email,
-            password
+            email: formData.email,
+            password: formData.password
           }, {
             headers: {
               "Content-Type": "application/json; charset=UTF-8"
             }
           });
-  
+
           if (loginResponse.status === 200) {
             const { token, username, profile_image } = loginResponse.data;
             setToken(token);
