@@ -4,16 +4,37 @@ import ProblemSolvingStatus from "./problemSolvingStatus";
 import ProblemLevelGraph from "./problemLevelGraph";
 import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight, FaBookOpen } from "react-icons/fa6";
+import { client } from '../../../utils';
 
 export default function RightDashboard({ crew, statistics, crews, userId, problems, userData }) {
-  // API 연결 부분
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
+  const [submissions, setSubmissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     if (crew && crew.activities && crew.activities.length > 0) {
       setCurrentActivityIndex(crew.activities.length - 1); // 가장 마지막 요소를 기본값으로 설정
     }
   }, [crew]);
+
+  // submissions 데이터를 가져오는 함수
+  const fetchSubmissionsData = async (activityId) => {
+    setIsLoading(true); // 로딩 상태 시작
+    try {
+      const response = await client.get(`/api/v1/crew/activity/${activityId}/submissions`, {
+        withCredentials: true
+      });
+      if (response.status === 200) {
+        setSubmissions(response.data);
+      } else {
+        console.error("크루 회차별 풀이 제출 데이터를 불러오지 못했어요.", response.statusText);
+      }
+    } catch (error) {
+      console.error("크루 회차별 풀이 제출 데이터를 불러오는데 문제가 발생했어요.", error);
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
+    }
+  };
 
   const handlePrev = () => {
     setCurrentActivityIndex(prevIndex => Math.max(0, prevIndex - 1));
@@ -25,17 +46,18 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
     }
   };
 
+  useEffect(() => {
+    if (crew && crew.activities && crew.activities.length > 0) {
+      const currentActivity = crew.activities[currentActivityIndex];
+      const activityId = currentActivity.name.replace(/[^0-9]/g, ''); // 회차 ID 추출
+      fetchSubmissionsData(activityId); // 해당 회차의 submissions 데이터를 가져옴
+    }
+  }, [currentActivityIndex, crew]);
+
   const formatDate = (dateString) => {
     return dateString ? dateString.split('T')[0] : "날짜 없음";
   };
 
-  // 목업 데이터 사용 부분
-  const activities = crews ? crews.activities : [];
-  const [currentOrder, setCurrentOrder] = useState(activities.length ? activities[activities.length - 1].order : 0);
-
-  const currentMockActivity = activities.find(activity => activity.order === currentOrder);
-
-  // crew와 crew.activities가 정의되어 있는지 확인
   if (!crew || !crew.activities || crew.activities.length === 0) {
     return (
       <div className="w-full box mb-6">
@@ -51,7 +73,6 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {/* 실제 API 데이터를 사용하는 부분 */}
       <div className="w-full flex justify-center">
         <div className="box px-6 py-3 max-w-fit flex flex-row justify-center items-center gap-4 text-lg font-bold text-gray-900">
           <button className="w-fit" onClick={handlePrev}><FaChevronLeft /></button>
@@ -67,14 +88,12 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
         </div>
       </div>
 
-      {/* 목업 데이터를 사용하는 부분 */}
       <div className="grid gap-6">
-        <ProblemToBeSolved activity={currentMockActivity} userId={userId} />
+        <ProblemToBeSolved submissions={submissions} isLoading={isLoading} />
       </div>
-      <div className="w-full grid grid-cols-3 gap-6">
-        <div className="col-span-2 flex flex-col gap-6">
-          <ProblemSolvingStatus activity={currentMockActivity} crew={crews} userData={userData} />
-          <CodeReview activity={currentMockActivity} crew={crews} userData={userData} problems={problems} />
+      <div className="w-full grid-cols-3 DashboardGrid">
+        <div className="col-span-2">
+          <ProblemSolvingStatus submissions={submissions} isLoading={isLoading} />
         </div>
         <div className="col-span-1">
           <ProblemLevelGraph statistics={statistics} />
