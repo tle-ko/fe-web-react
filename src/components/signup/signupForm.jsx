@@ -4,6 +4,8 @@ import PasswordInput from "./passwordInput";
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 import { client } from '../../utils';
 
+const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
+
 export default function SignupForm({ currentStep, formData, onInputChange, onNextStep, onPrevStep }) {
   const [emailVerified, setEmailVerified] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
@@ -13,7 +15,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const [codeCursor, setCodeCursor] = useState('cursor-pointer');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [usernameVerified, setUsernameVerified] = useState(false);
-  const [Image, setImage] = useState("https://picsum.photos/250/250");
+  const [profileImage, setProfileImage] = useState(defaultProfileImage);
   const fileInput = useRef(null);
   const debounceTimeout = useRef(null);
 
@@ -36,6 +38,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     return regex.test(boj_username);
   };
 
+  // 이메일 중복 검사
   const checkEmailAvailability = async (email) => {
     try {
       const response = await client.get('api/v1/auth/usability', { params: { email } });
@@ -51,6 +54,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   };
 
+  // 3초 간격으로 이메일이 사용 가능한 지 확인
   useEffect(() => {
     if (formData.email && validateEmail(formData.email)) {
       if (debounceTimeout.current) {
@@ -58,13 +62,14 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       }
       debounceTimeout.current = setTimeout(() => {
         checkEmailAvailability(formData.email);
-      }, 500); // 500ms debounce time
+      }, 300); // 300ms debounce time
     } else {
       setEmailVerified(false);
     }
   }, [formData.email]);
 
 
+  // 인증번호 전송 요청
   const sendValidateCode = async (email) => {
     try {
       const response = await client.post('api/v1/auth/verification', { email });
@@ -105,6 +110,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   };
 
+  // 3초 간격으로 인증번호가 올바른 지 확인
   useEffect(() => {
     if (verificationCode && formData.email) {
       if (debounceTimeout.current) {
@@ -144,6 +150,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   }, [codeVerified]);
 
+  // 닉네임 중복 검사
   const checkUsernameAvailability = async (username) => {
     try {
       const response = await client.get('api/v1/auth/usability', { params: {username} });
@@ -160,6 +167,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   };
   
+  // 3초 간격으로 닉네임이 사용 가능한 지 확인
   useEffect(() => {
     if (formData.username && validateUsername(formData.username)) {
       if (debounceTimeout.current) {
@@ -167,7 +175,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       }
       debounceTimeout.current = setTimeout(() => {
         checkUsernameAvailability(formData.username);
-      }, 500); // 500ms debounce time
+      }, 300); // 300ms debounce time
     } else {
       setUsernameVerified(false);
     }
@@ -176,8 +184,11 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      setProfileImage(URL.createObjectURL(file));
       onInputChange('profile_image', file);
+    } else {
+      setProfileImage(defaultProfileImage);
+      onInputChange('profile_image', null);
     }
   };
 
@@ -326,7 +337,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   
       <div className="w-full flex-col justify-center items-center gap-6 flex"> 
         <div className="relative w-32 h-32">
-          <img src={Image} alt="profile" className="w-full h-full rounded-full object-cover"/>
+          <img src={profileImage} alt="profile_image" className="w-full h-full rounded-full object-cover"/>
           <input 
             type="file"
             className="hidden"
@@ -359,7 +370,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         </p>
         <div className="w-full flex flex-col gap-6 items-center justify-center">
           <div className="relative w-32 h-32">
-            <img src={Image} alt="profile" className="w-full h-full rounded-full object-cover"/>
+            <img src={profileImage} alt="profile_image" className="w-full h-full rounded-full object-cover"/>
           </div>
           <Input
             title="이메일"
