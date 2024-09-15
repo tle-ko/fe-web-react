@@ -106,12 +106,12 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
 
   return (
     <div className="flex mt-24 gap-10 w-full items-start">
-      <button className="flex flex-col items-center gap-4 cursor-pointer group"
+      <button className="flex flex-col items-center gap-4 cursor-pointer group hover-scale"
         onClick={() => setActiveContainer('detail')}>
-        <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-hover cursor-pointer">
+        <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-main cursor-pointer">
           <FaChevronLeft size="1.5rem" color="white" />
         </div>
-        <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-hover">문제<br />보기</p>
+        <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-main">문제<br />보기</p>
       </button>
 
       <div className='w-full MainGrid1to3 min-w-96'>

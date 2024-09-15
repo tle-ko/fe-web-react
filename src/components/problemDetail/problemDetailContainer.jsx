@@ -60,11 +60,11 @@ export default function ProblemDetailContainer({ problemData }) {
               <p className="longSentence" ref={outputDescriptionRef} dangerouslySetInnerHTML={{ __html: outputDescription }}></p>
             </div>
           </div>
-          <button className="flex flex-col gap-4 cursor-pointer group" onClick={handleActiveContainer}>
+          <button className="flex flex-col h-fit items-center gap-4 cursor-pointer group hover-scale" onClick={handleActiveContainer}>
             <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-main cursor-pointer">
               <FaChevronRight size="1.5rem" color="white" />    
             </div>
-            <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-main">TLE<br/>분석<br/>리포트</p>
+            <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-main">문제<br/>분석</p>
           </button>
         </div>
       ) : (
