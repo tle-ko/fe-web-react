@@ -41,3 +41,11 @@
 .animate-drop-down {
   animation: dropdown 0.3s ease-out;
 }
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.1);
+}

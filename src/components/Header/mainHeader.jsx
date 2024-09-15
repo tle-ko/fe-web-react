@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logoWhite from '../../assets/images/logo-white.svg';
 import { isLoggedIn, removeToken, getUserName, getUserProfile } from '../../auth';
@@ -52,15 +52,19 @@ export default function Header() {
     };
   }, [dropdownRef]);
 
-
   return (
     <div className="w-full h-16 fixed top-0 left-0 z-20 px-4 py-3 bg-color-blue-main text-white text-xl flex justify-center items-center min-w-[48rem]">
       <div className='w-full flex justify-between items-center px-36 gap-12'>
-        <Link className="w-14" to="/"><img src={logoWhite} alt='logo' /></Link>
+        <Link className="w-14 hover-scale" to="/"><img src={logoWhite} alt='logo' /></Link>
         <div className='flex flex-row justify-between items-center w-full'>
           <div className="flex gap-8">
-            <p className='font-cafe24 cursor-pointer' onClick={(e) => handleProtectedLinkClick(e, '/problem')}>Problem</p>
-            <Link className='font-cafe24' to="/crew">Crew</Link>
+            <p className='font-cafe24 cursor-pointer hover-scale' 
+               onClick={(e) => handleProtectedLinkClick(e, '/problem')}>
+              Problem
+            </p>
+            <Link className='font-cafe24 hover-scale' to="/crew">
+              Crew
+            </Link>
           </div>
 
           {loggedIn ? (
@@ -70,7 +74,7 @@ export default function Header() {
                 <div className="justify-start items-center gap-3 flex cursor-pointer">
                   <p className="text-right text-white text-base font-medium cursor-pointer">{username} 님</p>
                 </div>
-                <img className="w-9 h-9 rounded-full" src={profileImage} alt="profile"/>
+                <img className="w-9 h-9 rounded-full object-cover" src={profileImage} alt="profile"/>
               </div>
               {dropdownVisible && (
                 <div className="absolute top-full mt-2 p-4 bg-white opacity-90 border-color-gray-200 flex flex-col justify-start rounded-xl animate-drop-down">
@@ -80,19 +84,18 @@ export default function Header() {
                   <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
                   to="/myPage">
                     마이 페이지</Link>
-                  <Link className="text-gray-600 text-sm p-2 underline whitespace-nowrap hover:text-color-blue-main"
+                  <p className="text-gray-600 text-sm p-2 underline whitespace-nowrap cursor-pointer hover:text-color-blue-main"
                   onClick={handleLogout}>
-                    로그아웃</Link>
+                    로그아웃</p>
                 </div>
               )}
             </div>
           ) : (
             <div className='flex gap-6'>
-              <Link className="underline whitespace-nowrap" to="/signin">sign in</Link>
-              <Link className="whitespace-nowrap" to="/signup">sign up</Link>
+              <Link className="underline whitespace-nowrap hover-scale" to="/signin">sign in</Link>
+              <Link className="whitespace-nowrap hover-scale" to="/signup">sign up</Link>
             </div>
           )}
-
         </div>
       </div>
     </div>
