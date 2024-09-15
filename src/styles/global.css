@@ -46,7 +46,7 @@
   }
 
   button {
-    @apply cursor-pointer text-inherit border-0 tracking-m1;
+    @apply cursor-pointer text-inherit border-0 tracking-m1 transition duration-300 ease-out;
   }
 }
 
