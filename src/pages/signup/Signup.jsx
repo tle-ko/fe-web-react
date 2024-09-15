@@ -102,9 +102,9 @@ export default function Signup() {
           });
 
           if (loginResponse.status === 200) {
-            const { token, username, profile_image } = loginResponse.data;
+            const { token, id, username, profile_image } = loginResponse.data;
             setToken(token);
-            setUserInfo(username, profile_image);
+            setUserInfo(id, username, profile_image);
             navigate('/crew');
             window.location.reload();
           } else {
