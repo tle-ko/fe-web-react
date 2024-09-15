@@ -6,7 +6,6 @@ import LoadingSpinner from '../common/analysisLoadingSpinner';
 export default function ProblemAnalysisLoading({setActiveContainer}) {
     const [ideaData, setIdeaData] = useState([]);
     const [currentFact, setCurrentFact] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
       fetch('/data/ideaData.json')
@@ -25,10 +24,9 @@ export default function ProblemAnalysisLoading({setActiveContainer}) {
   useEffect(() => {
     if (ideaData.length > 0) {
         const interval = setInterval(() => {
-            setCurrentIndex(prevIndex => {
+          setCurrentFact(prevIndex => {
                 const newIndex = (prevIndex + 1) % ideaData.length;
-                setCurrentFact(ideaData[newIndex].fact);
-                return newIndex;
+                return ideaData[newIndex].fact;
             });
         }, 8000);
 
@@ -37,8 +35,8 @@ export default function ProblemAnalysisLoading({setActiveContainer}) {
   }, [ideaData]);
 
     return (
-    <div className="flex mt-24 gap-10 w-full items-start">
-    <button className="flex flex-col items-center gap-4 cursor-pointer group"
+    <div className="inline-flex mt-24 gap-10 w-full min-w-fit items-start">
+    <button className="flex flex-col items-center gap-4 cursor-pointer group hover-scale"
         onClick={() => setActiveContainer('detail')}>
         <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-hover cursor-pointer">
           <FaChevronLeft size="1.5rem" color="white" />
@@ -50,7 +48,7 @@ export default function ProblemAnalysisLoading({setActiveContainer}) {
         <div className="flex flex-col justify-center items-center m-10">
           <LoadingSpinner />
           <p className="text-gray-900 text-lg mt-20">문제 분석을 불러오는 중이에요!</p>
-          <p className="text-gray-600 text-sm mt-4">{currentFact}</p>
+          <p className="text-gray-600 text-sm mt-4 whitespace-break-spaces">{currentFact}</p>
         </div>
       </div>
     </div>
