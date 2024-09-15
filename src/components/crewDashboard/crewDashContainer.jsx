@@ -39,7 +39,7 @@ export default function CrewDashContainer({ userId }) {
           withCredentials: true
         });
         if (response.status === 200) {
-          setStatistics(response.data); // 추가: statistics 데이터 설정
+          setStatistics(response.data); 
         } else {
           console.error("크루 분석 데이터를 불러올 수 없어요.", response.statusText);
         }
@@ -49,25 +49,24 @@ export default function CrewDashContainer({ userId }) {
     };
 
     fetchCrewData();
-    fetchStatisticsData(); // 추가: 통계 데이터 호출
+    fetchStatisticsData(); 
   }, [id]);
 
   return (
     <div className="flex flex-col gap-6 mt-20">
       {crew ? <Notice content={crew.notice} /> : 
-        // 로딩 스피너 적용
         <div className="w-full p-20">
           <div className="flex flex-col justify-center items-center m-10">
             <DataLoadingSpinner />
           </div>
         </div>}
-      <div className="w-full grid grid-cols-7 gap-6">
+      <div className="w-full DashboardGrid"> 
         {crew && statistics && ( 
           <>
-            <div className="col-span-2 min-w-28">
-              <LeftDashboard crew={crew} statistics={statistics} /> 
+            <div className="min-w-28">
+              <LeftDashboard crew={crew} statistics={statistics} className="min-w-28" /> 
             </div>
-            <div className="col-span-5 min-w-96">
+            <div className="min-w-96">
               <RightDashboard crew={crew} statistics={statistics} crews={crews} problems={problemData} userId={userId} userData={userData} />
             </div>
           </>
