@@ -18,9 +18,14 @@
     return !!getToken();
   };
 
-  export const setUserInfo = (username, profile_image) => {
+  export const setUserInfo = (id, username, profile_image) => {
+    localStorage.setItem('id', id); 
     localStorage.setItem('username', username);
     localStorage.setItem('profile_image', profile_image);
+  };
+
+  export const getUserId = () => {
+    return localStorage.getItem('id');
   };
 
   export const getUserName = () => {
