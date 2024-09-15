@@ -8,54 +8,58 @@ const SolvedProbGraph = ({ crew }) => {
 
   useEffect(() => {
     if (!crew || !crew.tags) return;
-  
+
     const tagsToTrack = [
       'math', 'implementation', 'greedy', 'string', 'data_structures', 'graphs', 'dp', 'geometry'
     ];
-  
+
     const tagCount = tagsToTrack.reduce((acc, tag) => {
       acc[tag] = 0;
       return acc;
     }, {});
-  
-    let totalTrackedProblems = 0; // 추적하는 태그들의 문제 수 합계
-  
-    // 각 태그의 problem_count를 누적하여 계산
+
+    let totalTrackedProblems = 0;
+
+    // 태그 데이터 처리
     crew.tags.forEach(tag => {
       if (tagsToTrack.includes(tag.key)) {
-        tagCount[tag.key] = tag.problem_count; // 태그의 문제 수를 바로 할당
-        totalTrackedProblems += tag.problem_count; // 추적한 태그들의 문제 수 누적
+        tagCount[tag.key] = tag.problem_count;
+        totalTrackedProblems += tag.problem_count;
       }
     });
-  
-    // 카테고리와 시리즈 데이터 설정 (각 태그의 문제 수를 그대로 사용)
+
     setCategories(tagsToTrack.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)));
     setSeries([{
       name: '태그 개수',
-      data: tagsToTrack.map(tag => tagCount[tag]) // 태그별 problem_count 사용
+      data: tagsToTrack.map(tag => tagCount[tag]) 
     }]);
-  
-    // tagData 설정 (태그 정보로 리스트 구성)
-    setTagData(crew.tags.map(tag => {
-      if (tagsToTrack.includes(tag.key)) {
+
+    const processedTagData = crew.tags
+      .filter(tag => tagsToTrack.includes(tag.key))
+      .map(tag => {
         const percentage = totalTrackedProblems > 0
-          ? ((tag.problem_count / totalTrackedProblems) * 100).toFixed(1) // 비율을 총 tracked 문제 수로 계산
+          ? ((tag.problem_count / totalTrackedProblems) * 100).toFixed(1)
           : 0;
         return {
-          tag: tag.label.ko, // 한글 태그명 사용
+          tag: tag.label.ko,
           count: tag.problem_count,
           percentage
         };
-      }
-      return null;
-    }).filter(Boolean)); // null 값 제거
-  
+      })
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5); // 상위 5개의 태그만 선택
+
+    setTagData(processedTagData);
   }, [crew]);
 
-  // 데이터가 없는 경우 처리
+  // 데이터가 없는 경우 렌더링 중지
   if (!series || series.length === 0 || crew.problem_count === 0) {
-    return null; // 데이터가 없으면 차트 렌더링 중지
+    return null;
   }
+
+  // 최대 count 값을 5배수로
+  const maxCount = Math.max(...series[0]?.data || [0]);
+  const yAxisMax = Math.ceil(maxCount / 5) * 5;
 
   const chartOptions = {
     chart: {
@@ -76,10 +80,11 @@ const SolvedProbGraph = ({ crew }) => {
       categories: categories
     },
     yaxis: {
-      max: Math.max(...Object.values(series[0]?.data || [0])) * 1.5,
-      tickAmount: Math.ceil((Math.max(...Object.values(series[0]?.data || [0])) * 1.5) / 5),
+      min: 0,
+      max: yAxisMax, 
+      tickAmount: yAxisMax / 5, // 눈금 개수를 5로 나누어 지정
       labels: {
-        formatter: (value) => Math.ceil(value / 5) * 5
+        formatter: (value) => Math.ceil(value) 
       }
     }
   };
@@ -88,7 +93,7 @@ const SolvedProbGraph = ({ crew }) => {
     <div className="box flex flex-col justify-start">
       <div className="flex justify-between gap-4">
         <div className="text-gray-900 text-lg font-bold font-cafe24"><p>크루 알고리즘 분석</p></div>
-        <p className="text-gray-900 text-base font-normal">총 {crew.problem_count}개</p> {/* 수정: crew.problem_count 사용 */}
+        <p className="text-gray-900 text-base font-normal">총 {crew.problem_count}개</p>
       </div>
       {crew.problem_count > 0 ? (
         <div className="solved-prob-graph relative flex flex-col">
@@ -106,6 +111,7 @@ const SolvedProbGraph = ({ crew }) => {
               <div>비율</div>
             </div>
             <ul>
+              {/* 상위 5개의 태그만 리스트로 표시 */}
               {tagData.map((data, index) => (
                 <li key={index} className="grid grid-cols-3 gap-4 border-b py-4 text-center text-gray-800 text-sm font-semibold whitespace-nowrap">
                   <div>#{data.tag}</div>
