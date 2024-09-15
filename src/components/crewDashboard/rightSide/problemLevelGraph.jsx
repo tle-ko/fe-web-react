@@ -7,21 +7,18 @@ const ProblemLevelGraph = ({ statistics }) => {
   const [problemCounts, setProblemCounts] = useState([]);
 
   useEffect(() => {
-    // statistics가 있는지 확인
     if (!statistics || !statistics.difficulties) return;
 
     const newLabels = [];
     const newProblemCounts = [];
     let totalProblems = 0;
 
-    // statistics에서 difficulties 데이터를 사용
     statistics.difficulties.forEach(difficultyData => {
-      newLabels.push(`Lv. ${difficultyData.difficulty}`); // 난이도 레벨
-      newProblemCounts.push(difficultyData.problem_count); // 문제 수
-      totalProblems += difficultyData.problem_count; // 전체 문제 수 계산
+      newLabels.push(`Lv. ${difficultyData.difficulty + 1}`);
+      newProblemCounts.push(difficultyData.problem_count);
+      totalProblems += difficultyData.problem_count;
     });
 
-    // 전체 문제 수를 기반으로 각 난이도의 비율을 계산
     const newSeries = newProblemCounts.map(count => (count / totalProblems) * 100);
 
     setSeries(newSeries);
@@ -29,26 +26,39 @@ const ProblemLevelGraph = ({ statistics }) => {
     setProblemCounts(newProblemCounts);
   }, [statistics]);
 
-  // 차트 렌더링 전에 데이터가 준비되었는지, 크기가 유효한지 확인
   if (!statistics || statistics.problem_count === 0 || series.length === 0) {
-    return null; // 데이터가 없으면 차트 렌더링 중지
+    return null;
   }
 
   const chartOptions = {
     chart: {
       type: 'donut',
       fontFamily: 'inherit',
-      height: 100 
+      height: 350,
     },
     labels: labels,
     legend: {
-      position: 'right',
-      offsetY: 0,
-      height: 230,
-      fontFamily: 'inherit'
+      position: 'right', 
+      width: '20%',
+      height: 350,
+      fontSize: '14px',
+      markers: {
+        width: 12,
+        height: 12,
+      },
+      itemMargin: {
+        vertical: 5,
+      },
+    },
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '65%',
+        },
+      },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     tooltip: {
       y: {
@@ -56,23 +66,23 @@ const ProblemLevelGraph = ({ statistics }) => {
           const total = series.reduce((acc, value) => acc + value, 0);
           const percentage = (series[seriesIndex] / total) * 100;
           return `${percentage.toFixed(1)}% (${problemCounts[seriesIndex]} 문제)`;
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   return (
-    <div className="box flex flex-col justify-start gap-10">
-      <div className="flex gap-4">
-        <div className="text-gray-900 text-lg font-bold font-cafe24">
-          <p>문제 난이도</p>
-        </div>
-        <p className="text-gray-900 text-base font-normal">총 {statistics.problem_count}개</p> {/* 총 문제 수를 statistics.problem_count로 표시 */}
+    <div className="min-h-40 box flex flex-col justify-start gap-10">
+      <div className="w-full flex flex-wrap gap-4 justify-between">
+        <p className="text-gray-900 text-lg font-bold font-cafe24">
+          문제 난이도
+        </p>
+        <p className="text-gray-900 text-base font-normal">총 {statistics.problem_count}개</p>
       </div>
       {statistics.problem_count > 0 ? (
         <div className="solved-prob-graph relative flex flex-col gap-10">
-          <div className="chart-wrap">
-            <div id="chart">
+          <div className="chart-wrap min-h-32 max-h-72">
+            <div id="chart min-h-32">
               <ReactApexChart options={chartOptions} series={series} type="donut" width="100%" />
             </div>
           </div>
