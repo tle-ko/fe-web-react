@@ -27,7 +27,7 @@ export default function Router() {
         <Route path="/problem" element={<ProblemMain />}>
           <Route path=":id" element={<ProblemDetail />} />
         </Route>
-        <Route path="/myPofolio" element={<MyPortfolio />} />
+        <Route path="/myPortfolio" element={<MyPortfolio />} />
       </Routes>
     </BrowserRouter>
   );
