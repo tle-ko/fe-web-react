@@ -30,10 +30,16 @@ module.exports = {
           main: '#E84057',
           java: '#E11F21'
         },
-        'color-green': '#03BBA3',
+        'color-green': {
+          default: '#03BBA3',
+          w50: '#81DDD1',
+        },
         'color-yellow': {
           default: '#FFB902',
           w50: '#FFCA41',
+        },
+        'color-pink': {
+          w50: '#FAB6DB',
         }
       },
       fontFamily: {
