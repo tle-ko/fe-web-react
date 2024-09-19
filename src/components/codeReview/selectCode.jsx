@@ -10,37 +10,23 @@ const SelectCode = ({ onSelectionChange, highlightedStart, highlightedEnd }) => 
   useEffect(() => {
     const fetchCodeData = async () => {
       try {
-
-        const response = await fetch('http://localhost:3000/data/codeData.json'); 
+        const response = await fetch('http://localhost:3000/data/codeData.json');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
         setCode(data.code);
 
-
         const newLineCount = (data.code.match(/\n/g) || []).length + 1;
         setLineNumbers(newLineCount);
       } catch (error) {
         console.error('Failed to fetch code data:', error);
-        setCode('Error loading code'); 
+        setCode('Error loading code');
       }
     };
 
     fetchCodeData();
   }, []);
-
-  const handleCodeChange = (e) => {
-    const newCode = e.target.value;
-    setCode(newCode);
-
-    const newLineCount = (newCode.match(/\n/g) || []).length + 1;
-    setLineNumbers(newLineCount);
-
-    setSelectedStart(null);
-    setSelectedEnd(null);
-    onSelectionChange(null, null);
-  };
 
   const handleLineNumberClick = (lineNumber) => {
     if (selectedStart === lineNumber && selectedEnd === lineNumber) {
@@ -59,10 +45,15 @@ const SelectCode = ({ onSelectionChange, highlightedStart, highlightedEnd }) => 
 
   const getLineNumberStyle = (index) => {
     let style = {};
-    if ((highlightedStart !== null && highlightedEnd !== null) && (index >= highlightedStart && index <= highlightedEnd)) {
+    if (
+      highlightedStart !== null &&
+      highlightedEnd !== null &&
+      index >= highlightedStart &&
+      index <= highlightedEnd
+    ) {
       style = { backgroundColor: 'rgba(66, 153, 225, 0.25)', color: 'black' };
     }
-    if ((selectedStart !== null && selectedEnd !== null) && (index >= selectedStart && index <= selectedEnd)) {
+    if (selectedStart !== null && selectedEnd !== null && index >= selectedStart && index <= selectedEnd) {
       style = { ...style, backgroundColor: 'rgba(200, 200, 200, 0.5)' };
     }
     if (selectedStart !== null && selectedEnd === null && index === selectedStart) {
@@ -91,6 +82,3 @@ const SelectCode = ({ onSelectionChange, highlightedStart, highlightedEnd }) => 
 };
 
 export default SelectCode;
-
-
-
