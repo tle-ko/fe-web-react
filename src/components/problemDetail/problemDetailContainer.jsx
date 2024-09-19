@@ -20,8 +20,8 @@ export default function ProblemDetailContainer({ problemData }) {
   }
 
   // 기본값 설정
-  const timeLimit = problemData?.limits?.time_limit?.value || 'N/A';
-  const memoryLimit = problemData?.limits?.memory?.value || 'N/A';
+  const timeLimit = problemData?.time_limit?.value || 'N/A';
+  const memoryLimit = problemData?.memory_limit?.value || 'N/A';
   const description = problemData?.description || '설명 없음';
   const inputDescription = problemData?.input_description || '입력 설명 없음';
   const outputDescription = problemData?.output_description || '출력 설명 없음';

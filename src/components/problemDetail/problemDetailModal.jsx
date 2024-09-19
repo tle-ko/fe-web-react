@@ -18,8 +18,8 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
 
   useEffect(() => {
     if (problemData) {
-      setTimeLimit(problemData.limits.time_limit.value);
-      setMemoryLimit(problemData.limits.memory.value);
+      setTimeLimit(problemData.time_limit.value);
+      setMemoryLimit(problemData.memory_limit.value);
       setTitle(problemData.title);
       setProblemUrl(problemData.link);
       setProblemDescription(problemData.description);
@@ -75,7 +75,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     };
 
     try {
-      const response = await client.patch(`/api/v1/problem/${problemData.id}/detail`, data, {
+      const response = await client.patch(`/api/v1/problem/${problemData.problem_id}/detail`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -118,7 +118,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
 
   const handleDelete = async () => {
     try {
-      const response = await client.delete(`/api/v1/problem/${problemData.id}/detail`, {
+      const response = await client.delete(`/api/v1/problem/${problemData.problem_id}/detail`, {
         headers: {
           'Content-Type': 'application/json',
         },
