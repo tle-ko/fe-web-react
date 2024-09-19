@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "../common/modal";
 import LanguageTag from "../common/languageTag";
 import AlertContainer from "../common/alertContainer";
-import { FaCircleUser } from "react-icons/fa6";
 import Textarea from "../common/textarea";
+import ProfileImg from "../../../src/assets/images/profile.svg"; 
 
 export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
   const [message, setMessage] = useState("");
@@ -64,10 +64,15 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
           </div>
         </div>
         <div className="pr-2 pb-3 border-b border-gray-200 flex-col justify-start items-start gap-3 inline-flex">
-          <div className=" text-gray-900 text-lg font-bold">현재 인원</div>
-          <div className="justify-start items-center gap-2 inline-flex">
-            {Array.from({ length: crew.members.count }).map((_, index) => (
-              <FaCircleUser key={index} className="w-8 h-8 text-gray-500" />
+          <div className="text-gray-900 text-lg font-bold">현재 인원</div>
+          <div className="justify-start items-center inline-flex">
+            {Array.from({ length: crew.member_count.count }).map((_, index) => (
+              <img
+                key={index}
+                src={ProfileImg}
+                alt="User Profile"
+                className="w-8 h-8 rounded-full object-cover text-gray-500"
+              />
             ))}
           </div>
         </div>
