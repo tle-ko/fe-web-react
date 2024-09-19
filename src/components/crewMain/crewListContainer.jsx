@@ -1,3 +1,4 @@
+// crewListContainer
 import CrewList from "./crewList";
 import TagFilter from "./tagFilter";
 import Pagination from "../../components/common/pagiNation";
@@ -13,10 +14,12 @@ export default function CrewListContainer() {
   const [pageIndex, setPageIndex] = useState(0);
   const numOfPage = 12;
   const [selectedTags, setSelectedTags] = useState({ languages: [], tiers: [] });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await client.get('api/v1/crews/recruiting', {
           withCredentials: true
         });
@@ -28,6 +31,8 @@ export default function CrewListContainer() {
         }
       } catch (error) {
         console.error('Error fetching crew data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -65,7 +70,7 @@ export default function CrewListContainer() {
         <>
           <div className="containerTitle">크루 목록</div>
           <TagFilter onUpdateTags={handleUpdateTags} />
-          <CrewList data={filteredCrews} pageIndex={pageIndex} numOfPage={numOfPage} />
+          <CrewList filters={filteredCrews} pageIndex={pageIndex} numOfPage={numOfPage} isLoading={isLoading} />
           <Pagination 
             totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
             currentPage={pageIndex + 1} 

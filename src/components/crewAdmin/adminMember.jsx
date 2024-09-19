@@ -74,7 +74,7 @@ export default function AdminMember() {
   }
 
   return (
-    <div className="w-4/5 flex flex-col gap-6">
+    <div className="w-full col-span-3 flex flex-col gap-6">
       <section className="box flex flex-col gap-6">
         <h2 className="font-bold text-lg font-cafe24">크루 가입 신청 현황</h2>
         <div className="flex flex-col gap-6">
