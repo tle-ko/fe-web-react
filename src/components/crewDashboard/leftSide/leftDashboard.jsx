@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 
 export default function LeftDashboard({ crew, statistics }) {
   const { id } = useParams();
-  const [members, setMembers] = useState([]); // 새로운 멤버 데이터 상태
   const [host, setHost] = useState(null); // 호스트 상태
   const [crewMembers, setCrewMembers] = useState([]); // 크루 멤버 상태
 
@@ -23,7 +22,6 @@ export default function LeftDashboard({ crew, statistics }) {
           const hostData = membersData.find(member => member.is_captain);
           const crewMembersData = membersData.filter(member => !member.is_captain);
 
-          setMembers(membersData); // 전체 멤버 저장
           setHost(hostData); // 호스트 설정
           setCrewMembers(crewMembersData); // 일반 멤버 설정
         } else {
@@ -92,7 +90,7 @@ export default function LeftDashboard({ crew, statistics }) {
           ))}
         </div>
       </div>
-      <SolvedProbGraph crew={statistics} /> {/* SolvedProbGraph에 statistics 전달 */}
+      <SolvedProbGraph crew={statistics} />
     </div>
   );
 }
