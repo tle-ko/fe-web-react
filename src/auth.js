@@ -19,11 +19,23 @@
   };
 
   export const setUserInfo = (id, username, profile_image) => {
-    localStorage.setItem('id', id); 
+    localStorage.setItem('id', id);
     localStorage.setItem('username', username);
-    localStorage.setItem('profile_image', profile_image);
+    
+    if (profile_image && profile_image.startsWith('blob:')) {
+      fetch(profile_image)
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            localStorage.setItem('profile_image', reader.result);
+          }
+          reader.readAsDataURL(blob);
+        });
+    } else {
+      localStorage.setItem('profile_image', profile_image);
+    }
   };
-
   export const getUserId = () => {
     return localStorage.getItem('id');
   };
@@ -33,5 +45,7 @@
   };
 
   export const getUserProfile = () => {
-    return localStorage.getItem('profile_image');
+    const profileImage = localStorage.getItem('profile_image');
+    const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
+    return profileImage && profileImage.startsWith('data:') ? profileImage : profileImage || defaultProfileImage;
   };
