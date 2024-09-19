@@ -71,7 +71,7 @@ export default function MyCrew() {
                 const latestActivity = crew.latest_activity;
 
                 return (
-                  <div key={crew.id} className="box h-full hidden-scrollbar">
+                  <div key={crew.crew_id} className="box h-full hidden-scrollbar">
                     <div className="h-full flex-col justify-between items-start gap-6 inline-flex">
                       <div className="w-full flex-col justify-start items-start gap-3 flex">
                         <div className="w-full flex-col justify-start items-start gap-6 flex">
@@ -84,17 +84,17 @@ export default function MyCrew() {
                           <div className="text-color-blue-main font-semibold">
                             {latestActivity?.name}
                           </div>
-                          {latestActivity?.date_start_at && latestActivity?.date_end_at && (
+                          {latestActivity?.start_at && latestActivity?.end_at && (
                             <div className="flex text-gray-700 font-medium gap-1">
-                              <p>{formatDate(latestActivity.date_start_at)}</p>
+                              <p>{formatDate(latestActivity.start_at)}</p>
                               <p>~</p>
-                              <p>{formatDate(latestActivity.date_end_at)}</p>
+                              <p>{formatDate(latestActivity.end_at)}</p>
                             </div>
                           )}
                         </div>
                       </div>
                       <div className="w-full flex justify-end items-end gap-3">
-                        <Link to={`/crew/${crew.id}`}>
+                        <Link to={`/crew/${crew.crew_id}`}>
                           <Button
                             buttonSize="detailBtn"
                             colorStyle="skyBlue"
