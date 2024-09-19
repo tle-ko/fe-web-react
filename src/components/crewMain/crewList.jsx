@@ -2,82 +2,25 @@ import React, { useState, useEffect } from "react";
 import Button from "../common/button";
 import LanguageTag from "../common/languageTag";
 import ApplyModal from "./applyModal";
-import { client } from "../../utils";
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
+import { client } from "../../utils";
 
-export default function CrewList({ pageIndex, numOfPage, filters }) {
-  const [crews, setCrews] = useState([]);
-  const [filteredCrews, setFilteredCrews] = useState([]);
+export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
   const [pageData, setPageData] = useState([]);
   const [modalStates, setModalStates] = useState({});
   const [selectedCrew, setSelectedCrew] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await client.get('api/v1/crews/recruiting');
-        if (response.status === 200) {
-          setCrews(response.data);
-        } else {
-          console.error('크루 데이터를 불러올 수 없어요.', response.statusText);
-        }
-      } catch (error) {
-        console.error('크루 데이터를 불러오는 데 문제가 발생했어요.', error);
-      } finally {
-        setIsLoading(false); // 데이터를 불러온 후 로딩 상태 해제
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const safeFilters = {
-      languages: filters?.languages || [],
-      tiers: filters?.tiers || [],
-    };
-
-    const doesTierMatch = (crewTier, selectedTiers) => {
-      if (selectedTiers.length === 0) return true;
-
-      const tierMapping = {
-        '브론즈': '브론즈 이상',
-        '실버': '실버 이상',
-        '골드': '골드 이상',
-        '플레티넘': '플래티넘 이상',
-        '다이아': '다이아 이상',
-        '루비': '루비 이상',
-        '마스터': '마스터 이상'
-      };
-
-      return selectedTiers.some(selectedTier => {
-        const baseTier = crewTier.split(' ')[0];
-        return tierMapping[baseTier] === selectedTier;
-      });
-    };
-
-    const filtered = crews.filter(crew => {
-      const matchesLanguage = safeFilters.languages.length === 0 || crew.tags.some(tag => tag.type === 'language' && safeFilters.languages.includes(tag.name));
-      const matchesTier = safeFilters.tiers.length === 0 || crew.tags.some(tag => tag.type === 'level' && doesTierMatch(tag.name, safeFilters.tiers));
-      return matchesLanguage && matchesTier;
-    });
-
-    setFilteredCrews(filtered);
-  }, [crews, filters]);
 
   useEffect(() => {
     const startIndex = pageIndex * numOfPage;
     const endIndex = startIndex + numOfPage;
-    setPageData(filteredCrews.slice(startIndex, endIndex));
+    setPageData(filters.slice(startIndex, endIndex));
 
-    const initialModalStates = filteredCrews.reduce((acc, crew) => ({ ...acc, [crew.id]: false }), {});
+    const initialModalStates = filters.reduce((acc, crew) => ({ ...acc, [crew.crew_id]: false }), {});
     setModalStates(initialModalStates);
-  }, [filteredCrews, pageIndex, numOfPage]);
+  }, [filters, pageIndex, numOfPage]);
 
   const handleOpenModal = (crewId) => {
-    setSelectedCrew(crews.find(crew => crew.id === crewId));
+    setSelectedCrew(filters.find(crew => crew.crew_id === crewId));
     setModalStates((prevState) => ({
       ...prevState,
       [crewId]: true,
@@ -95,7 +38,7 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
     if (!selectedCrew) return;
 
     try {
-      const response = await client.post(`/api/v1/crew/${selectedCrew.id}/apply`, { message }, {
+      const response = await client.post(`/api/v1/crew/${selectedCrew.crew_id}/applications`, { message }, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -104,38 +47,36 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
 
       if (response.status === 200 || response.status === 201) {
         console.log("크루 신청이 완료되었습니다.");
-        handleCloseModal(selectedCrew.id);
+        handleCloseModal(selectedCrew.crew_id);
       } else {
         console.error('Failed to apply for the crew:', response.statusText);
       }
     } catch (error) {
       console.error('Error applying for the crew:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <div>
       {isLoading ? (
-        <div className="w-full p-20">
-          <div className="flex flex-col justify-center items-center m-10">
-            <DataLoadingSpinner /> {/* 로딩 중일 때 표시 */}
+        <div className="w-full p-12">
+          <div className="flex flex-col justify-center items-center">
+            <DataLoadingSpinner />
           </div>
         </div>
-      ) : filteredCrews.length === 0 || pageData.length === 0 ? (
+      ) : pageData.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
           </div>
-          <p>조건에 해당되는 크루가 없어요 😓</p> {/* 필터링된 크루가 없을 때 표시 */}
+          <p>조건에 해당되는 크루가 없어요 😓</p>
         </div>
       ) : (
         <div className="cardGrid3 w-full flex-col justify-start items-start">
           {pageData.map((crew) => (
-            <div key={crew.id} className="box justify-center items-start gap-3">
+            <div key={crew.crew_id} className="box justify-center items-start gap-3">
               <div className="w-full flex-col justify-center items-start gap-4 flex flex-grow">
                 <div className="w-full flex justify-between items-center">
                   <div className="justify-start items-center gap-2 flex">
@@ -147,12 +88,12 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
                       buttonSize="detailBtn"
                       colorStyle="skyBlue"
                       content="신청하기"
-                      onClick={() => handleOpenModal(crew.id)}
+                      onClick={() => handleOpenModal(crew.crew_id)}
                     />
-                    {modalStates[crew.id] && (
+                    {modalStates[crew.crew_id] && (
                       <ApplyModal
-                        isOpen={modalStates[crew.id]}
-                        onClose={() => handleCloseModal(crew.id)}
+                        isOpen={modalStates[crew.crew_id]}
+                        onClose={() => handleCloseModal(crew.crew_id)}
                         onApply={handleApply}
                         crew={selectedCrew}
                       />
@@ -162,7 +103,7 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
                 <div className="w-full flex-col justify-center items-start gap-4 flex">
                   <div className="justify-start items-center gap-3 inline-flex text-sm">
                     <div className="text-color-blue-main ">인원</div>
-                    <div className="text-gray-700">{crew.members.count}명 / {crew.members.max_count}명</div>
+                    <div className="text-gray-700">{crew.member_count.count}명 / {crew.member_count.max_count}명</div>
                   </div>
                   <div className="w-full justify-start items-center gap-4 inline-flex text-sm ">
                     <p className=" text-color-blue-main whitespace-nowrap">크루 태그</p>
@@ -187,5 +128,4 @@ export default function CrewList({ pageIndex, numOfPage, filters }) {
       )}
     </div>
   );
-  
 }
