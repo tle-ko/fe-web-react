@@ -71,21 +71,23 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const difficultyDescription = getDifficultyDescription(difficultyValue);
 
   // 시간복잡도 관련
-  const timeComplexity = analysisData.time_complexity.value;
+  const timeComplexity = analysisData.time_complexity;
 
   // 힌트 관련
-  const hints = analysisData.hints;
-
-  const visibleHintContent = (index, hintItem) => {
+  const hints = analysisData.hints.map(hint => hint.split('\n'));
+  const visibleHintContent = (index, hintItems) => {
     return (
       <div className='bg-white text-gray-900 animate-fade-in'>
         <div className='inline-flex gap-2'>
           <p className="text-xl">💡</p>
-          <p className="longSentence">{hintItem}</p>
+          <div className="longSentence">
+            {hintItems}
+          </div>
         </div>
       </div>
     );
   };
+
 
   const viewHintButton = (index) => {
     return (
@@ -164,13 +166,13 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
           <p className="text-gray-600 text-md">효과적인 문제 풀이를 위해 순차적으로 제공돼요</p>
         </div>
 
-        {hints.map((hintItem, index) => (
+        {hints.map((hintItems, index) => (
           <div
             className="box w-full"
             key={index}
           >
             {visibleHintCards.includes(index) ? (
-              visibleHintContent(index, hintItem)
+              visibleHintContent(index, hintItems)
             ) : (
               viewHintButton(index)
             )}

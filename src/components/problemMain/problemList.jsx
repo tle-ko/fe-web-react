@@ -27,9 +27,9 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
               <img
                 className='w-6 h-8'
                 src={
-                  problem.difficulty.value === 1 ? Level1 :
-                  problem.difficulty.value === 2 ? Level2 :
-                  problem.difficulty.value === 3 ? Level3 :
+                  problem.analysis.difficulty.value === 1 ? Level1 :
+                  problem.analysis.difficulty.value === 2 ? Level2 :
+                  problem.analysis.difficulty.value === 3 ? Level3 :
                   Leveln
                 }
                 alt="Level Icon"
@@ -37,7 +37,7 @@ export default function ProblemList({ data, pageIndex, numOfPage }) {
               <p className='w-full text-gray-900 text-2xl font-bold truncate'>{problem.title}</p>
             </div>
             <div className='w-full flex justify-end'>
-              <Link to={`${problem.id}`}>
+              <Link to={`${problem.problem_id}`}>
                 <Button
                   buttonSize="detailBtn"
                   colorStyle="whiteBlack"
