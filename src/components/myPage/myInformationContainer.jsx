@@ -72,10 +72,11 @@ export default function MyInformationContainer() {
     const updateData = new FormData();
     updateData.append('username', username);
     updateData.append('boj_username', boj_username);
+    
     if (profile_image instanceof File) {
       updateData.append('profile_image', profile_image);
     }
-
+  
     client.patch('api/v1/user/manage', updateData, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -84,7 +85,17 @@ export default function MyInformationContainer() {
       .then(response => {
         setIsEditing(false);
         alert('정보가 성공적으로 수정되었습니다.');
-        setUserInfo(username, profile_image instanceof File ? Image : profile_image);
+        
+        if (profile_image instanceof File) {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            setUserInfo(response.data.id, username, reader.result);
+          }
+          reader.readAsDataURL(profile_image);
+        } else {
+          setUserInfo(response.data.id, username, response.data.profile_image);
+        }
+        
         window.location.reload();
       })
       .catch(error => console.error('Error updating user info:', error));
