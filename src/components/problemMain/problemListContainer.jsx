@@ -4,6 +4,7 @@ import useChildRoute from "../../hooks/useChildRoute";
 import ProblemList from './problemList';
 import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
+import DataLoadingSpinner from "../../components/common/dataLoadingSpinner";
 import { client } from '../../utils';
 
 export default function ProblemListContainer() {
@@ -39,7 +40,10 @@ export default function ProblemListContainer() {
             withCredentials: true
           });
           if (response.status === 200) {
-            setProblemData(response.data);
+            console.log(response.data);
+            // API 응답이 배열인지 객체인지 확인하고 배열로 변환
+            const data = Array.isArray(response.data) ? response.data : response.data.results;
+            setProblemData(data);
           } else {
             console.error('Failed to fetch problem data:', response.statusText);
           }
@@ -54,31 +58,31 @@ export default function ProblemListContainer() {
     }, []);
 
     useEffect(() => {
-        if (!problemData) return;
+      if (loading) return;
 
-        const searchTermConsonant = getConsonant(searchTerm.toLowerCase());
-        let exactMatches = problemData.filter(problem => problem.title.toLowerCase().includes(searchTerm.toLowerCase()));
-        let consonantMatches = problemData.filter(problem => {
-          const titleConsonant = getConsonant(problem.title.toLowerCase());
-          return titleConsonant.includes(searchTermConsonant) && !exactMatches.includes(problem);
-        });
-    
-        let filteredData = [...exactMatches, ...consonantMatches];
-        setFilteredProblemCount(filteredData.length);
-    
-        let sortedFilteredData = [...filteredData];
-        if (selectedOption === "최신순") {
-          sortedFilteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        } else if (selectedOption === "낮은순") {
-          sortedFilteredData.sort((a, b) => a.difficulty.value - b.difficulty.value);
-        } else if (selectedOption === "높은순") {
-          sortedFilteredData.sort((a, b) => b.difficulty.value - a.difficulty.value);
-        }
-    
-        const start = pageIndex * numOfPage;
-        const end = start + numOfPage;
-        setCurrentData(sortedFilteredData.slice(start, end));
-      }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption]);
+      const searchTermConsonant = getConsonant(searchTerm.toLowerCase());
+      let exactMatches = problemData.filter(problem => problem.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      let consonantMatches = problemData.filter(problem => {
+        const titleConsonant = getConsonant(problem.title.toLowerCase());
+        return titleConsonant.includes(searchTermConsonant) && !exactMatches.includes(problem);
+      });
+  
+      let filteredData = [...exactMatches, ...consonantMatches];
+      setFilteredProblemCount(filteredData.length);
+  
+      let sortedFilteredData = [...filteredData];
+      if (selectedOption === "최신순") {
+        sortedFilteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      } else if (selectedOption === "낮은순") {
+        sortedFilteredData.sort((a, b) => a.difficulty.value - b.difficulty.value);
+      } else if (selectedOption === "높은순") {
+        sortedFilteredData.sort((a, b) => b.difficulty.value - a.difficulty.value);
+      }
+  
+      const start = pageIndex * numOfPage;
+      const end = start + numOfPage;
+      setCurrentData(sortedFilteredData.slice(start, end));
+    }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption, loading]);
     
     return(
         <div>
@@ -106,14 +110,24 @@ export default function ProblemListContainer() {
                 onChange={(e) => setSelectedOption(e.target.value)}
               />
             </div>
-            <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
-            <div className='min-w-30rem'>
-              <Pagination
-              totalPage={Math.ceil(filteredProblemCount / numOfPage)}
-              currentPage={pageIndex + 1}
-              setCurrentPage={handlePageChange}
-              />
-            </div>
+            {loading ? (
+              <div className="w-full p-20">
+                <div className="flex flex-col justify-center items-center m-10">
+                  <DataLoadingSpinner />
+                </div>
+              </div>
+            ) : (
+              <>
+                <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
+                <div className='min-w-30rem'>
+                  <Pagination
+                    totalPage={Math.ceil(filteredProblemCount / numOfPage)}
+                    currentPage={pageIndex + 1}
+                    setCurrentPage={handlePageChange}
+                  />
+                </div>
+              </>
+            )}
         </>
         )} 
     </div>
