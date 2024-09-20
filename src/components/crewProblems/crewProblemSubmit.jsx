@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
-import CodeBox from '../../components/codeReview/codeBox';
+import CodeBox from './codeBox';
 import Button from '../../components/common/button';
 import ProblemHeader from './crewProblemHeader';
 import SubmitByHeader from './submitByHeader';
