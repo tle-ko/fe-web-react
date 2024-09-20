@@ -1,73 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaCircleArrowUp, FaTrash } from "react-icons/fa6";
 
-const defaultAvatar = 'https://via.placeholder.com/40'; 
-const defaultUsername = 'userundefined'; 
+const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
+const defaultUsername = '올바르지 않은 사용자';
 
-const ReviewContainer = ({ selectedStart, selectedEnd, onResetSelection, onHighlightLine }) => {
+const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+};
+
+export default function ReviewContainer({ selectedStart, selectedEnd, onResetSelection, onHighlightLine, comments, userData }) {
   const [review, setReview] = useState('');
-  const [reviews, setReviews] = useState([]);
-  const [isHovered, setIsHovered] = useState(false);
+  const [reviews, setReviews] = useState(comments);
   const [selectedReviewIndex, setSelectedReviewIndex] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const codeResponse = await fetch('http://localhost:3000/data/codeData.json');
-        const codeData = await codeResponse.json();
-
-        const userResponse = await fetch('http://localhost:3000/data/userData.json');
-        const userData = await userResponse.json();
-
-        const userMap = userData.reduce((map, user) => {
-          map[user.id] = user; 
-          return map;
-        }, {});
-
-        const reviewsWithUsers = codeData.comments.items.map(comment => ({
-          ...comment,
-          avatar: userMap[comment.created_by.id]?.image_url || defaultAvatar, 
-          user: userMap[comment.created_by.id]?.username || defaultUsername, 
-          date: new Date(codeData.created_at).toLocaleString(),
-          start: comment.line_start,
-          end: comment.line_end,
-          text: comment.content, 
-        }));
-
-        setReviews(reviewsWithUsers);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const textareaRef = useRef(null);
 
   const handleReviewChange = (e) => {
     setReview(e.target.value);
   };
 
-  const saveReview = () => {
-    if (review.trim() === '') {
-      alert('Please enter a review.');
-      return;
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+  }, [review]);
 
-    const currentDateTime = new Date();
-    const formattedDate = `${currentDateTime.getFullYear()}년 ${currentDateTime.getMonth() + 1}월 ${currentDateTime.getDate()}일 ${currentDateTime.getHours()}:${currentDateTime.getMinutes()}`;
-
+  const saveReview = () => {
+    const currentDate = new Date().toISOString(); // 현재 시간을 ISO 형식으로 변환
     const newReview = {
-      start: selectedStart,
-      end: selectedEnd,
-      text: review,
-      user: defaultUsername, 
-      avatar: defaultAvatar, 
-      date: formattedDate,
+      line_start: selectedStart,
+      line_end: selectedEnd,
+      content: review,
+      created_by: {
+        username: defaultUsername,
+        profile_image: defaultProfileImage,
+      },
+      created_at: currentDate,
     };
 
     setReviews([...reviews, newReview]);
     setReview('');
-    onResetSelection();
+    onResetSelection(); // 선택 상태 초기화
+    setSelectedReviewIndex(null); // 선택된 리뷰 인덱스 초기화
   };
 
   const handleKeyDown = (e) => {
@@ -80,14 +61,10 @@ const ReviewContainer = ({ selectedStart, selectedEnd, onResetSelection, onHighl
   const handleReviewClick = (index, start, end) => {
     if (selectedReviewIndex === index) {
       setSelectedReviewIndex(null);
-      if (onHighlightLine) {
-        onHighlightLine(null, null); 
-      }
+      onHighlightLine(null, null);
     } else {
       setSelectedReviewIndex(index);
-      if (onHighlightLine) {
-        onHighlightLine(start, end);
-      }
+      onHighlightLine(start, end);
     }
   };
 
@@ -95,32 +72,32 @@ const ReviewContainer = ({ selectedStart, selectedEnd, onResetSelection, onHighl
     const updatedReviews = reviews.filter((_, i) => i !== index);
     setReviews(updatedReviews);
     setSelectedReviewIndex(null);
-    if (onHighlightLine) {
-      onHighlightLine(null, null);
-    }
+    onHighlightLine(null, null);
   };
 
   return (
-    <div className="w-1/2 md:mt-0">
-      <div className="px-6">
+    <div className="w-full">
         {reviews.length > 0 && (
-          <div className="mt-4">
+          <div className="flex flex-col gap-6">
             {reviews
-              .sort((a, b) => a.start - b.start || a.date.localeCompare(b.date))
+              .sort((a, b) => a.line_start - b.line_start || new Date(a.created_at) - new Date(b.created_at))
               .map((item, index) => (
+                // 댓글 카드
                 <div
                   key={index}
-                  className={`border p-4 mb-4 rounded-lg cursor-pointer ${
-                    selectedReviewIndex === index ? 'bg-gray-100' : 'bg-white border-gray-300'
+                  className={`box p-5 w-full min-w-60 hover:bg-gray-50 ${
+                    selectedReviewIndex === index ? 'bg-gray-100 border-color-blue-w50' : 'bg-white border-gray-200'
                   }`}
-                  onClick={() => handleReviewClick(index, item.start, item.end)}
+                  onClick={() => handleReviewClick(index, item.line_start, item.line_end)}
+                  onMouseOver={() => onHighlightLine(item.line_start, item.line_end)}
+                  onMouseOut={() => onHighlightLine(null, null)}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex flex-col justify-between w-full">
                       <div className="flex justify-between items-center mb-2">
-                        <div className="text-sm font-semibold text-gray-700">
-                          {`라인 ${item.start} ~ ${item.end}`}
-                        </div>
+                        <span className="text-sm font-semibold text-gray-700">
+                          {`라인 ${item.line_start} ~ ${item.line_end}`}
+                        </span>
                         <div className="flex">
                           <FaTrash
                             className="w-3.5 h-3.5 text-gray-600 cursor-pointer"
@@ -133,45 +110,44 @@ const ReviewContainer = ({ selectedStart, selectedEnd, onResetSelection, onHighl
                       </div>
                       <div className="flex items-center mb-2">
                         <img
-                          src={item.avatar}
-                          alt="avatar"
-                          className="w-6 h-6 rounded-full mr-2"
+                          src={item.created_by.profile_image}
+                          alt="profile_image"
+                          className="w-6 h-6 rounded-full mr-2 object-cover"
                         />
-                        <div className="flex items-center">
-                          <div className="font-semibold text-sm text-gray-600">{item.user}</div>
-                          <div className="text-gray-500 mx-2">|</div>
-                          <div className="text-gray-400 text-sm">{item.date}</div>
+                        <div className="inline-flex justify-start items-center gap-2">
+                          <span className="font-semibold text-sm text-gray-600">{item.created_by.username}</span>
+                          <span className="text-gray-600 text-sm">|</span>
+                          <span className="text-gray-400 text-sm">{formatDate(item.created_at)}</span>
                         </div>
                       </div>
-                      <div className="text-gray-800 font-medium text-sm">{item.text}</div> {/* Display the review text here */}
+                      <p className="w-full h-fit text-gray-800 font-medium text-sm whitespace-pre-wrap break-words">{item.content}</p>
                     </div>
                   </div>
                 </div>
               ))}
           </div>
         )}
-        <div className="relative mt-24">
-          <input
-            type="text"
-            className="border border-gray-300 p-4 mb-4 block w-full rounded-lg"
-            placeholder="코드 리뷰 작성"
-            value={review}
-            onChange={handleReviewChange}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className="absolute top-4 right-5 bg-white"
-            onClick={saveReview}
-            aria-label="Save Review"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <FaCircleArrowUp className={`w-6 h-6 ${isHovered ? 'text-color-blue-main' : 'text-gray-200'}`} />
-          </button>
-        </div>
-      </div>
+        
+        {(selectedStart !== null && selectedEnd !== null) && (
+          <div className="mt-6 flex flex-row box p-4 w-full justify-between items-center">
+            <textarea
+              ref={textareaRef}
+              type="text"
+              className="w-11/12 min-w-60 h-fit longSentence resize-none"
+              placeholder="선택한 부분에 대한 리뷰를 작성해주세요"
+              value={review}
+              onChange={handleReviewChange}
+              onKeyDown={handleKeyDown}
+              style={{ overflow: 'hidden' }}
+            />
+            <FaCircleArrowUp 
+              className={`w-6 h-6 cursor-pointer ${review.trim() !== '' ? 'text-color-blue-main' : 'text-gray-200 cursor-default pointer-events-none'}`} 
+              onClick={saveReview}
+              aria-label="SaveReview"
+              disabled={review.trim() === ''}
+            />
+          </div>
+        )}
     </div>
   );
-};
-
-export default ReviewContainer;
+}

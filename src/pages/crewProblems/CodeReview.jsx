@@ -1,38 +1,37 @@
+// 코드 리뷰 페이지
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams
-import SelectCode from '../../components/codeReview/selectCode';
+import { useParams } from 'react-router-dom';
 import ProblemHeader from '../../components/crewProblems/crewProblemHeader';
 import ReviewContainer from '../../components/codeReview/reviewContainer';
-import SubmitterHeader from '../../components/crewProblems/submitterHeader';
+import SubmitProblemHeader from '../../components/crewProblems/submitProblemHeader';
+import DataLoadingSpinner from '../../components/common/dataLoadingSpinner';
+import CodeContainer from '../../components/codeReview/codeContainer';
 
-const CodeReview = () => {
-  const { problemId = 1 } = useParams(); // useParams hook to get URL params
+export default function CodeReview() {
+  const { problemId = 1 } = useParams();
   const [codeData, setCodeData] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [selection, setSelection] = useState({ start: null, end: null });
   const [highlightedLines, setHighlightedLines] = useState({ start: null, end: null });
 
   useEffect(() => {
-    const fetchCodeData = async () => {
+    const fetchData = async () => {
       try {
-        // Hardcode URL to load data for problemId 1
-        const response = await fetch('http://localhost:3000/data/codeData.json');
-        const data = await response.json();
-        setCodeData(data);
+        const [codeResponse, userResponse] = await Promise.all([
+          fetch('/data/codeData.json'),
+          fetch('/data/userData.json')
+        ]);
+        const codeData = await codeResponse.json();
+        const userData = await userResponse.json();
+        setCodeData(codeData);
+        setUserData(userData);
       } catch (error) {
-        console.error('Failed to fetch code data:', error);
-        setCodeData(null); // Handle the error and set state to null or an empty state
+        console.error('Failed to fetch data:', error);
       }
     };
 
-    fetchCodeData();
-  }, []);
-
-  // Data for the submitter header, hardcoded for demonstration
-  const submitter = {
-    name: codeData ? codeData.created_by.username : 'Unknown User',
-    time: codeData ? new Date(codeData.created_at).toLocaleString() : 'Unknown Time',
-    status: codeData ? (codeData.is_correct ? '맞았습니다' : '틀렸습니다') : 'Unknown Status',
-  };
+    fetchData();
+  }, [problemId]);
 
   const handleSelectionChange = (start, end) => {
     setSelection({ start, end });
@@ -43,46 +42,39 @@ const CodeReview = () => {
   };
 
   const handleHighlightLine = (start, end) => {
-    if (highlightedLines.start === start && highlightedLines.end === end) {
-      setHighlightedLines({ start: null, end: null });
-    } else {
-      setHighlightedLines({ start, end });
-    }
+    setHighlightedLines({ start, end });
   };
+
+  if (!codeData || !userData) {
+    return <DataLoadingSpinner />;
+  }
 
   return (
     <div>
-      <div className="main-content mt-20">
-        <div className='relative z-30'>
-          <ProblemHeader problemId={parseInt(problemId, 10)} />
-          <SubmitterHeader submitter={submitter} />
+      <div className="fixed top-16 left-0 w-full z-10">
+        <ProblemHeader problemId={parseInt(problemId, 10)} />
+        <SubmitProblemHeader submitData={codeData} />
+      </div>
+
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-8">
+          <CodeContainer
+            code={codeData.code}
+            onLineSelect={handleSelectionChange}
+            highlightedLines={highlightedLines}
+          />
         </div>
-
-        <div className="flex">
-          <div className="w-3/4">
-            {codeData ? (
-              <SelectCode
-                code={codeData.code}
-                onSelectionChange={handleSelectionChange}
-                highlightedStart={highlightedLines.start}
-                highlightedEnd={highlightedLines.end}
-              />
-            ) : (
-              <p>Loading code data...</p>
-            )}
-          </div>
-
+        <div className="col-span-4">
           <ReviewContainer
             selectedStart={selection.start}
             selectedEnd={selection.end}
             onResetSelection={resetSelection}
             onHighlightLine={handleHighlightLine}
-            comments={codeData ? codeData.comments.items : []}
+            comments={codeData.comments.items}
+            userData={userData}
           />
         </div>
       </div>
     </div>
   );
-};
-
-export default CodeReview;
+}
