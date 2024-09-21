@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import useChildRoute from "../../hooks/useChildRoute";
 import ProblemList from './problemList';
@@ -19,15 +19,15 @@ export default function ProblemListContainer() {
       setPageIndex(index - 1);
     };
 
-    const consonant = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    const consonant = useMemo(() => ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'], []);
 
-    const getConsonant = (str) => {
+    const getConsonant = useCallback((str) => {
       return str.split('').map((char) => {
         const code = char.charCodeAt(0) - 44032;
         if (code < 0 || code > 11171) return char;
         return consonant[Math.floor(code / 588)];
       }).join('');
-    };
+    }, [consonant]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProblemCount, setFilteredProblemCount] = useState(0);
@@ -36,12 +36,11 @@ export default function ProblemListContainer() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await client.get('api/v1/problems', { // 문제 검색 api
+          const response = await client.get('api/v1/problems', {
             withCredentials: true
           });
           if (response.status === 200) {
             console.log(response.data);
-            // API 응답이 배열인지 객체인지 확인하고 배열로 변환
             const data = Array.isArray(response.data) ? response.data : response.data.results;
             setProblemData(data);
           } else {
@@ -82,7 +81,7 @@ export default function ProblemListContainer() {
       const start = pageIndex * numOfPage;
       const end = start + numOfPage;
       setCurrentData(sortedFilteredData.slice(start, end));
-    }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption, loading]);
+    }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption, getConsonant, loading]);
     
     return(
         <div>
@@ -118,7 +117,12 @@ export default function ProblemListContainer() {
               </div>
             ) : (
               <>
-                <ProblemList data={currentData} pageIndex={pageIndex} numOfPage={numOfPage} />
+                <ProblemList 
+                  data={currentData} 
+                  pageIndex={pageIndex} 
+                  numOfPage={numOfPage} 
+                  isSearching={searchTerm !== ''}
+                />
                 <div className='min-w-30rem'>
                   <Pagination
                     totalPage={Math.ceil(filteredProblemCount / numOfPage)}
