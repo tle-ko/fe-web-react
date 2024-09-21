@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronLeft, FaTag } from 'react-icons/fa';
 import { RiBarChart2Fill } from 'react-icons/ri';
 import { MdAccessTimeFilled } from 'react-icons/md';
+import ReactMarkdown from 'react-markdown';
 import Button from '../common/button.jsx';
 import AnalysisLoading from './problemAnalysisLoading.jsx';
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
@@ -10,12 +11,19 @@ import '../../styles/animation.css'
 export default function ProblemAnalysisContainer({ analysisData, setActiveContainer }) {
   const [visibleHintCards, setVisibleHintCards] = useState([]);
   const timeComplexityRef = useRef(null);
+  const hintRefs = useRef([]);
 
   useEffect(() => {
     if (window.MathJax) {
       window.MathJax.typesetPromise([timeComplexityRef.current]);
     }
   }, [analysisData]);
+
+  useEffect(() => {
+    if (window.MathJax) {
+      window.MathJax.typesetPromise(hintRefs.current);
+    }
+  }, [visibleHintCards]);
 
   // 데이터 로딩 중 처리
   if (!analysisData) {
@@ -74,20 +82,28 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const timeComplexity = analysisData.time_complexity;
 
   // 힌트 관련
-  const hints = analysisData.hints.map(hint => hint.split('\n'));
+  const hints = analysisData.hints[0].split('\n\n'); // 첫 번째 인덱스의 데이터를 \n\n로 분리
   const visibleHintContent = (index, hintItems) => {
     return (
       <div className='bg-white text-gray-900 animate-fade-in'>
-        <div className='inline-flex gap-2'>
+        <div className='inline-flex gap-2 items-center'>
           <p className="text-xl">💡</p>
-          <div className="longSentence">
-            {hintItems}
+          <div className='longSentence' ref={(el) => (hintRefs.current[index] = el)}>
+          <ReactMarkdown
+              className='h-fit'
+              components={{
+                p: ({ node, ...props }) => <p className="whitespace-pre-wrap" {...props} />,
+                ol: ({ node, ...props }) => <li className="select-text" {...props} />,
+                li: ({ node, ...props }) => <li className="select-text" {...props} />,
+              }}
+          > 
+              {hintItems}
+            </ReactMarkdown>
           </div>
         </div>
       </div>
     );
   };
-
 
   const viewHintButton = (index) => {
     return (
