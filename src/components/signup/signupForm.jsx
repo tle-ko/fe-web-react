@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Input from "../../components/common/input";
 import PasswordInput from "./passwordInput";   
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
@@ -10,6 +10,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   const [emailVerified, setEmailVerified] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [codeVerified, setCodeVerified] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [codeButtonLabel, setCodeButtonLabel] = useState('인증번호 발송');
   const [codeColor, setCodeButtonColor] = useState('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
   const [codeCursor, setCodeCursor] = useState('cursor-pointer');
@@ -39,20 +41,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   };
 
   // 이메일 중복 검사
-  const checkEmailAvailability = async (email) => {
+  const checkEmailAvailability = useCallback(async (email) => {
     try {
       const response = await client.get('api/v1/auth/usability', { params: { email } });
-
-      if (response.status === 200) {
-        setEmailVerified(response.data.email.is_usable);
-      } else {
-        setEmailVerified(false);
-      }
+      setEmailVerified(response.status === 200 && response.data.email.is_usable);
     } catch (error) {
       console.error('Error checking email availability:', error);
       setEmailVerified(false);
     }
-  };
+  }, []);
+
 
   // 3초 간격으로 이메일이 사용 가능한 지 확인
   useEffect(() => {
@@ -66,7 +64,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     } else {
       setEmailVerified(false);
     }
-  }, [formData.email]);
+  }, [formData.email, checkEmailAvailability]);
 
 
   // 인증번호 전송 요청
@@ -79,24 +77,28 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
         alert("입력한 이메일로 인증번호가 발송되었습니다!");
       } else {
-        alert("잘못된 이메일 혹은 이미 동일한 이메일로 가입된 계정이 존재합니다.");
+        alert("이메일 인증번호 발송에 실패했습니다. 다시 시도해주세요.");
         setEmailVerified(false);
       }
     } catch (error) {
       console.error('Error sending verification code:', error);
+      alert("이메일 인증번호 발송 중 오류가 발생했습니다. 다시 시도해주세요.");
       setEmailVerified(false);
     }
   };
 
-  const getValidateCode = async (email, verification_code) => {
+  const getValidateCode = useCallback(async (email, verification_code) => {
+    if (isVerifying || verificationSuccess) return; // 요청 중이거나 성공했으면 추가 요청을 막습니다.
+    setIsVerifying(true); // 요청 시작
     try {
       const response = await client.post('api/v1/auth/verification', { email, verification_code });
       if (response.status === 200) {
         alert("이메일 인증 성공!");
         setCodeVerified(true);
+        setVerificationSuccess(true); // 요청 성공
         onInputChange('verification_token', response.data.verification_token);
       } else {
-        alert("올바르지 않은 인증번호입니다.");
+        alert("인증번호 확인에 실패했습니다. 다시 시도해주세요.");
         setCodeVerified(false);
       }
     } catch (error) {
@@ -104,13 +106,24 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       if (error.response) {
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
+        if (error.response.status === 400 && error.response.data[0] === '인증 코드가 만료되었습니다.') {
+          alert("인증 코드가 만료되었습니다. 새로운 인증 코드를 요청해주세요.");
+          setCodeButtonLabel('인증번호 재발송');
+          setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
+          setCodeCursor('cursor-pointer');
+          setEmailVerified(true);
+          setCodeVerified(false);
+        } else {
+          alert("인증번호 확인 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
       }
       setCodeVerified(false);
+    } finally {
+      setIsVerifying(false); // 요청 완료
     }
-  };
+  }, [onInputChange, isVerifying, verificationSuccess]);
 
-  // 3초 간격으로 인증번호가 올바른 지 확인
+  // 5초 간격으로 인증번호가 올바른 지 확인
   useEffect(() => {
     if (verificationCode && formData.email) {
       if (debounceTimeout.current) {
@@ -118,16 +131,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       }
       debounceTimeout.current = setTimeout(() => {
         getValidateCode(formData.email, verificationCode);
-      }, 300); // 300ms debounce time
+      }, 500); // 500ms debounce time
     } else {
       setCodeVerified(false);
     }
-  }, [verificationCode, formData.email]);
+  }, [verificationCode, formData.email, getValidateCode]);
 
-  
   const handleVerificationCodeChange = (e) => {
     const code = e.target.value.toUpperCase();
     setVerificationCode(code);
+    setVerificationSuccess(false); // 코드 변경 시 성공 상태 초기화
   };
 
   const handleCodeInputChange = () => {
@@ -157,7 +170,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   
       if (response.status === 200) {
         setUsernameVerified(response.data.username.is_usable);
-        console.log('Username availability:', response.data.username.is_usable);
       } else {
         setUsernameVerified(false);
       }
@@ -234,8 +246,9 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                 <Input
                   title="이메일 인증번호"
                   placeholder="인증번호 입력"
-                  value={verificationCode}
                   width={22}
+                  type="text"
+                  value={verificationCode}
                   onChange={handleVerificationCodeChange}
                   disabled={!emailVerified}
                   style={{ textTransform: 'uppercase' }}
