@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import ProblemToBeSolved from "./problemToBeSolved";
-import ProblemSolvingStatus from "./problemSolvingStatus";
+import ProblemSubmitStatus from "./problemSubmitStatus";
 import ProblemLevelGraph from "./problemLevelGraph";
 import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight, FaBookOpen } from "react-icons/fa6";
 import { client } from '../../../utils';
 
-export default function RightDashboard({ crew, statistics, crews, userId, problems, userData }) {
+export default function RightDashboard({ crew, statistics, crews, problems, userData }) {
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const [submissions, setSubmissions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (crew && crew.activities && crew.activities.length > 0) {
@@ -19,20 +19,20 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
 
   // submissions 데이터를 가져오는 함수
   const fetchSubmissionsData = async (activityId) => {
-    setIsLoading(true); // 로딩 상태 시작
+    setIsLoading(true);
     try {
-      const response = await client.get(`/api/v1/crew/activity/${activityId}/submissions`, {
+      const response = await client.get(`/api/v1/crew/activities/${activityId}`, {
         withCredentials: true
       });
       if (response.status === 200) {
-        setSubmissions(response.data);
+        setSubmissions(response.data.problems); 
       } else {
         console.error("크루 회차별 풀이 제출 데이터를 불러오지 못했어요.", response.statusText);
       }
     } catch (error) {
       console.error("크루 회차별 풀이 제출 데이터를 불러오는데 문제가 발생했어요.", error);
     } finally {
-      setIsLoading(false); // 로딩 상태 종료
+      setIsLoading(false);
     }
   };
 
@@ -49,13 +49,12 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
   useEffect(() => {
     if (crew && crew.activities && crew.activities.length > 0) {
       const currentActivity = crew.activities[currentActivityIndex];
-      const activityId = currentActivity.name.replace(/[^0-9]/g, ''); // 회차 ID 추출
-      fetchSubmissionsData(activityId); // 해당 회차의 submissions 데이터를 가져옴
+      fetchSubmissionsData(currentActivity.activity_id);
     }
   }, [currentActivityIndex, crew]);
 
   const formatDate = (dateString) => {
-    return dateString ? dateString.split('T')[0] : "날짜 없음";
+    return dateString ? dateString.split('T')[0] : " ";
   };
 
   if (!crew || !crew.activities || crew.activities.length === 0) {
@@ -79,9 +78,9 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
           <div className="w-full flex flex-row gap-6">
             <div className="w-16 flex justify-center font-cafe24">{currentActivity.name}</div>
             <div className="max-w-max flex text-gray-900 text-base-16 gap-1">
-              <p>{formatDate(currentActivity.date_start_at)}</p>
+              <p>{formatDate(currentActivity.start_at)}</p>
               <p>~</p>
-              <p>{formatDate(currentActivity.date_end_at)}</p>
+              <p>{formatDate(currentActivity.end_at)}</p>
             </div>
           </div>
           <button onClick={handleNext}><FaChevronRight /></button>
@@ -92,8 +91,9 @@ export default function RightDashboard({ crew, statistics, crews, userId, proble
         <ProblemToBeSolved submissions={submissions} isLoading={isLoading} />
       </div>
       <div className="w-full grid-cols-3 DashboardGrid">
-        <div className="col-span-2">
-          <ProblemSolvingStatus submissions={submissions} isLoading={isLoading} />
+        <div className="col-span-2 grid gap-6">
+          <ProblemSubmitStatus crew={crew} submissions={submissions} isLoading={isLoading} />
+          <CodeReview activity={currentActivity} crew={crew} userData={userData} problems={problems} />
         </div>
         <div className="col-span-1">
           <ProblemLevelGraph statistics={statistics} />
