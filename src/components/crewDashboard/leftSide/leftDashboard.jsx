@@ -1,38 +1,12 @@
 import LanguageTag from "../../common/languageTag";
 import { FaCrown } from "react-icons/fa";
 import ProfileImg from "../../../assets/images/profile.svg";
-import AlgorithmGraph from "./algorithmGraph";
+import SolvedProbGraph from "./algorithmGraph";
 
 export default function LeftDashboard({ crew, statistics }) {
-  const { id } = useParams();
-  const [members, setMembers] = useState([]); // 새로운 멤버 데이터 상태
-  const [host, setHost] = useState(null); // 호스트 상태
-  const [crewMembers, setCrewMembers] = useState([]); // 크루 멤버 상태
-
-  useEffect(() => {
-    const fetchCrewMembers = async () => {
-      try {
-        const response = await client.get(`/api/v1/crew/${id}/members`, {
-          withCredentials: true
-        });
-        if (response.status === 200) {
-          const membersData = response.data;
-          const hostData = membersData.find(member => member.is_captain);
-          const crewMembersData = membersData.filter(member => !member.is_captain);
-
-          setMembers(membersData); // 전체 멤버 저장
-          setHost(hostData); // 호스트 설정
-          setCrewMembers(crewMembersData); // 일반 멤버 설정
-        } else {
-          console.error("크루 멤버 데이터를 불러오지 못했어요.", response.statusText);
-        }
-      } catch (error) {
-        console.error("크루 멤버 데이터를 불러오는데 문제가 발생했어요.", error);
-      }
-    };
-
-    fetchCrewMembers();
-  }, [id]);
+  // crew 데이터에서 호스트와 멤버 구분
+  const host = crew.members.find(member => member.is_captain);
+  const crewMembers = crew.members.filter(member => !member.is_captain);
 
   if (!crew) return null;
 
@@ -95,7 +69,9 @@ export default function LeftDashboard({ crew, statistics }) {
           ))}
         </div>
       </div>
-      <SolvedProbGraph crew={statistics} /> {/* SolvedProbGraph에 statistics 전달 */}
+
+      {/* 문제 해결 그래프 */}
+      <SolvedProbGraph crew={statistics} />
     </div>
   );
 }
