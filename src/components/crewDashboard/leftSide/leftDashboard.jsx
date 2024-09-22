@@ -1,10 +1,7 @@
 import LanguageTag from "../../common/languageTag";
 import { FaCrown } from "react-icons/fa";
 import ProfileImg from "../../../assets/images/profile.svg";
-import SolvedProbGraph from "./algorithmGraph";
-import { client } from "../../../utils";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import AlgorithmGraph from "./algorithmGraph";
 
 export default function LeftDashboard({ crew, statistics }) {
   const { id } = useParams();
@@ -42,7 +39,9 @@ export default function LeftDashboard({ crew, statistics }) {
   return (
     <div className="grid gap-6">
       <div className="box flex justify-start gap-5">
-        <div className="text-gray-900 text-lg font-bold font-cafe24"><p>크루 태그</p></div>
+        <div className="text-gray-900 text-lg font-bold font-cafe24">
+          <p>크루 태그</p>
+        </div>
         <div className="justify-start items-center gap-2 inline-flex flex-wrap">
           {crew.tags
             .filter(tag => tag.type === "language")
@@ -61,6 +60,7 @@ export default function LeftDashboard({ crew, statistics }) {
           ))}
         </div>
       </div>
+
       <div className="box flex flex-col justify-start gap-5">
         <div className="flex gap-4">
           <div className="text-gray-900 text-lg font-bold font-cafe24">
@@ -69,6 +69,7 @@ export default function LeftDashboard({ crew, statistics }) {
           <p className="text-gray-900 text-base font-normal">{crew.member_count.count}명</p>
         </div>
         <div className="flex flex-col gap-4">
+          {/* 호스트 표시 */}
           {host && (
             <div className="flex items-center gap-4">
               <img
@@ -80,6 +81,8 @@ export default function LeftDashboard({ crew, statistics }) {
               <div><FaCrown color="#FFCA41" /></div>
             </div>
           )}
+
+          {/* 일반 멤버 표시 */}
           {crewMembers.map((member, index) => (
             <div key={index} className="flex items-center gap-4">
               <img
