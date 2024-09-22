@@ -38,7 +38,12 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
     if (!selectedCrew) return;
 
     try {
-      const response = await client.post(`/api/v1/crew/${selectedCrew.crew_id}/applications`, { message }, {
+      const payload = {
+        crew: selectedCrew.crew_id, // crewId 전달
+        message: message, // 사용자 메시지 전달
+      };
+
+      const response = await client.post(`/api/v1/crew/application`, payload, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
