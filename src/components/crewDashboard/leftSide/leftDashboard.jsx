@@ -1,46 +1,20 @@
 import LanguageTag from "../../common/languageTag";
 import { FaCrown } from "react-icons/fa";
 import ProfileImg from "../../../assets/images/profile.svg";
-import SolvedProbGraph from "./algorithmGraph";
-import { client } from "../../../utils";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import AlgorithmGraph from "./algorithmGraph";
 
 export default function LeftDashboard({ crew, statistics }) {
-  const { id } = useParams();
-  const [host, setHost] = useState(null); // 호스트 상태
-  const [crewMembers, setCrewMembers] = useState([]); // 크루 멤버 상태
-
-  useEffect(() => {
-    const fetchCrewMembers = async () => {
-      try {
-        const response = await client.get(`/api/v1/crew/${id}/members`, {
-          withCredentials: true
-        });
-        if (response.status === 200) {
-          const membersData = response.data;
-          const hostData = membersData.find(member => member.is_captain);
-          const crewMembersData = membersData.filter(member => !member.is_captain);
-
-          setHost(hostData); // 호스트 설정
-          setCrewMembers(crewMembersData); // 일반 멤버 설정
-        } else {
-          console.error("크루 멤버 데이터를 불러오지 못했어요.", response.statusText);
-        }
-      } catch (error) {
-        console.error("크루 멤버 데이터를 불러오는데 문제가 발생했어요.", error);
-      }
-    };
-
-    fetchCrewMembers();
-  }, [id]);
+  const host = crew.members.find(member => member.is_captain);
+  const crewMembers = crew.members.filter(member => !member.is_captain);
 
   if (!crew) return null;
 
   return (
     <div className="grid gap-6">
       <div className="box flex justify-start gap-5">
-        <div className="text-gray-900 text-lg font-bold font-cafe24"><p>크루 태그</p></div>
+        <div className="text-gray-900 text-lg font-bold font-cafe24">
+          <p>크루 태그</p>
+        </div>
         <div className="justify-start items-center gap-2 inline-flex flex-wrap">
           {crew.tags
             .filter(tag => tag.type === "language")
@@ -59,6 +33,7 @@ export default function LeftDashboard({ crew, statistics }) {
           ))}
         </div>
       </div>
+
       <div className="box flex flex-col justify-start gap-5">
         <div className="flex gap-4">
           <div className="text-gray-900 text-lg font-bold font-cafe24">
@@ -67,6 +42,7 @@ export default function LeftDashboard({ crew, statistics }) {
           <p className="text-gray-900 text-base font-normal">{crew.member_count.count}명</p>
         </div>
         <div className="flex flex-col gap-4">
+          {/* 호스트 표시 */}
           {host && (
             <div className="flex items-center gap-4">
               <img
@@ -78,6 +54,8 @@ export default function LeftDashboard({ crew, statistics }) {
               <div><FaCrown color="#FFCA41" /></div>
             </div>
           )}
+
+          {/* 일반 멤버 표시 */}
           {crewMembers.map((member, index) => (
             <div key={index} className="flex items-center gap-4">
               <img
@@ -90,7 +68,9 @@ export default function LeftDashboard({ crew, statistics }) {
           ))}
         </div>
       </div>
-      <SolvedProbGraph crew={statistics} />
+
+      {/* 문제 해결 그래프 */}
+      <AlgorithmGraph crew={statistics} />
     </div>
   );
 }
