@@ -6,13 +6,14 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     strategy:
       matrix:
@@ -21,29 +22,41 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
 
     - name: Login as github-actions bot
       run: |
         git config user.name 'github-actions[bot]'
         git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-    - name: Deploy to GitHub Pages
+    - name: Initialize gh-pages branch
       run: |
-        npm run deploy
+        git checkout --orphan gh-pages
+        git reset --hard
+        git commit --allow-empty -m "Initialize gh-pages branch"
 
-    - name: Apply updates
+    - name: Checkout to main branch
+      run: git checkout main
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build --if-present
+
+    - name: Move build files to gh-pages branch
       run: |
-        git branch -f main
-        git add .
-        git commit -m "cd: 사이트 자동 빌드
+        git checkout gh-pages
+        git add build
+        git mv build/* .
+        git commit --amend -m "🤖 cd: 사이트 자동 빌드"
 
-        Co-authored-by: 2oooo914 <102661547+2oooo914@users.noreply.github.com>
-        [skip actions]"
-        git push origin main
+    - name: Push changes to gh-pages branch
+      run: git push -f origin gh-pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
