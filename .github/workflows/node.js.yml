@@ -29,12 +29,20 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
 
-    - name: Configure Git for deployment
+    - name: Login as github-actions bot
       run: |
-        git config --global user.email "everywavyday@gmail.com"
-        git config --global user.name "yoojin"
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Deploy to GitHub Pages
-      run: npm run deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      run: |
+        npm run deploy
+
+    - name: Apply updates
+      run: |
+        git branch -f <deploy-branch>
+        git commit -m "cd: 사이트 자동 빌드
+
+        Co-authored-by: 2oooo914 <102661547+2oooo914@users.noreply.github.com>
+        [skip actions]"
+        git push origin <target-branch>
