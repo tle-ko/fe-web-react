@@ -34,4 +34,7 @@ jobs:
         git config --global user.email "everywavyday@gmail.com"
         git config --global user.name "yoojin"
 
-    - run: npm run deploy
+    - name: Deploy to GitHub Pages
+      run: npm run deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
