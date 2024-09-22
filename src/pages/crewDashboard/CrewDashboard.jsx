@@ -16,7 +16,7 @@ export default function CrewDashHome() {
 
   return (
     <div>
-      {!shouldHideHeader && <CrewHeaderWithNav crewId={id} userId={userId} />}
+      {!shouldHideHeader && <CrewHeaderWithNav />}
       <div className={shouldHideHeader ? "mt-0" : "mt-20"}>
         <Routes>
           <Route path="/" element={<CrewDashContainer userId={userId} />} />
