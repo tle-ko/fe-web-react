@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const SolvedProbGraph = ({ crew }) => {
+const AlgorithmGraph = ({ crew }) => {
   const [series, setSeries] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tagData, setTagData] = useState([]);
@@ -13,51 +13,39 @@ const SolvedProbGraph = ({ crew }) => {
       'math', 'implementation', 'greedy', 'string', 'data_structures', 'graphs', 'dp', 'geometry'
     ];
 
-    const tagCount = tagsToTrack.reduce((acc, tag) => {
-      acc[tag] = 0;
+    // 태그 데이터 처리
+    const trackedTags = crew.tags.filter(tag => tagsToTrack.includes(tag.tag.key));
+
+    const totalTrackedProblems = trackedTags.reduce((acc, tag) => acc + tag.count, 0);
+
+    const tagCount = trackedTags.reduce((acc, tag) => {
+      acc[tag.tag.key] = tag.count;
       return acc;
     }, {});
-
-    let totalTrackedProblems = 0;
-
-    // 태그 데이터 처리
-    crew.tags.forEach(tag => {
-      if (tagsToTrack.includes(tag.key)) {
-        tagCount[tag.key] = tag.problem_count;
-        totalTrackedProblems += tag.problem_count;
-      }
-    });
 
     setCategories(tagsToTrack.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)));
     setSeries([{
       name: '태그 개수',
-      data: tagsToTrack.map(tag => tagCount[tag]) 
+      data: tagsToTrack.map(tag => tagCount[tag] || 0)
     }]);
 
-    const processedTagData = crew.tags
-      .filter(tag => tagsToTrack.includes(tag.key))
-      .map(tag => {
-        const percentage = totalTrackedProblems > 0
-          ? ((tag.problem_count / totalTrackedProblems) * 100).toFixed(1)
-          : 0;
-        return {
-          tag: tag.label.ko,
-          count: tag.problem_count,
-          percentage
-        };
-      })
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5); // 상위 5개의 태그만 선택
+    const processedTagData = trackedTags.map(tag => ({
+      tag: tag.tag.name_ko || tag.tag.name_en,  // 한국어 이름 또는 영어 이름 사용
+      count: tag.count,
+      percentage: totalTrackedProblems > 0
+        ? ((tag.count / totalTrackedProblems) * 100).toFixed(1)
+        : 0
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);  // 상위 5개의 태그만 선택
 
     setTagData(processedTagData);
   }, [crew]);
 
-  // 데이터가 없는 경우 렌더링 중지
-  if (!series || series.length === 0 || crew.problem_count === 0) {
+  if (!series.length || crew.problem_count === 0) {
     return null;
   }
 
-  // 최대 count 값을 5배수로
   const maxCount = Math.max(...series[0]?.data || [0]);
   const yAxisMax = Math.ceil(maxCount / 5) * 5;
 
@@ -81,10 +69,10 @@ const SolvedProbGraph = ({ crew }) => {
     },
     yaxis: {
       min: 0,
-      max: yAxisMax, 
-      tickAmount: yAxisMax / 5, // 눈금 개수를 5로 나누어 지정
+      max: yAxisMax,
+      tickAmount: yAxisMax / 5, 
       labels: {
-        formatter: (value) => Math.ceil(value) 
+        formatter: (value) => Math.ceil(value)
       }
     }
   };
@@ -99,9 +87,7 @@ const SolvedProbGraph = ({ crew }) => {
         <div className="solved-prob-graph relative flex flex-col">
           <div className="chart-wrap">
             <div id="chart">
-              {series[0]?.data.some(val => val > 0) && (
-                <ReactApexChart options={chartOptions} series={series} type="radar" height={350} />
-              )}
+              <ReactApexChart options={chartOptions} series={series} type="radar" height={350} />
             </div>
           </div>
           <div id="series-data" className="mt-4">
@@ -111,7 +97,6 @@ const SolvedProbGraph = ({ crew }) => {
               <div>비율</div>
             </div>
             <ul>
-              {/* 상위 5개의 태그만 리스트로 표시 */}
               {tagData.map((data, index) => (
                 <li key={index} className="grid grid-cols-3 gap-4 border-b py-4 text-center text-gray-800 text-sm font-semibold whitespace-nowrap">
                   <div>#{data.tag}</div>
@@ -136,4 +121,4 @@ const SolvedProbGraph = ({ crew }) => {
   );
 };
 
-export default SolvedProbGraph;
+export default AlgorithmGraph;

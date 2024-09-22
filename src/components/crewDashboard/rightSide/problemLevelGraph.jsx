@@ -5,18 +5,30 @@ const ProblemLevelGraph = ({ statistics }) => {
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
   const [problemCounts, setProblemCounts] = useState([]);
+  const [displayData, setDisplayData] = useState([]); // 그래프와 테이블에 표시할 데이터
 
   useEffect(() => {
     if (!statistics || !statistics.difficulties) return;
 
     const newLabels = [];
     const newProblemCounts = [];
+    const allDisplayData = []; // 모든 데이터 저장
     let totalProblems = 0;
 
+    // 데이터 처리
     statistics.difficulties.forEach(difficultyData => {
-      newLabels.push(`Lv. ${difficultyData.difficulty + 1}`);
-      newProblemCounts.push(difficultyData.problem_count);
-      totalProblems += difficultyData.problem_count;
+      const label = difficultyData.difficulty === 0 ? '분석 중' : `Lv. ${difficultyData.difficulty}`;
+      allDisplayData.push({
+        label,
+        count: difficultyData.count,
+        difficulty: difficultyData.difficulty,
+      });
+      
+      if (difficultyData.difficulty !== 0) { // 난이도 0인 항목을 그래프에서 제외
+        newLabels.push(`Lv. ${difficultyData.difficulty}`);
+        newProblemCounts.push(difficultyData.count);
+        totalProblems += difficultyData.count;
+      }
     });
 
     const newSeries = newProblemCounts.map(count => (count / totalProblems) * 100);
@@ -24,6 +36,7 @@ const ProblemLevelGraph = ({ statistics }) => {
     setSeries(newSeries);
     setLabels(newLabels);
     setProblemCounts(newProblemCounts);
+    setDisplayData(allDisplayData); // 모든 데이터를 저장
   }, [statistics]);
 
   if (!statistics || statistics.problem_count === 0 || series.length === 0) {
@@ -38,7 +51,7 @@ const ProblemLevelGraph = ({ statistics }) => {
     },
     labels: labels,
     legend: {
-      position: 'right', 
+      position: 'right',
       width: '20%',
       height: 350,
       fontSize: '14px',
@@ -93,11 +106,11 @@ const ProblemLevelGraph = ({ statistics }) => {
               <div>비율</div>
             </div>
             <ul>
-              {labels.map((label, index) => (
+              {displayData.map((data, index) => (
                 <li key={index} className="grid grid-cols-3 gap-4 border-b py-4 text-center text-gray-800 text-sm font-semibold">
-                  <div>{label}</div>
-                  <div>{problemCounts[index]}</div>
-                  <div>{series[index].toFixed(1)}%</div>
+                  <div>{data.label === `Lv. 0` ? "분석 중" : data.label}</div>
+                  <div>{data.count}</div>
+                  <div>{((data.count / statistics.problem_count) * 100).toFixed(1)}%</div>
                 </li>
               ))}
             </ul>

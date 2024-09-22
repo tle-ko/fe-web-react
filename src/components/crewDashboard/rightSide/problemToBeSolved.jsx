@@ -2,16 +2,12 @@ import React from "react";
 import { IoSearch } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
-import { getUserId } from "../../../auth";
 import DataLoadingSpinner from "../../common/dataLoadingSpinner";
 
 const ProblemToBeSolved = ({ submissions, isLoading }) => {
   const { id } = useParams();
 
-  const userSubmissionData = submissions?.find(
-    (submission) => submission.submitted_by.user_id === parseInt(getUserId(), 10)
-  );
-  const problems = userSubmissionData?.submissions || [];
+  const problems = submissions || []; 
 
   return (
     <div className="box flex flex-col gap-6">
@@ -27,30 +23,32 @@ const ProblemToBeSolved = ({ submissions, isLoading }) => {
         </div>
       ) : problems.length > 0 ? (
         <div className="w-full grid grid-cols-8 gap-5">
-          {problems.map((problem, index) => (
-            <Link
-              to={`/crew/${id}/problems/${problem.problem_id}`}
-              key={index}
-              className="col-span-1"
-            >
-              <div
-                className={`w-full px-3 py-6 rounded-xl flex-col justify-center items-center inline-flex gap-4 cursor-pointer ${
-                  problem.is_submitted
-                    ? "bg-color-blue-w25 text-color-blue-main"
-                    : "bg-gray-50 text-gray-600 hover:bg-color-blue-w25"
-                }`}
+          {problems
+            .sort((a, b) => a.order - b.order)
+            .map((problem, index) => (
+              <Link
+                to={`/crew/${id}/problems/${problem.problem_id}`}
+                key={index}
+                className="col-span-1"
               >
-                <div className="text-center text-base font-extrabold cursor-pointer whitespace-nowrap">
-                  {problem.problem_title}
+                <div
+                  className={`w-full px-3 py-6 rounded-xl flex-col justify-center items-center inline-flex gap-4 cursor-pointer ${
+                    problem.my_submission
+                      ? "bg-color-blue-w25 text-color-blue-main"
+                      : "bg-gray-50 text-gray-600 hover:bg-color-blue-w25"
+                  }`}
+                >
+                  <div className="text-center text-base font-extrabold cursor-pointer whitespace-nowrap">
+                    {problem.title}
+                  </div>
+                  {problem.my_submission ? (
+                    <FaCheck size="1.5rem" />
+                  ) : (
+                    <IoSearch className="text-gray-500" size="1.5rem" />
+                  )}
                 </div>
-                {problem.is_submitted ? (
-                  <FaCheck size="1.5rem" />
-                ) : (
-                  <IoSearch className="text-gray-500" size="1.5rem" />
-                )}
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
         </div>
       ) : (
         <div className="flex flex-col items-center gap-3 py-9 text-gray-600">
