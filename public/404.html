@@ -1,12 +1,40 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL='/'" />
-    <link rel="canonical" href="/" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found</title>
-  </head>
-  <body>
-    <h1>Page Not Found</h1>
-    <p>Redirecting...</p>
-  </body>
+    <script>
+        const path = window.location.pathname;
+        const url = "https://tle-kr.com";
+
+        switch (path) {
+            case '/signin':
+                window.location.href = `${url}/signin`;
+                break;
+            case '/signup':
+                window.location.href = `${url}/signup`;
+                break;
+            case '/myPage':
+                window.location.href = `${url}/myPage`;
+                break;
+            case '/crew':
+                window.location.href = `${url}/crew`;
+                break;
+            case '/problem':
+                window.location.href = `${url}/problem`;
+                break;
+            case '/myPortfolio':
+                window.location.href = `${url}/myPortfolio`;
+                break;
+            default:
+                window.location.href = `${url}`;
+                break;
+        }
+    </script>
+</head>
+<body>
+    <h1>404 Not Found</h1>
+    <p>The page you are looking for does not exist.</p>
+</body>
 </html>
