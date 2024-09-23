@@ -101,7 +101,7 @@ const CodeReview = ({ activity, crew, userData, problems }) => {
               <img
                 src={ `http://api.tle-kr.com${member.profile_image}` }
                 alt={member.username}
-                className="w-10 h-10 rounded-full cursor-pointer"
+                className="w-10 h-10 rounded-full cursor-pointer object-cover"
                 onClick={() => handleProfileClick(member.user_id)}
                 title={member.username}
               />
@@ -127,7 +127,7 @@ const CodeReview = ({ activity, crew, userData, problems }) => {
                     <div className='cursor-pointer'>{mockSubmissions[problem.id - 1]?.created_at}</div>
                     <div className="flex justify-start relative cursor-pointer">
                       {/* 리뷰어 이미지 부분 */}
-                      {reviewerImages[problem.id] || <img src="http://api.tle-kr.com/media/user/profile/9/%EA%B3%B5%EB%B6%80%EC%8A%A4%EB%88%84%ED%94%BC.jpg" alt="Default" className="w-6 h-6 rounded-full" />}
+                      {reviewerImages[problem.id] || <img src="http://api.tle-kr.com/media/user/profile/9/%EA%B3%B5%EB%B6%80%EC%8A%A4%EB%88%84%ED%94%BC.jpg" alt="Default" className="w-6 h-6 rounded-full object-cover" />}
                     </div>
                   </div>
                 ))}
