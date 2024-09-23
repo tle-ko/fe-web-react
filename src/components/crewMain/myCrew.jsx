@@ -38,7 +38,8 @@ export default function MyCrew() {
       if (direction === 'left') {
         return Math.max(0, prevIndex - 4);
       } else {
-        return Math.min(prevIndex + 4, crews.length - 4);
+        const nextIndex = prevIndex + 4;
+        return Math.min(nextIndex, crews.length - (crews.length % 4)); 
       }
     });
   };
@@ -67,7 +68,7 @@ export default function MyCrew() {
             </div>
           ) : (
             <div className="cardGrid4 w-full">
-              {crews.slice(visibleStartIndex, visibleStartIndex + 4).map((crew, index) => {
+              {crews.slice(visibleStartIndex, visibleStartIndex + 4).map((crew) => {
                 const latestActivity = crew.latest_activity;
 
                 return (
@@ -107,9 +108,6 @@ export default function MyCrew() {
                   </div>
                 );
               })}
-              {Array.from({ length: 4 - crews.slice(visibleStartIndex, visibleStartIndex + 4).length }).map((_, i) => (
-                <div key={`empty-${i}`} className="hidden"></div>
-              ))}
             </div>
           )}
           {crews.length > 4 && (
