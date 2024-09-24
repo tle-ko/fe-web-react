@@ -28,7 +28,7 @@ export default function ProblemList({ data, pageIndex, numOfPage, isSearching })
 
   return (
       <>
-      <div className="min-w-0rem cardGrid4 mb-16">
+      <div className="cardGrid4 mb-16">
         {data.slice(pageIndex * numOfPage, (pageIndex + 1) * numOfPage).map((problem) => (
           <div className="box min-w-60 flex-col justify-start items-start inline-flex gap-6" key={problem.problem_id}>
             <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
