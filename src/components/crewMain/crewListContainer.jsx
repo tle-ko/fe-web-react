@@ -68,14 +68,17 @@ export default function CrewListContainer() {
         <Outlet />
       ) : (
         <>
-          <div className="containerTitle">크루 목록</div>
+          <div className="text-gray-900 text-xl font-semibold">크루 목록</div>
           <TagFilter onUpdateTags={handleUpdateTags} />
           <CrewList filters={filteredCrews} pageIndex={pageIndex} numOfPage={numOfPage} isLoading={isLoading} />
-          <Pagination 
-            totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
-            currentPage={pageIndex + 1} 
-            setCurrentPage={handlePageChange} 
-          />
+          <div className="w-full">
+            <Pagination 
+              totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
+              currentPage={pageIndex + 1} 
+              setCurrentPage={handlePageChange} 
+            />
+          </div>
+
         </>
       )}
     </div>

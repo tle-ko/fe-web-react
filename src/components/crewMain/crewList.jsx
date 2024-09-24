@@ -62,7 +62,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {isLoading ? (
         <div className="w-full p-12">
           <div className="flex flex-col justify-center items-center">
@@ -79,7 +79,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
           <p>조건에 해당되는 크루가 없어요 😓</p>
         </div>
       ) : (
-        <div className="cardGrid3 w-full flex-col justify-start items-start">
+        <div className="cardGrid3">
           {pageData.map((crew) => (
             <div key={crew.crew_id} className="box justify-center items-start gap-3">
               <div className="w-full flex-col justify-center items-start gap-4 flex flex-grow">
