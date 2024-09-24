@@ -14,9 +14,9 @@ export default function CrewMain() {
       {isChildRoute ? (
         <Outlet />
       ) : (
-        <div className="w-full min-h-screen flex flex-col justify-center items-center">
-          <div className="flex-col justify-center items-center gap-12 inline-flex w-full">
-            <div className="w-full h-11 justify-between items-center gap-20 inline-flex">
+        <div className="flex justify-center items-center min-w-30rem">
+          <div className="w-full flex flex-col justify-center items-center gap-12">
+            <div className="w-full h-11 justify-between items-center gap-20 inline-flex min-w-30rem">
               <div className="text-gray-700 text-2xxl font-bold font-cafe24">크루 둘러보기</div>
               <CreateCrew />
             </div>

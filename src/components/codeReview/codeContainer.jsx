@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 // 제출 된 코드를 표시하는 컴포넌트
-export default function CodeContainer({ code, onLineSelect, highlightedLines }) {
+export default function CodeContainer({ code, onLineSelect, highlightedLines, setHighlightedLines}) {
   const [selectedLines, setSelectedLines] = useState({ start: null, end: null });
 
   const handleLineClick = (lineNumber) => {
     if (selectedLines.start === lineNumber && selectedLines.end === null) {
-      // 선택된 라인을 다시 클릭하면 선택 해제
       setSelectedLines({ start: null, end: null });
       onLineSelect(null, null);
     } else if (selectedLines.start === null || (selectedLines.start !== null && selectedLines.end !== null)) {

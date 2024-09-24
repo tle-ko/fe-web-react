@@ -69,7 +69,7 @@ const SelectLanguageTag = ({ language, onClick, selected }) => {
   
   return (
     <div 
-      className={`font-pretendard font-semibold inline-flex items-center py-2 px-3 rounded-full text-sm ${languageColor()} cursor-pointer hidden-scrollbar overflow-x-auto`}
+      className={`font-pretendard font-semibold inline-flex items-center py-2 px-3 rounded-full text-sm ${languageColor()} cursor-pointer hidden-scrollbar overflow-x-auto transition duration-300 ease-out`}
       onClick={onClick}
     >
       {(selected ? languageIcons : languageGreyIcons)[language] && (
