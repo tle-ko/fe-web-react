@@ -15,7 +15,7 @@ const formatDate = (isoString) => {
   return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
 };
 
-export default function ReviewContainer({ selectedStart, selectedEnd, onResetSelection, onHighlightLine, comments, userData }) {
+export default function ReviewContainer({ selectedStart, selectedEnd, onResetSelection, onHighlightLine, comments, setHighlightedLines }) {
   const [review, setReview] = useState('');
   const [reviews, setReviews] = useState(comments);
   const [selectedReviewIndex, setSelectedReviewIndex] = useState(null);
@@ -33,7 +33,7 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
   }, [review]);
 
   const saveReview = () => {
-    const currentDate = new Date().toISOString(); // 현재 시간을 ISO 형식으로 변환
+    const currentDate = new Date().toISOString();
     const newReview = {
       line_start: selectedStart,
       line_end: selectedEnd,
@@ -47,8 +47,9 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
 
     setReviews([...reviews, newReview]);
     setReview('');
-    onResetSelection(); // 선택 상태 초기화
-    setSelectedReviewIndex(null); // 선택된 리뷰 인덱스 초기화
+    onResetSelection();
+    setSelectedReviewIndex(null);
+    setHighlightedLines({ start: null, end: null });
   };
 
   const handleKeyDown = (e) => {
@@ -62,9 +63,11 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
     if (selectedReviewIndex === index) {
       setSelectedReviewIndex(null);
       onHighlightLine(null, null);
+      setHighlightedLines({ start: null, end: null });
     } else {
       setSelectedReviewIndex(index);
       onHighlightLine(start, end);
+      setHighlightedLines({ start, end });
     }
   };
 
@@ -73,6 +76,7 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
     setReviews(updatedReviews);
     setSelectedReviewIndex(null);
     onHighlightLine(null, null);
+    setHighlightedLines({ start: null, end: null });
   };
 
   return (
@@ -82,15 +86,12 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
             {reviews
               .sort((a, b) => a.line_start - b.line_start || new Date(a.created_at) - new Date(b.created_at))
               .map((item, index) => (
-                // 댓글 카드
                 <div
                   key={index}
                   className={`box p-5 w-full min-w-60 hover:bg-gray-50 ${
                     selectedReviewIndex === index ? 'bg-gray-100 border-color-blue-w50' : 'bg-white border-gray-200'
                   }`}
                   onClick={() => handleReviewClick(index, item.line_start, item.line_end)}
-                  onMouseOver={() => onHighlightLine(item.line_start, item.line_end)}
-                  onMouseOut={() => onHighlightLine(null, null)}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex flex-col justify-between w-full">

@@ -35,10 +35,12 @@ export default function CodeReview() {
 
   const handleSelectionChange = (start, end) => {
     setSelection({ start, end });
+    setHighlightedLines({ start, end });
   };
 
   const resetSelection = () => {
     setSelection({ start: null, end: null });
+    setHighlightedLines({ start: null, end: null });
   };
 
   const handleHighlightLine = (start, end) => {
@@ -62,6 +64,7 @@ export default function CodeReview() {
             code={codeData.code}
             onLineSelect={handleSelectionChange}
             highlightedLines={highlightedLines}
+            setHighlightedLines={setHighlightedLines}
           />
         </div>
         <div className="col-span-4">
@@ -71,7 +74,7 @@ export default function CodeReview() {
             onResetSelection={resetSelection}
             onHighlightLine={handleHighlightLine}
             comments={codeData.comments.items}
-            userData={userData}
+            setHighlightedLines={setHighlightedLines}
           />
         </div>
       </div>
