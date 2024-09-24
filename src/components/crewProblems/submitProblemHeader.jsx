@@ -7,9 +7,9 @@ export default function SubmitProblemHeader({ submitData }) {
     const incorrectClasses = "bg-color-red-main text-white";  
 
     return (
-      <span className={`${baseClasses} ${status ? correctClasses : incorrectClasses}`}>
+      <p className={`${baseClasses} ${status ? correctClasses : incorrectClasses}`}>
         {status ? "맞았습니다" : "틀렸습니다"}
-      </span>
+      </p>
     );
   };
 
@@ -25,16 +25,16 @@ export default function SubmitProblemHeader({ submitData }) {
 
   return (
     <div className="w-full h-16 bg-white top-32 left-0 fixed px-28 py-4 flex flex-row gap-4 items-center border border-gray-200">
-      <div className="flex justify-center items-center">
+      <div className="w-fit flex justify-center items-center">
         <AnswerTag status={submitData.is_correct} />
-        <div className="font-semibold text-lg flex justify-center items-center ml-5 mr-3">
+        <p className="w-fit font-semibold text-lg flex justify-center items-center ml-5 mr-3">
           {submitData.created_by.username}
-        </div>
+        </p>
         <div className="font-semibold text-gray-600"> | </div>
       </div>
-      <div className="text-base text-gray-600 font-medium">
+      <p className="text-base text-gray-600 font-medium">
         {formatDate(submitData.created_at)}
-      </div>
+      </p>
     </div>
   );
 }
