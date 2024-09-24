@@ -40,7 +40,6 @@ export default function ProblemListContainer() {
             withCredentials: true
           });
           if (response.status === 200) {
-            console.log(response.data);
             const data = Array.isArray(response.data) ? response.data : response.data.results;
             setProblemData(data);
           } else {

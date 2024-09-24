@@ -7,10 +7,14 @@ import SubmitByHeader from './submitByHeader';
 import Dropdown from '../../components/common/dropDown';
 
 const CrewProblemSubmit = () => {
-  const { problemId, id } = useParams();  // crew ID 및 problem ID 얻기
+  const navigate = useNavigate();
+  const { problemId: paramProblemId, id: paramId } = useParams();
+  const problemId = paramProblemId ? parseInt(paramProblemId, 10) : 1; 
+  const id = paramId ? parseInt(paramId, 10) : 1; 
+
+  const [code, setCode] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [selectedCorrectness, setSelectedCorrectness] = useState('');
-  const navigate = useNavigate(); // URL 경로 변경을 위한 useNavigate
 
   const languageOptions = [
     'Python',
@@ -43,43 +47,44 @@ const CrewProblemSubmit = () => {
 
   return (
     <div>
-      <ProblemHeader problemId={parseInt(problemId, 10)} />
-      <SubmitByHeader id={parseInt(id, 10)} />
+        <ProblemHeader problemId={parseInt(problemId, 10)} />
+        <SubmitByHeader id={parseInt(id, 10)} />
 
-      <div className="flex flex-row items-center mt-20 mb-10 px-24">
-        <div className="mr-10 mt-5">
-          <div className="text-lg mb-3 font-semibold">언어</div>
-          <Dropdown
-            options={languageOptions}
-            placeholder="언어 선택"
-            selected={selectedLanguage}  // 선택된 언어 표시
-            onChange={handleLanguageChange}
-          />
-        </div>
-        <div className="mr-10 mt-5">
-          <div className="text-lg mb-3 font-semibold">정답여부</div>
-          <Dropdown
-            options={correctnessOptions}
-            placeholder="정답여부"
-            selected={selectedCorrectness}  // 선택된 정답여부 표시
-            onChange={handleCorrectnessChange}
-          />
-        </div>
-      </div>
+        <div className="flex flex-col gap-6 justify-start mt-24">
+          <div className="inline-flex items-center gap-6">
+              <div className="flex flex-col justify-start">
+                <p className="text-lg mb-3 font-semibold">언어</p>
+                <Dropdown
+                  options={languageOptions}
+                  placeholder="언어 선택"
+                  selected={selectedLanguage}  // 선택된 언어 표시
+                  onChange={handleLanguageChange}
+                />
+              </div>
+              <div className="flex flex-col justify-start">
+                <p className="text-lg mb-3 font-semibold">정답 여부</p>
+                <Dropdown
+                  options={correctnessOptions}
+                  placeholder="정답여부"
+                  selected={selectedCorrectness}  // 선택된 정답여부 표시
+                  onChange={handleCorrectnessChange}
+                />
+              </div>
+            </div>
 
-      <div className="flex flex-col px-24">
-        <div className="text-lg mb-3 font-semibold">소스코드</div>
-        <CodeBox />
-        <div className='mt-10 flex justify-center'>
-          <Button
-            buttonSize="formBtn"
-            colorStyle="blueWhite"
-            content="풀이 제출하기"
-            onClick={handleSubmit}
-            width="1/5"
-          />
+            <div className="w-full flex flex-col justify-start">
+              <p className="text-lg mb-3 font-semibold">소스코드</p>
+              <CodeBox setCode={setCode}/>
+              <div className='mt-10 flex justify-center'>
+                <Button
+                  buttonSize="formBtn"
+                  colorStyle="blueWhite"
+                  content="풀이 제출하기"
+                  onClick={handleSubmit}
+                />
+              </div>
+            </div>
         </div>
-      </div>
     </div>
   );
 };
