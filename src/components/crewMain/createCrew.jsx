@@ -29,6 +29,9 @@ export default function CreateCrew() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    if (showAlert) {
+      window.location.reload();  
+    }
   };
 
   const handleCreateCrew = async () => {
