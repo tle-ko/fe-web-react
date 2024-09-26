@@ -5,7 +5,7 @@ import ApplyModal from "./applyModal";
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
 import { client } from "../../utils";
 
-export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
+export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isInitialEmpty }) {
   const [pageData, setPageData] = useState([]);
   const [modalStates, setModalStates] = useState({});
   const [selectedCrew, setSelectedCrew] = useState(null);
@@ -69,7 +69,18 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
             <DataLoadingSpinner />
           </div>
         </div>
+      ) : isInitialEmpty ? (
+        // 초기 데이터가 없을 때
+        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p>생성된 크루가 없어요 😓</p>
+        </div>
       ) : pageData.length === 0 ? (
+        // 필터된 데이터가 없을 때
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import SideNav from '../../components/nav/sideNav';
-import Button from "../../components/common/button";
+import SideNav from '../nav/sideNav';
+import Button from "../common/button";
 import Level1 from "../../assets/images/lv1.svg";
 import Level2 from "../../assets/images/lv2.svg";
 import Level3 from "../../assets/images/lv3.svg";
