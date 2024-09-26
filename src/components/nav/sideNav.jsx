@@ -1,15 +1,22 @@
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom'; // 쿼리 파라미터를 위해
 
 export default function SideNav({ elements, setSelectedElement, selectedElement }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 첫 번째 요소를 선택하도록 설정
-    if (!selectedElement && elements.length > 0) {
-      setSelectedElement(elements[0].order); // order로 초기 설정
+    const selectedFromUrl = searchParams.get('selected');
+    
+    if (selectedFromUrl) {
+      setSelectedElement(Number(selectedFromUrl)); 
+    } else if (!selectedElement && elements.length > 0) {
+      setSelectedElement(elements[0].order); 
     }
-  }, [elements, setSelectedElement, selectedElement]);
+  }, [elements, setSelectedElement, selectedElement, searchParams]);
 
   const handleClick = (order) => {
     setSelectedElement(order);
+    setSearchParams({ order });
   };
 
   return (
@@ -18,11 +25,11 @@ export default function SideNav({ elements, setSelectedElement, selectedElement 
       {elements.map((element, index) => (
         <div
           key={index}
-          className={`w-full flex-col justify-start items-start flex cursor-pointer ${selectedElement === element.order ? 'bg-color-blue-w25 w-full text-blue-500 rounded' : 'text-black hover:text-blue-500 group'}`} // group 추가
-          onClick={() => handleClick(element.order)} // order로 클릭 설정 및 새로고침
+          className={`w-full flex-col justify-start items-start flex cursor-pointer ${selectedElement === element.order ? 'bg-color-blue-w25 w-full text-blue-500 rounded' : 'text-black hover:text-blue-500 group'}`}
+          onClick={() => handleClick(element.order)} 
         >
           <div className={`min-w-[20rem] px-4 py-3 rounded justify-start items-start inline-flex cursor-pointer ${selectedElement === element.order ? 'text-blue-500' : 'text-black group-hover:text-blue-500'}`}>
-            <p className="text-base font-semibold group-hover:text-blue-500">{element.label}</p> {/* group-hover 추가 */}
+            <p className="text-base font-semibold group-hover:text-blue-500">{element.label}</p>
           </div>
         </div>
       ))}

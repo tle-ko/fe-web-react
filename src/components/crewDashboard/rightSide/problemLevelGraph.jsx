@@ -70,7 +70,7 @@ const ProblemLevelGraph = ({ statistics }) => {
               <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
               <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             </div>
-            <p>문제 난이도가 분석되면<br/>그래프가 표시돼요 😊</p>
+            <p className="text-center">문제 난이도가 분석되면<br/>그래프가 표시돼요 😊</p>
           </div>
           {renderTableData()} 
         </>

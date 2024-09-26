@@ -32,13 +32,13 @@ const ProblemToBeSolved = ({ submissions, isLoading }) => {
                 className="col-span-1"
               >
                 <div
-                  className={`w-full px-3 py-6 rounded-xl flex-col justify-center items-center inline-flex gap-4 cursor-pointer ${
+                  className={`w-full h-full px-3 py-6 rounded-xl flex-col justify-between items-center inline-flex gap-4 cursor-pointer ${
                     problem.my_submission
                       ? "bg-color-blue-w25 text-color-blue-main"
                       : "bg-gray-50 text-gray-600 hover:bg-color-blue-w25"
                   }`}
                 >
-                  <div className="text-center text-base font-extrabold cursor-pointer whitespace-nowrap">
+                  <div className="text-center text-base font-extrabold cursor-pointer whitespace-wrap">
                     {problem.title}
                   </div>
                   {problem.my_submission ? (
