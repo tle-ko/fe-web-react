@@ -82,7 +82,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const timeComplexity = analysisData.time_complexity;
 
   // 힌트 관련
-  const hints = analysisData.hints[0].split('\n\n'); // 첫 번째 인덱스의 데이터를 \n\n로 분리
+  const hints = analysisData.hints;
   const visibleHintContent = (index, hintItems) => {
     return (
       <div className='bg-white text-gray-900 animate-fade-in'>
