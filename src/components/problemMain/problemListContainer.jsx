@@ -72,9 +72,9 @@ export default function ProblemListContainer() {
       if (selectedOption === "최신순") {
         sortedFilteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       } else if (selectedOption === "낮은순") {
-        sortedFilteredData.sort((a, b) => a.difficulty.value - b.difficulty.value);
+        sortedFilteredData.sort((a, b) => a.analysis.difficulty.value - b.analysis.difficulty.value);
       } else if (selectedOption === "높은순") {
-        sortedFilteredData.sort((a, b) => b.difficulty.value - a.difficulty.value);
+        sortedFilteredData.sort((a, b) => b.analysis.difficulty.value - a.analysis.difficulty.value);
       }
   
       const start = pageIndex * numOfPage;
