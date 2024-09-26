@@ -36,11 +36,10 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
     )
   }
 
-  // 데이터가 없는 경우 처리
-  if (!analysisData.is_analyzed) {
+  //분석 데이터가 없는 경우 처리
+  if (analysisData.difficulty.value === 0) {
     return <AnalysisLoading />;
   }
-
   // 알고리즘 태그 관련
   const AnalysisTags = analysisData.tags;
 

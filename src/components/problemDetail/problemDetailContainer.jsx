@@ -68,7 +68,7 @@ export default function ProblemDetailContainer({ problemData }) {
           </button>
         </div>
       ) : (
-        problemData.analysis && problemData.analysis.is_analyzed ?(
+        problemData.analysis ? (
           <AnalysisContainer setActiveContainer={setActiveContainer} analysisData={problemData.analysis} />
         ) : (
           <AnalysisLoading setActiveContainer={setActiveContainer} />
