@@ -1,23 +1,40 @@
-import useFetchData from "../../hooks/useEffectData";
+import { useEffect, useState } from "react";
+import { client } from "../../utils";
+import { useParams } from "react-router-dom";
 
-export default function CrewHeaderProblem({ problemId }) {
+export default function CrewHeaderProblem() {
+  const { problemId } = useParams(); // problemId로 받기
 
-  const data = useFetchData("http://localhost:3000/data/problemData.json");
+  const [problem, setProblem] = useState();
 
-  // 받은 problemId와 일치하는 데이터 찾기
-  // problemId를 숫자로 변환하여 비교
-  const problem = data.find(problem => problem.id === parseInt(problemId, 10));
+  // 문제 데이터를 불러오는 useEffect
+  useEffect(() => {
+    const fetchProblemDetail = async () => {
+      try {
+        const response = await client.get(`/api/v1/crew/activity/problem/${problemId}`);
+        if (response.status === 200) {
+          setProblem(response.data);
+          console.log("크루 문제 데이터 불러오기 성공");
+        } else {
+          console.error("크루 문제 데이터를 불러오지 못했어요.", response.statusText);
+        }
+      } catch (error) {
+        console.error("크루 문제 데이터를 불러오는데 문제가 발생했어요.", error);
+      }
+    };
 
-  // problem이 존재하면 해당 데이터를 사용하여 렌더링
+    fetchProblemDetail();
+  }, [problemId]); // problemId를 의존성으로 설정
+
   return (
     <div>
-      {problem ? (
-        <div className="w-screen h-16 bg-white top-16 left-0 fixed py-4 flex flex-row gap-2 items-center border boerder-gray-200 z-10">
+      <div className="w-screen h-16 bg-white top-16 left-0 fixed py-4 flex flex-row gap-2 items-center border boerder-gray-200 z-10">
+        {problem ? (
           <p className="px-[7.5rem] font-cafe24 text-2xl">{problem.title}</p>
-        </div>
-      ) : (
-        <div>해당하는 문제가 없어요 😓</div>
-      )}
+        ) : (
+          <div></div>
+        )}
     </div>
-  )
+    </div>
+  );
 }
