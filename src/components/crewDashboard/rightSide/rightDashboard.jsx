@@ -21,7 +21,7 @@ export default function RightDashboard({ crew, statistics, problems, userData })
   const fetchSubmissionsData = async (activityId) => {
     setIsLoading(true);
     try {
-      const response = await client.get(`/api/v1/crew/activities/${activityId}`, {
+      const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
         withCredentials: true
       });
       if (response.status === 200) {
