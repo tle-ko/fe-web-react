@@ -15,7 +15,7 @@ export default function ProblemDetailNav({ problemData }) {
           </Link>
           <Link 
             className="bg-gray-50 px-4 py-3 rounded justify-center items-center flex text-gray-600 text-center text-sm font-semibold hover:text-color-blue-main hover:bg-color-blue-w25"
-            to={`/crew/${id}/problems/${problemData.id}/submit`}
+            to={`/crew/${id}/problems/${problemData.problem_id}/submit`}
           >
             문제 제출  
           </Link>
