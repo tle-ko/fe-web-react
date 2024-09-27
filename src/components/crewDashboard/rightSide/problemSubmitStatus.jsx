@@ -94,7 +94,7 @@ const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
           ) : (
             <>
               {rankings.length > 0 && (
-                <div className={`transition-all ease-in duration-200 ${showAll ? 'max-h-full' : 'max-h-62'} overflow-hidden`}>
+                <div className={`transition-all ease-in duration-200 ${showAll ? 'max-h-full' : 'max-h-48'} overflow-hidden`}>
                   <div className="min-w-full grid gap-2 text-center">
                     <div className="grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-2 text-gray-400 text-sm font-light">
                       <div></div>
@@ -104,13 +104,13 @@ const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
                       ))}
                     </div>
                     {rankings.map((user, index) => (
-                      <div key={index} className="grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
+                      <div key={index} className="w-full h-full grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
                         <div>{user.rank}</div>
                         <div>{user.username}</div>
                         {user.submissions.map((submission, idx) => (
                           <div
                             key={idx}
-                            className={`max-w-11 min-h-7 max-h-11 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
+                            className={`w-10 h-10 max-w-8 max-h-8 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
                           />
                         ))}
                       </div>
