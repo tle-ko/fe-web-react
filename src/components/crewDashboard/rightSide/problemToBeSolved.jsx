@@ -33,7 +33,7 @@ const ProblemToBeSolved = ({ submissions, isLoading }) => {
               >
                 <div
                   className={`w-full h-full px-3 py-6 rounded-xl flex-col justify-between items-center inline-flex gap-4 cursor-pointer ${
-                    problem.my_submission
+                    problem.has_submitted
                       ? "bg-color-blue-w25 text-color-blue-main"
                       : "bg-gray-50 text-gray-600 hover:bg-color-blue-w25"
                   }`}
@@ -41,7 +41,7 @@ const ProblemToBeSolved = ({ submissions, isLoading }) => {
                   <div className="text-center text-base font-extrabold cursor-pointer whitespace-wrap">
                     {problem.title}
                   </div>
-                  {problem.my_submission ? (
+                  {problem.has_submitted ? (
                     <FaCheck size="1.5rem" />
                   ) : (
                     <IoSearch className="text-gray-500" size="1.5rem" />
