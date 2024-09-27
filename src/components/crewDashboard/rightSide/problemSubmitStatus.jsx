@@ -3,17 +3,16 @@ import { BiSolidSquareRounded } from "react-icons/bi";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import DataLoadingSpinner from "../../common/dataLoadingSpinner";
 
-const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
+const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
   const [rankings, setRankings] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    if (!crew || !submissions || submissions.length === 0) return;
+    if (!members || !submissions || submissions.length === 0) return;
 
     const userRankData = {};
 
-    // 멤버 초기화: crew.members의 모든 멤버를 기준으로 초기화
-    crew.members.forEach(member => {
+    members.forEach(member => {
       userRankData[member.user_id] = {
         username: member.username,
         submissions: Array(submissions.length).fill({
@@ -49,7 +48,7 @@ const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
     }));
 
     setRankings(sortedRankings);
-  }, [crew, submissions]);
+  }, [members, submissions]);
 
   return (
     <div className="box w-full flex flex-col gap-6">
