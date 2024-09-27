@@ -39,7 +39,7 @@ export default function CrewProblemDetail() {
 
   return (
     <>
-      <div className="fixed top-16 left-0 w-full">
+      <div className="fixed top-16 left-0 w-full z-10">
         <ProblemHeader 
           title={problemData.title} 
         />
