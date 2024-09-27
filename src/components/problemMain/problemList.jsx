@@ -40,7 +40,7 @@ export default function ProblemList({ data, pageIndex, numOfPage, isSearching, l
     <>
       <div className="cardGrid4 mb-16">
         {data.slice(pageIndex * numOfPage, (pageIndex + 1) * numOfPage).map((problem) => (
-          <div className="box min-w-60 flex-col justify-start items-start inline-flex gap-6" key={problem.problem_id}>
+          <div className="box min-w-60 flex-col justify-start items-start inline-flex gap-6" key={problem.problem_ref_id}>
             <div className="w-full containerTitle justify-start items-center gap-3 inline-flex overflow-hidden">
               <img
                 className='w-6 h-8'
@@ -55,7 +55,7 @@ export default function ProblemList({ data, pageIndex, numOfPage, isSearching, l
               <p className='w-full text-gray-900 text-2xl font-bold truncate'>{problem.title}</p>
             </div>
             <div className='w-full flex justify-end'>
-              <Link to={`${problem.problem_id}`}>
+              <Link to={`${problem.problem_ref_id}`}>
                 <Button
                   buttonSize="detailBtn"
                   colorStyle="whiteBlack"
