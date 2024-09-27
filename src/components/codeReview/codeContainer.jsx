@@ -1,8 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { client } from "../../utils";  // client import
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
-// 제출 된 코드를 표시하는 컴포넌트
-export default function CodeContainer({ code, onLineSelect, highlightedLines, setHighlightedLines}) {
+export default function CodeContainer({ onLineSelect, highlightedLines, setHighlightedLines }) {
+  const { submitId } = useParams();
+  const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedLines, setSelectedLines] = useState({ start: null, end: null });
+
+  useEffect(() => {
+    const fetchCodeData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await client.get(`/api/v1/crew/activity/problem/submission/${submitId}`, {
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          setCode(response.data.code); 
+        } else {
+          console.error("코드 데이터를 불러오지 못했어요.", response.statusText);
+        }
+      } catch (error) {
+        console.error("코드 데이터를 불러오는 중 문제가 발생했어요.", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCodeData();
+  }, [submitId]);
 
   const handleLineClick = (lineNumber) => {
     if (selectedLines.start === lineNumber && selectedLines.end === null) {
@@ -22,7 +49,7 @@ export default function CodeContainer({ code, onLineSelect, highlightedLines, se
   };
 
   const getLineStyle = (index) => {
-    const isSelected = (selectedLines.start !== null && selectedLines.end !== null) 
+    const isSelected = (selectedLines.start !== null && selectedLines.end !== null)
       ? (index >= selectedLines.start && index <= selectedLines.end)
       : (index === selectedLines.start);
 
@@ -32,6 +59,14 @@ export default function CodeContainer({ code, onLineSelect, highlightedLines, se
       : isHighlighted ? { backgroundColor: 'rgba(83, 131, 232, 0.125)' }
       : {};
   };
+
+  if (isLoading) {
+    return <div className="w-full p-20">
+        <div className="flex flex-col justify-center items-center m-10">
+          <DataLoadingSpinner />
+        </div>
+      </div>;
+  }
 
   const lines = code.split('\n');
 
