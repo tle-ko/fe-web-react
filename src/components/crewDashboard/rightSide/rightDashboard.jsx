@@ -6,7 +6,7 @@ import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight, FaBookOpen } from "react-icons/fa6";
 import { client } from '../../../utils';
 
-export default function RightDashboard({ crew, statistics, problems, userData }) {
+export default function RightDashboard({ crew, statistics }) {
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const [submissions, setSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
