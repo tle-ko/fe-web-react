@@ -3,19 +3,21 @@ import { BiSolidSquareRounded } from "react-icons/bi";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import DataLoadingSpinner from "../../common/dataLoadingSpinner";
 
-const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
+const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
   const [rankings, setRankings] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    if (!crew || !submissions || submissions.length === 0) return;
+    if (!members || !submissions || submissions.length === 0) return;
 
     const userRankData = {};
 
-    // 멤버 초기화: crew.members의 모든 멤버를 기준으로 초기화
-    crew.members.forEach(member => {
+    // 각 멤버에 대한 초기 제출 데이터 설정
+    members.forEach(member => {
       userRankData[member.user_id] = {
         username: member.username,
+        totalSubmissions: 0,  // 총 제출 개수
+        correctSubmissions: 0,  // 정답 제출 개수
         submissions: Array(submissions.length).fill({
           is_submitted: false,
           is_correct: false
@@ -36,20 +38,39 @@ const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
               is_submitted: true,
               is_correct: isCorrect
             };
+
+            // 총 제출 횟수 및 정답 횟수 업데이트
+            userRankData[userId].totalSubmissions += 1;
+            if (isCorrect) {
+              userRankData[userId].correctSubmissions += 1;
+            }
           }
         });
       }
     });
 
-    const sortedRankings = Object.entries(userRankData).map(([userId, userData], index) => ({
-      rank: `${index + 1}위`,
-      userId: parseInt(userId),
-      username: userData.username,
-      submissions: userData.submissions
-    }));
+    // 제출 개수와 정답 개수를 기준으로 순위 정렬
+    const sortedRankings = Object.entries(userRankData)
+      .map(([userId, userData]) => ({
+        userId: parseInt(userId),
+        username: userData.username,
+        totalSubmissions: userData.totalSubmissions,
+        correctSubmissions: userData.correctSubmissions,
+        submissions: userData.submissions
+      }))
+      .sort((a, b) => {
+        if (b.totalSubmissions === a.totalSubmissions) {
+          return b.correctSubmissions - a.correctSubmissions;  // 제출 수가 같으면 정답 개수로 정렬
+        }
+        return b.totalSubmissions - a.totalSubmissions;  // 제출 수로 우선 정렬
+      })
+      .map((userData, index) => ({
+        ...userData,
+        rank: `${index + 1}위`
+      }));
 
     setRankings(sortedRankings);
-  }, [crew, submissions]);
+  }, [members, submissions]);
 
   return (
     <div className="box w-full flex flex-col gap-6">
@@ -95,7 +116,7 @@ const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
           ) : (
             <>
               {rankings.length > 0 && (
-                <div className={`transition-all ease-in duration-200 ${showAll ? 'max-h-full' : 'max-h-62'} overflow-hidden`}>
+                <div className={`transition-all ease-in duration-200 ${showAll ? 'max-h-full' : 'max-h-48'} overflow-hidden`}>
                   <div className="min-w-full grid gap-2 text-center">
                     <div className="grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-2 text-gray-400 text-sm font-light">
                       <div></div>
@@ -105,13 +126,13 @@ const ProblemSubmitStatus = ({ crew, submissions, isLoading }) => {
                       ))}
                     </div>
                     {rankings.map((user, index) => (
-                      <div key={index} className="grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
+                      <div key={index} className="w-full h-full grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
                         <div>{user.rank}</div>
                         <div>{user.username}</div>
                         {user.submissions.map((submission, idx) => (
                           <div
                             key={idx}
-                            className={`max-w-11 min-h-7 max-h-11 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
+                            className={`w-10 h-10 max-w-8 max-h-8 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
                           />
                         ))}
                       </div>

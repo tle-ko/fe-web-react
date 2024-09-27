@@ -1,21 +1,16 @@
 import Notice from "./notice";
 import LeftDashboard from "./leftSide/leftDashboard";
 import RightDashboard from "./rightSide/rightDashboard";
-import useFetchData from "../../hooks/useEffectData";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { client } from "../../utils";
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
 
-export default function CrewDashContainer({ userId }) {
-  const crewData = useFetchData("http://localhost:3000/data/crewData.json");
-  const userData = useFetchData("http://localhost:3000/data/userData.json");
-  const problemData = useFetchData("http://localhost:3000/data/problemData.json");
+export default function CrewDashContainer() {
 
   const [crew, setCrew] = useState(null);
   const [statistics, setStatistics] = useState(null); // 추가: statistics 데이터 상태
   const { id } = useParams();
-  const crews = crewData.find(crew => crew.id === parseInt(id));
   
   useEffect(() => {
     const fetchCrewData = async () => {
@@ -67,7 +62,7 @@ export default function CrewDashContainer({ userId }) {
               <LeftDashboard crew={crew} statistics={statistics} className="min-w-28" /> 
             </div>
             <div className="min-w-96">
-              <RightDashboard crew={crew} statistics={statistics} crews={crews} problems={problemData} userId={userId} userData={userData} />
+              <RightDashboard crew={crew} statistics={statistics} />
             </div>
           </>
         )}

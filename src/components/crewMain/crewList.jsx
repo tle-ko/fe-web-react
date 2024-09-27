@@ -5,7 +5,7 @@ import ApplyModal from "./applyModal";
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
 import { client } from "../../utils";
 
-export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
+export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isInitialEmpty }) {
   const [pageData, setPageData] = useState([]);
   const [modalStates, setModalStates] = useState({});
   const [selectedCrew, setSelectedCrew] = useState(null);
@@ -62,14 +62,25 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {isLoading ? (
         <div className="w-full p-12">
           <div className="flex flex-col justify-center items-center">
             <DataLoadingSpinner />
           </div>
         </div>
+      ) : isInitialEmpty ? (
+        // 초기 데이터가 없을 때
+        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p>생성된 크루가 없어요 😓</p>
+        </div>
       ) : pageData.length === 0 ? (
+        // 필터된 데이터가 없을 때
         <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
           <div className="justify-start items-center gap-2 inline-flex animate-bounce">
             <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
@@ -79,7 +90,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading }) {
           <p>조건에 해당되는 크루가 없어요 😓</p>
         </div>
       ) : (
-        <div className="cardGrid3 w-full flex-col justify-start items-start">
+        <div className="cardGrid3">
           {pageData.map((crew) => (
             <div key={crew.crew_id} className="box justify-center items-start gap-3">
               <div className="w-full flex-col justify-center items-start gap-4 flex flex-grow">

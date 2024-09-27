@@ -5,6 +5,7 @@ import { client } from "../../utils";
 import Button from "../common/button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import DataLoadingSpinner from "../common/dataLoadingSpinner";
+import '../../styles/animation.css'
 
 export default function MyCrew() {
   const [crews, setCrews] = useState([]);
@@ -51,7 +52,7 @@ export default function MyCrew() {
   return (
     <div className="w-full">
       <div className="w-full flex flex-col gap-5">
-        <div className="containerTitle">내가 참여한 크루</div>
+        <div className="text-gray-900 text-xl font-semibold">내가 참여한 크루</div>
         <div className="w-full relative">
           {isLoading ? (
             <div className="w-full p-20">
@@ -116,13 +117,13 @@ export default function MyCrew() {
                 className={`absolute left-0 pl-2 ${visibleStartIndex === 0 ? 'hidden' : ''}`}
                 onClick={() => handleSlide('left')}
               >
-                <FaChevronLeft size="2rem" />
+                <FaChevronLeft size="2rem" className="hover-scale  hover:text-color-blue-main" />
               </button>
               <button
                 className={`absolute right-0 pr-2 ${visibleStartIndex + 4 >= crews.length ? 'hidden' : ''}`}
                 onClick={() => handleSlide('right')}
               >
-                <FaChevronRight size="2rem" />
+                <FaChevronRight size="2rem" className="hover-scale hover:text-color-blue-main"/>
               </button>
             </div>
           )}

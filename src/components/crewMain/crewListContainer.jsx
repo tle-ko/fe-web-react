@@ -1,4 +1,3 @@
-// crewListContainer
 import CrewList from "./crewList";
 import TagFilter from "./tagFilter";
 import Pagination from "../../components/common/pagiNation";
@@ -15,6 +14,7 @@ export default function CrewListContainer() {
   const numOfPage = 12;
   const [selectedTags, setSelectedTags] = useState({ languages: [], tiers: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialEmpty, setIsInitialEmpty] = useState(false); // 초기 데이터가 없는지 확인하는 상태
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +24,10 @@ export default function CrewListContainer() {
           withCredentials: true
         });
         if (response.status === 200) {
-          setCrews(response.data);
-          setFilteredCrews(response.data); // 초기에는 모든 크루를 표시
+          const data = response.data;
+          setCrews(data);
+          setFilteredCrews(data); // 초기에는 모든 크루를 표시
+          setIsInitialEmpty(data.length === 0); // 초기 데이터가 없으면 true로 설정
         } else {
           console.error('Failed to fetch crew data:', response.statusText);
         }
@@ -37,14 +39,6 @@ export default function CrewListContainer() {
     };
     fetchData();
   }, []);
-
-  const handlePageChange = (index) => {
-    setPageIndex(index - 1);
-  };
-
-  const handleUpdateTags = (tags) => {
-    setSelectedTags(tags);
-  };
 
   useEffect(() => {
     const filtered = crews.filter(crew => {
@@ -68,14 +62,22 @@ export default function CrewListContainer() {
         <Outlet />
       ) : (
         <>
-          <div className="containerTitle">크루 목록</div>
-          <TagFilter onUpdateTags={handleUpdateTags} />
-          <CrewList filters={filteredCrews} pageIndex={pageIndex} numOfPage={numOfPage} isLoading={isLoading} />
-          <Pagination 
-            totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
-            currentPage={pageIndex + 1} 
-            setCurrentPage={handlePageChange} 
+          <div className="text-gray-900 text-xl font-semibold">크루 목록</div>
+          <TagFilter onUpdateTags={setSelectedTags} />
+          <CrewList 
+            filters={filteredCrews} 
+            pageIndex={pageIndex} 
+            numOfPage={numOfPage} 
+            isLoading={isLoading} 
+            isInitialEmpty={isInitialEmpty} // 초기 데이터 여부 전달
           />
+          <div className="w-full">
+            <Pagination 
+              totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
+              currentPage={pageIndex + 1} 
+              setCurrentPage={setPageIndex} 
+            />
+          </div>
         </>
       )}
     </div>

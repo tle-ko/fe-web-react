@@ -48,8 +48,10 @@ export default function AdminMember() {
             i === index ? { ...apply, is_pending: false, is_accepted: true } : apply
           )
         );
+        window.location.reload();
       } else {
         console.error('수락 요청 실패:', response.statusText);
+        window.location.reload();
       }
     } catch (error) {
       console.error('수락 요청 중 오류 발생:', error);
@@ -71,8 +73,10 @@ export default function AdminMember() {
             i === index ? { ...apply, is_pending: false, is_accepted: false } : apply
           )
         );
+        window.location.reload();
       } else {
         console.error('거절 요청 실패:', response.statusText);
+        window.location.reload();
       }
     } catch (error) {
       console.error('거절 요청 중 오류 발생:', error);
@@ -114,7 +118,7 @@ export default function AdminMember() {
             return (
               <div key={index} className="box flex flex-col gap-6">
                 <div className="w-full flex gap-6">
-                  <img src={`http://api.tle-kr.com${applyData.applicant.profile_image}`} alt="" className="w-12 h-12 rounded-full" />
+                  <img src={`http://api.tle-kr.com${applyData.applicant.profile_image}`} alt="" className="w-12 h-12 rounded-full object-cover" />
                   <div className="w-72 flex flex-col gap-4 text-gray-900">
                     <p className="text-base font-bold">{applyData.applicant.username}</p>
                     <div className="flex gap-4 font-medium flex-wrap">

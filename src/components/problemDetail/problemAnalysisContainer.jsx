@@ -36,11 +36,10 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
     )
   }
 
-  // 데이터가 없는 경우 처리
-  if (!analysisData.is_analyzed) {
+  //분석 데이터가 없는 경우 처리
+  if (analysisData.difficulty.value === 0) {
     return <AnalysisLoading />;
   }
-
   // 알고리즘 태그 관련
   const AnalysisTags = analysisData.tags;
 
@@ -82,7 +81,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const timeComplexity = analysisData.time_complexity;
 
   // 힌트 관련
-  const hints = analysisData.hints[0].split('\n\n'); // 첫 번째 인덱스의 데이터를 \n\n로 분리
+  const hints = analysisData.hints;
   const visibleHintContent = (index, hintItems) => {
     return (
       <div className='bg-white text-gray-900 animate-fade-in'>

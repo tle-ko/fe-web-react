@@ -5,6 +5,7 @@ import Button from '../common/button';
 import { client } from '../../utils';
 import { setUserInfo } from '../../auth';
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
 export default function MyInformationContainer() {
   const [Image, setImage] = useState('');
@@ -22,6 +23,7 @@ export default function MyInformationContainer() {
   const [bojUsernameValid, setBojUsernameValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [inputChanged, setInputChanged] = useState(false);
+  const [loading, setLoading] = useState(true);
   const fileInput = useRef(null);
   const debounceTimeout = useRef(null);
 
@@ -29,18 +31,21 @@ export default function MyInformationContainer() {
     client.get('api/v1/user/manage')
       .then(response => {
         const data = response.data;
-        console.log('User info fetched:', data);
         setMypageUserInfo({
           email: data.email,
           profile_image: data.profile_image,
           username: data.username,
-          boj_username: data.boj.username,
-          boj_level: data.boj.level.name || '티어 확인 불가',
+          boj_username: data.boj?.username || '백준 아이디 확인 불가',
+          boj_level: data.boj?.level?.name || '티어 확인 불가',
         });
         setImage(data.profile_image);
         setInitialUsername(data.username);
+        setLoading(false);
       })
-      .catch(error => console.error('Error fetching user info:', error));
+      .catch(error => {
+        console.error('Error fetching user info:', error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태 업데이트
+      });
   }, []);
 
   const handleInputChange = (field, value) => {
@@ -213,6 +218,12 @@ export default function MyInformationContainer() {
 
   return (
     <div className='flex flex-col gap-6 col-span-3'>
+      {loading ? (
+        <div className='w-full h-full flex justify-center items-center'>
+          <DataLoadingSpinner />
+        </div>
+      ) : (
+      <>
       <div className='box min-w-fit'>
         <div className='w-full flex flex-col gap-6 justify-start items-start'>
           <p className='boxTitle'>내 정보 설정</p>
@@ -292,37 +303,39 @@ export default function MyInformationContainer() {
         </div>
       </div>
 
-      <div className='box min-w-fit'>
-        <div className='w-full flex flex-col gap-6 justify-start items-start'>
-          <p className='boxTitle'>비밀번호 변경</p>
-          <div className="w-full flex flex-col gap-6 items-end">
-            <div className='w-full'>         
-                <PasswordInput
-                    title="비밀번호"
-                    placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
-                    type="password"
-                    value={password}
-                    width={20}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setInputChanged(true);
-                    }}
-                  />
-                {password && inputChanged && renderFeedback(
-                  passwordValid,
-                  "사용 가능한 비밀번호입니다.",
-                  "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
-                )}
-              </div>
-              <Button
-                    buttonSize={'detailBtn'}
-                    colorStyle={'blueWhite'}
-                    content={'변경'}
-                    onClick={handlePasswordChange}
-                  />
+        <div className='box min-w-fit'>
+          <div className='w-full flex flex-col gap-6 justify-start items-start'>
+            <p className='boxTitle'>비밀번호 변경</p>
+            <div className="w-full flex flex-col gap-6 items-end">
+              <div className='w-full'>         
+                  <PasswordInput
+                      title="비밀번호"
+                      placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+                      type="password"
+                      value={password}
+                      width={20}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setInputChanged(true);
+                      }}
+                    />
+                  {password && inputChanged && renderFeedback(
+                    passwordValid,
+                    "사용 가능한 비밀번호입니다.",
+                    "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
+                  )}
+                </div>
+                <Button
+                      buttonSize={'detailBtn'}
+                      colorStyle={'blueWhite'}
+                      content={'변경'}
+                      onClick={handlePasswordChange}
+                    />
+            </div>
           </div>
         </div>
-      </div>
+      </>
+    )}
     </div>
   );
 }

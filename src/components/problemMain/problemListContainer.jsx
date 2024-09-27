@@ -4,15 +4,15 @@ import useChildRoute from "../../hooks/useChildRoute";
 import ProblemList from './problemList';
 import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
-import DataLoadingSpinner from "../../components/common/dataLoadingSpinner";
 import { client } from '../../utils';
 
 export default function ProblemListContainer() {
     const isChildRoute = useChildRoute("/problem/");
     const [pageIndex, setPageIndex] = useState(0);
-    const [currentData, setCurrentData] = useState([]);
     const [problemData, setProblemData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [totalPage, setTotalPage] = useState(1);
     const numOfPage = 16;
 
     const handlePageChange = (index) => {
@@ -33,28 +33,32 @@ export default function ProblemListContainer() {
     const [filteredProblemCount, setFilteredProblemCount] = useState(0);
     const [selectedOption, setSelectedOption] = useState("최신순");
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await client.get('api/v1/problems', {
-            withCredentials: true
-          });
-          if (response.status === 200) {
-            console.log(response.data);
-            const data = Array.isArray(response.data) ? response.data : response.data.results;
-            setProblemData(data);
-          } else {
-            console.error('Failed to fetch problem data:', response.statusText);
-          }
-        } catch (error) {
-          console.error('Error fetching problem data:', error);
-        } finally {
-          setLoading(false);
+    const fetchData = useCallback(async (query) => {
+      setLoading(true);
+      try {
+        const response = await client.get('api/v1/problems', {
+          params: {
+            q: query
+          },
+          withCredentials: true
+        });
+        if (response.status === 200) {
+          const data = Array.isArray(response.data.results) ? response.data.results : [];
+          setProblemData(data);
+        } else {
+          console.error('Failed to fetch problem data:', response.statusText);
         }
-      };
-    
-      fetchData();
+      } catch (error) {
+        console.error('Error fetching problem data:', error);
+      } finally {
+        setLoading(false);
+      }
     }, []);
+
+    useEffect(() => {
+      fetchData(searchTerm);
+      setPageIndex(0); // 검색어가 변경될 때 페이지 인덱스를 초기화
+    }, [fetchData, searchTerm]);
 
     useEffect(() => {
       if (loading) return;
@@ -73,15 +77,14 @@ export default function ProblemListContainer() {
       if (selectedOption === "최신순") {
         sortedFilteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       } else if (selectedOption === "낮은순") {
-        sortedFilteredData.sort((a, b) => a.difficulty.value - b.difficulty.value);
+        sortedFilteredData.sort((a, b) => a.analysis.difficulty.value - b.analysis.difficulty.value);
       } else if (selectedOption === "높은순") {
-        sortedFilteredData.sort((a, b) => b.difficulty.value - a.difficulty.value);
+        sortedFilteredData.sort((a, b) => b.analysis.difficulty.value - a.analysis.difficulty.value);
       }
   
-      const start = pageIndex * numOfPage;
-      const end = start + numOfPage;
-      setCurrentData(sortedFilteredData.slice(start, end));
-    }, [problemData, pageIndex, numOfPage, searchTerm, selectedOption, getConsonant, loading]);
+      setFilteredData(sortedFilteredData);
+      setTotalPage(Math.ceil(sortedFilteredData.length / numOfPage));
+    }, [problemData, searchTerm, selectedOption, getConsonant, loading, numOfPage]);
     
     return(
         <div>
@@ -109,29 +112,20 @@ export default function ProblemListContainer() {
                 onChange={(e) => setSelectedOption(e.target.value)}
               />
             </div>
-            {loading ? (
-              <div className="w-full p-20">
-                <div className="flex flex-col justify-center items-center m-10">
-                  <DataLoadingSpinner />
-                </div>
-              </div>
-            ) : (
-              <>
-                <ProblemList 
-                  data={currentData} 
-                  pageIndex={pageIndex} 
-                  numOfPage={numOfPage} 
-                  isSearching={searchTerm !== ''}
-                />
-                <div className='min-w-30rem'>
-                  <Pagination
-                    totalPage={Math.ceil(filteredProblemCount / numOfPage)}
-                    currentPage={pageIndex + 1}
-                    setCurrentPage={handlePageChange}
-                  />
-                </div>
-              </>
-            )}
+            <ProblemList 
+              data={filteredData} 
+              pageIndex={pageIndex} 
+              numOfPage={numOfPage} 
+              isSearching={searchTerm !== ''}
+              loading={loading}
+            />
+            <div className='min-w-30rem'>
+              <Pagination
+                totalPage={totalPage}
+                currentPage={pageIndex + 1}
+                setCurrentPage={handlePageChange}
+              />
+            </div>
         </>
         )} 
     </div>

@@ -23,7 +23,7 @@ export default function Main() {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 }
     );
 
     const currentSections = sectionsRef.current;

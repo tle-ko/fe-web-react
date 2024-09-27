@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import SideNav from '../../components/nav/sideNav';
-import MyCrew from '../../components/myPage/myCrewContainer';
+// import MyCrew from '../../components/myPage/myCrewContainer';
 import MyInfo from '../../components/myPage/myInformationContainer';
 import Footer from '../../components/common/footer';
 
 export default function MySetting(){
     const elements = [
       { order: 1, label: '내 정보 관리' },
-      { order: 2, label: '신청 크루 관리' }
+      // { order: 2, label: '신청 크루 관리' }
     ];
 
     // 초기 선택값을 첫 번째 요소로 설정
@@ -18,8 +18,8 @@ export default function MySetting(){
       switch (selectedElement) {
         case 1:
           return <MyInfo />;
-        case 2:
-          return <MyCrew />;
+        // case 2:
+        //   return <MyCrew />;
         default:
           return <MyInfo />; // 기본값으로 크루 관리 페이지 컴포넌트 렌더링
       }

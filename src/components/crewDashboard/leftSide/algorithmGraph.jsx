@@ -13,9 +13,7 @@ const AlgorithmGraph = ({ crew }) => {
       'math', 'implementation', 'greedy', 'string', 'data_structures', 'graphs', 'dp', 'geometry'
     ];
 
-    // 태그 데이터 처리
     const trackedTags = crew.tags.filter(tag => tagsToTrack.includes(tag.tag.key));
-
     const totalTrackedProblems = trackedTags.reduce((acc, tag) => acc + tag.count, 0);
 
     const tagCount = trackedTags.reduce((acc, tag) => {
@@ -30,21 +28,17 @@ const AlgorithmGraph = ({ crew }) => {
     }]);
 
     const processedTagData = trackedTags.map(tag => ({
-      tag: tag.tag.name_ko || tag.tag.name_en,  // 한국어 이름 또는 영어 이름 사용
+      tag: tag.tag.name_ko || tag.tag.name_en,
       count: tag.count,
       percentage: totalTrackedProblems > 0
         ? ((tag.count / totalTrackedProblems) * 100).toFixed(1)
         : 0
     }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 5);  // 상위 5개의 태그만 선택
+    .slice(0, 5);
 
     setTagData(processedTagData);
   }, [crew]);
-
-  if (!series.length || crew.problem_count === 0) {
-    return null;
-  }
 
   const maxCount = Math.max(...series[0]?.data || [0]);
   const yAxisMax = Math.ceil(maxCount / 5) * 5;
@@ -70,7 +64,7 @@ const AlgorithmGraph = ({ crew }) => {
     yaxis: {
       min: 0,
       max: yAxisMax,
-      tickAmount: yAxisMax / 5, 
+      tickAmount: yAxisMax / 5,
       labels: {
         formatter: (value) => Math.ceil(value)
       }
@@ -83,7 +77,26 @@ const AlgorithmGraph = ({ crew }) => {
         <div className="text-gray-900 text-lg font-bold font-cafe24"><p>크루 알고리즘 분석</p></div>
         <p className="text-gray-900 text-base font-normal">총 {crew.problem_count}개</p>
       </div>
-      {crew.problem_count > 0 ? (
+
+      {crew.problem_count === 0 ? (
+        <div className="flex flex-col items-center gap-3 py-16 text-gray-600">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p>선장님이 문제를 등록하지 않았어요😓</p>
+        </div>
+      ) : (crew.tags.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 py-16 text-gray-600">
+          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+          </div>
+          <p className="text-center">크루 알고리즘 태그가 분석되면<br />그래프가 표시돼요 😊</p>
+        </div>
+      ) : (
         <div className="solved-prob-graph relative flex flex-col">
           <div className="chart-wrap">
             <div id="chart">
@@ -107,16 +120,7 @@ const AlgorithmGraph = ({ crew }) => {
             </ul>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col items-center gap-3 py-6 text-gray-600">
-          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-          </div>
-          <p>선장님이 문제를 등록하지 않았어요😓</p>
-        </div>
-      )}
+      ))}
     </div>
   );
 };
