@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import useChildRoute from "../../hooks/useChildRoute";
 import ProblemList from './problemList';
-import ProblemPagination from '../../components/problemMain/problemPagiNation';
+import Pagination from '../../components/common/pagiNation';
 import Dropdown from "../../components/common/dropDown";
 import { client } from '../../utils';
 
@@ -120,7 +120,7 @@ export default function ProblemListContainer() {
               loading={loading}
             />
             <div className='min-w-30rem'>
-              <ProblemPagination
+              <Pagination
                 totalPage={totalPage}
                 currentPage={pageIndex + 1}
                 setCurrentPage={handlePageChange}
