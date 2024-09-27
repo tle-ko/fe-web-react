@@ -81,9 +81,9 @@ export default function Signin() {
   };
 
   return (
-    <>
-      <div className="cardGrid2 mb-12">
-        <div className="relative pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[32rem]">
+    <div className="w-full">
+      <div className="cardGrid2 items-center mb-12">
+        <div className="col-span-1 relative pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[32rem]">
           <div className="w-fit flex flex-col gap-6">
             <p className="text-gray-50 text-2xl font-extrabold">
               알고리즘 문제 해결 도우미<br />
@@ -98,7 +98,7 @@ export default function Signin() {
             <img src="../assets/signin/boat.svg" alt="boat" />
           </div>
         </div>
-        <div className="box flex flex-col gap-6 min-w-[32rem]">
+        <div className="col-span-1 box h-full flex flex-col gap-6 min-w-[32rem]">
         <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-6">
           <p className="font-cafe24 text-gray-900 text-lg font-bold">
             로그인
@@ -134,6 +134,6 @@ export default function Signin() {
         </form>
       </div>
       </div>
-    </>
+    </div>
   );
 }
