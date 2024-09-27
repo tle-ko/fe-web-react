@@ -58,8 +58,8 @@ export default function ApplyModal({ isOpen, onClose, onApply, crew }) {
           <div className="pr-2 justify-start items-center gap-2 inline-flex">
             <div className="text-gray-900 text-base font-semibold">{crew.latest_activity.name}</div>
             <div className="text-gray-900 text-base font-medium">
-              {crew.latest_activity.date_start_at ? crew.latest_activity.date_start_at.split('T')[0] : "시작일 없음"} ~ 
-              {crew.latest_activity.date_end_at ? crew.latest_activity.date_end_at.split('T')[0] : "종료일 없음"}
+              {crew.latest_activity.start_at ? crew.latest_activity.start_at.split('T')[0] : "시작일 없음"} ~ 
+              {crew.latest_activity.end_at ? crew.latest_activity.end_at.split('T')[0] : "종료일 없음"}
             </div>
           </div>
         </div>

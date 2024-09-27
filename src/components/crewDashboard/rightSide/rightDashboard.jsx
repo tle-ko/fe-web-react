@@ -6,7 +6,7 @@ import CodeReview from "./codeReviewGraph";
 import { FaChevronLeft, FaChevronRight, FaBookOpen } from "react-icons/fa6";
 import { client } from '../../../utils';
 
-export default function RightDashboard({ crew, statistics, problems, userData }) {
+export default function RightDashboard({ crew, statistics }) {
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const [submissions, setSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,8 +92,8 @@ export default function RightDashboard({ crew, statistics, problems, userData })
       </div>
       <div className="w-full grid-cols-3 DashboardGrid">
         <div className="col-span-2 grid gap-6">
-          <ProblemSubmitStatus crew={crew} submissions={submissions} isLoading={isLoading} />
-          <CodeReview activity={currentActivity} crew={crew} userData={userData} problems={problems} />
+          <ProblemSubmitStatus members={crew.members} submissions={submissions} isLoading={isLoading} />
+          <CodeReview members={crew.members} problems={submissions} isLoading={isLoading} />
         </div>
         <div className="col-span-1">
           <ProblemLevelGraph statistics={statistics} />
