@@ -8,9 +8,9 @@ import { client } from "../../utils"
 
 export default function ProblemDetailModal({ isOpen, onClose, problemData, isDeleteModal }) {
   const [showAlert, setShowAlert] = useState(false);
+  const [title, setTitle] = useState('');
   const [timeLimit, setTimeLimit] = useState('');
   const [memoryLimit, setMemoryLimit] = useState('');
-  const [title, setTitle] = useState('');
   const [problemUrl, setProblemUrl] = useState('');
   const [problemDescription, setProblemDescription] = useState('');
   const [inputDescription, setInputDescription] = useState('');
@@ -47,7 +47,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     }
   };
 
-  const handleRegisterProblem = async() => {
+  const handleRegisterProblem = async () => {
     const stringFields = [title, problemDescription, inputDescription, outputDescription];
     const numberFields = [timeLimit, memoryLimit];
   
@@ -57,30 +57,38 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     if (!allStringFieldsFilled || !allNumberFieldsFilled) {
       alert('모든 필수 항목을 작성해 주세요!');
       return;
-    } 
+    }
   
     if (problemUrl && !isValidUrl(problemUrl)) {
       alert('유효한 URL을 입력해 주세요!');
       return;
-    }  
-
+    }
+  
+    const parsedTimeLimit = parseFloat(timeLimit);
+    const parsedMemoryLimit = parseFloat(memoryLimit);
+  
+    if (isNaN(parsedTimeLimit) || isNaN(parsedMemoryLimit)) {
+      alert('시간 제한과 메모리 제한은 숫자로 입력해 주세요!');
+      return;
+    }
+  
     const data = {
       title,
       link: problemUrl,
       description: problemDescription,
       input_description: inputDescription,
       output_description: outputDescription,
-      memory_limit_megabyte: parseInt(memoryLimit, 10),
-      time_limit_second: parseInt(timeLimit, 10),
+      memory_limit: parsedMemoryLimit,
+      time_limit: parsedTimeLimit,
     };
-
+  
     try {
       const response = await client.patch(`/api/v1/problem/${problemData.problem_ref_id}/detail`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (response.status === 200) {
         setShowAlert(true);
       } else {
@@ -90,7 +98,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
       alert(`문제 수정 중 오류가 발생했습니다: ${error.message}`);
     }
   };
-
+  
   const handleClose = () => {
     onClose();
     window.location.reload();
