@@ -150,7 +150,7 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
                           alt="profile_image"
                           className="w-6 h-6 rounded-full mr-2 object-cover"
                         />
-                        <div className="inline_number-flex justify-start items-center gap-2">
+                        <div className="inline-flex justify-start items-center gap-2">
                           <span className="font-semibold text-sm text-gray-600">{item.created_by.username}</span>
                           <span className="text-gray-600 text-sm">|</span>
                           <span className="text-gray-400 text-sm">{formatDate(item.created_at)}</span>
