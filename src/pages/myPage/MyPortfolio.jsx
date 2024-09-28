@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../../components/common/footer';
 import MyPortfolioAnalysis from '../../components/myPage/myPortfolioAnalysis';
 import MyCrewHistoryContainer from '../../components/myPage/myCrewHistoryContainer';
-// import Button from '../../components/common/button'; 
 import { GrCircleInformation } from "react-icons/gr";
 import { client } from '../../utils';
-
+import  { getUserProfile } from '../../auth';
 
 const PortfolioData = {
   userIntroduction: "안녕하세요! 지상 최고의 개발자를 꿈꾸는 대학생입니다.",
@@ -15,7 +14,8 @@ const PortfolioData = {
   strengthAlgorithm: "Greedy"
 }
 
-export default function MyPortfolio(){
+export default function MyPortfolio() {
+  const [profile_image, setProfileImage] = useState(getUserProfile());
   const [userInfo, setMyPortfolioUserInfo] = useState({
     email: '',
     username: '',
@@ -30,11 +30,11 @@ export default function MyPortfolio(){
           const data = response.data;
           setMyPortfolioUserInfo({
             email: data.email,
-            profile_image: data.profile_image,
             username: data.username,
-            boj_username: data.boj?.username || '백준 아이디 확인 불가',
-            boj_level: data.boj?.level?.name || '티어 확인 불가',
+            boj_username: data.boj?.username,
+            boj_level: data.boj?.level?.name,
           });
+          setProfileImage(getUserProfile());
         })
         .catch(error => {
           console.error('Error fetching user info:', error);
@@ -51,7 +51,7 @@ export default function MyPortfolio(){
       <div className='w-full grid grid-cols-6 gap-6'>
         <div className='box col-span-2 flex justify-center items-center gap-6'>
           <img 
-          src={userInfo.profile_image} 
+          src={profile_image} 
           alt="profile" 
           className="w-32 h-32 rounded-full object-cover"
           />
