@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
-import AnalysisLoading from '../../components/problemDetail/problemAnalysisLoading';
 import { FaChevronRight } from "react-icons/fa";
 
 export default function ProblemDetailContainer({ problemData }) {
@@ -8,16 +7,33 @@ export default function ProblemDetailContainer({ problemData }) {
   const descriptionRef = useRef(null);
   const inputDescriptionRef = useRef(null);
   const outputDescriptionRef = useRef(null);
+  const analysisRef = useRef(null);
+
+  const typeset = useCallback((element) => {
+    if (window.MathJax && element) {
+      window.MathJax.typesetPromise([element])
+    }
+  }, []);
 
   useEffect(() => {
-    if (window.MathJax) {
-      window.MathJax.typesetPromise([descriptionRef.current, inputDescriptionRef.current, outputDescriptionRef.current]);
+    if (problemData) {
+      [descriptionRef, inputDescriptionRef, outputDescriptionRef].forEach(ref => {
+        if (ref.current) {
+          typeset(ref.current);
+        }
+      });
     }
-  }, [problemData]);
+  }, [problemData, typeset]);
 
-  const handleActiveContainer = () => {
+  useEffect(() => {
+    if (activeContainer === "analysis" && analysisRef.current) {
+      typeset(analysisRef.current);
+    }
+  }, [activeContainer, typeset]);
+
+  const handleActiveContainer = useCallback(() => {
     setActiveContainer("analysis");
-  }
+  }, []);
 
   // 기본값 설정
   const timeLimit = problemData?.time_limit?.value || 'N/A';
@@ -68,12 +84,11 @@ export default function ProblemDetailContainer({ problemData }) {
           </button>
         </div>
       ) : (
-        problemData.analysis ? (
-          <AnalysisContainer setActiveContainer={setActiveContainer} analysisData={problemData.analysis} />
-        ) : (
-          <AnalysisLoading setActiveContainer={setActiveContainer} />
-        )
-      )}
+            <AnalysisContainer 
+              setActiveContainer={setActiveContainer} 
+              analysisData={problemData.analysis}
+            />
+          )}
     </>
   );
 }

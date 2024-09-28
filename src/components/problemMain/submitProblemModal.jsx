@@ -49,14 +49,22 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
       return;
     }
 
+    const parsedTimeLimit = parseFloat(timeLimit);
+    const parsedMemoryLimit = parseFloat(memoryLimit);
+  
+    if (isNaN(parsedTimeLimit) || isNaN(parsedMemoryLimit)) {
+      alert('시간 제한과 메모리 제한은 숫자로 입력해 주세요!');
+      return;
+    }
+
     const problemData = {
       title,
       link: problemUrl,
       description: problemDescription,
       input_description: inputDescription,
       output_description: outputDescription,
-      memory_limit: parseInt(memoryLimit, 10),
-      time_limit: parseInt(timeLimit, 10),
+      memory_limit: parsedMemoryLimit,
+      time_limit: parsedTimeLimit,
     };
 
     try {
