@@ -17,7 +17,6 @@ export default function CrewProblemDetail() {
         const response = await client.get(`/api/v1/crew/activity/problem/${problemId}`);
         if (response.status === 200) {
           setProblemData(response.data);
-          console.log("크루 문제 데이터 불러오기 성공")
         } else {
           console.error("크루 문제 데이터를 불러오지 못했어요.", response.statusText);
         }
