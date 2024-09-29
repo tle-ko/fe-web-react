@@ -3,7 +3,7 @@ import Input from '../common/input';
 import PasswordInput from '../signup/passwordInput';
 import Button from '../common/button';
 import { client } from '../../utils';
-import { getUserProfile, setUserInfo } from '../../auth';
+import { setUserInfo } from '../../auth';
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
