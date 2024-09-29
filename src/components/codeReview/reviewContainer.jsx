@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaCircleArrowUp, FaTrash } from "react-icons/fa6";
 import { client } from "../../utils"; 
+import { getUserId }  from "../../auth";
 import { useParams } from 'react-router-dom';
 import DataLoadingSpinner from '../common/dataLoadingSpinner';
-
-const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
-const defaultUsername = '올바르지 않은 사용자';
 
 const formatDate = (isoString) => {
   const date = new Date(isoString);
@@ -25,6 +23,7 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
   const [review, setReview] = useState('');
   const [selectedReviewIndex, setSelectedReviewIndex] = useState(null);
   const textareaRef = useRef(null);
+  const currentUserId = parseInt(getUserId());
 
   useEffect(() => {
     const fetchReviewData = async () => {
@@ -59,24 +58,32 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
     }
   }, [review]);
 
-  const saveReview = () => {
-    const currentDate = new Date().toISOString();
+  const saveReview = async () => {
     const newReview = {
       line_number_start: selectedStart,
       line_number_end: selectedEnd,
-      content: review,
-      created_by: {
-        username: defaultUsername,
-        profile_image: defaultProfileImage,
-      },
-      created_at: currentDate,
+      content: review
     };
-
-    setReviews([...reviews, newReview]);
-    setReview('');
-    onResetSelection();
-    setSelectedReviewIndex(null);
-    setHighlightedLines({ start: null, end: null });
+  
+    try {
+      const response = await client.post(`/api/v1/crew/activity/problem/submission/${submitId}/comment`, newReview, submitId,{
+        withCredentials: true,
+      });
+  
+      if (response.status === 201) {
+        setReviews([...reviews, response.data]);
+        setReview('');
+        onResetSelection();
+        setSelectedReviewIndex(null);
+        setHighlightedLines({ start: null, end: null });
+        alert('댓글이 등록되었어요!');
+        window.location.reload();
+      } else {
+        console.error('댓글을 저장하는 중 문제가 발생했어요.', response.statusText);
+      }
+    } catch (error) {
+      console.error('댓글을 저장하는 중 문제가 발생했어요.', error);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -98,12 +105,40 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
     }
   };
 
-  const handleDelete = (index) => {
-    const updatedReviews = reviews.filter((_, i) => i !== index);
-    setReviews(updatedReviews);
-    setSelectedReviewIndex(null);
-    onHighlightLine(null, null);
-    setHighlightedLines({ start: null, end: null });
+  const handleDelete = async (commentId, index) => {
+    const comment = reviews[index];
+    console.log('Current User ID:', currentUserId);
+    console.log('Comment Created By User ID:', comment.created_by.user_id);
+    console.log('삭제 클릭:', commentId, comment);  
+  
+    if (!comment) {
+      console.error('댓글을 찾을 수 없습니다.');
+      return;
+    }
+  
+    if (currentUserId === comment.created_by.user_id) {
+      try {
+        const response = await client.delete(`/api/v1/crew/activity/problem/submission/comment/${commentId}`, {
+          withCredentials: true,
+        });
+  
+        if (response.status === 204) {
+          const updatedReviews = reviews.filter((_, i) => i !== index);
+          setReviews(updatedReviews);
+          setSelectedReviewIndex(null);
+          onHighlightLine(null, null);
+          setHighlightedLines({ start: null, end: null });
+          alert('댓글이 삭제되었어요!');
+          window.location.reload();
+        } else {
+          console.error('댓글을 삭제하는 중 문제가 발생했어요.', response.statusText);
+        }
+      } catch (error) {
+        console.error('댓글을 삭제하는 중 문제가 발생했어요.', error);
+      }
+    } else {
+      alert('본인이 작성한 댓글만 삭제할 수 있어요.');
+    }
   };
 
   if (isLoading) {
@@ -139,14 +174,14 @@ export default function ReviewContainer({ selectedStart, selectedEnd, onResetSel
                             className="w-3.5 h-3.5 text-gray-600 cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleDelete(index);
+                              handleDelete(item.comment_id, index);
                             }}
                           />
                         </div>
                       </div>
                       <div className="flex items-center mb-2">
-                      <img 
-                          src={`http://api.tle-kr.com${item.created_by.profile_image}`}
+                        <img                      
+                          src={`${process.env.REACT_APP_API_BASE_URL}${item.created_by.profile_image}`}
                           alt="profile_image"
                           className="w-6 h-6 rounded-full mr-2 object-cover"
                         />
