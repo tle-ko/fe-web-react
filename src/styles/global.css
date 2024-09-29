@@ -157,13 +157,27 @@
     grid-template-columns: 1fr;
   }
   
-  @media (min-width: 1024px) {
+  @media (min-width: 1000px) {
     .DashboardGrid {
       grid-template-columns: 2fr 5fr;
       grid-template-rows: auto;
       gap: 1.5rem;
     }
   }
+
+
+  /* 기본 2열 구조 */
+  .ResponsiveGrid {
+    @apply grid gap-6;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  @media (max-width: 800px) {
+    .ResponsiveGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 
   .icon {
     @apply p-0 justify-center items-center text-2xl;
