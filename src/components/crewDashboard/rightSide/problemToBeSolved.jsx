@@ -22,7 +22,7 @@ const ProblemToBeSolved = ({ submissions, isLoading }) => {
           </div>
         </div>
       ) : problems.length > 0 ? (
-        <div className="w-full grid grid-cols-8 gap-5">
+        <div className="w-full grid grid-cols-8 lg:grid-cols-8 mid-lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2 gap-5">
           {problems
             .sort((a, b) => a.order - b.order)
             .map((problem, index) => (
