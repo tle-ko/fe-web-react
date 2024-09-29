@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../../styles/animation.css'
 import CodeAndBoat from '../../assets/mainPage/codeAndBoat.png';
-import CrewScreen from '../../assets/mainPage/crewScreen.png';
+import CrewDashboardScreen from '../../assets/mainPage/crewDashboardScreen.png';
+import CrewCodereviewScreen from '../../assets/mainPage/crewCodereviewScreen.png';
 import PortfolioScreen from '../../assets/mainPage/portfolioScreen.png';
 import Footer from '../../components/common/footer';
 
@@ -13,6 +14,9 @@ import { MdAccessTimeFilled } from 'react-icons/md';
 
 export default function Main() {
   const sectionsRef = useRef([]);
+  const mathJaxRef = useRef(null);
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [CrewDashboardScreen, CrewCodereviewScreen];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,6 +41,20 @@ export default function Main() {
         if (section) observer.unobserve(section);
       });
     };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  useEffect(() => {
+    if (window.MathJax) {
+      window.MathJax.typesetPromise([mathJaxRef.current]);
+    }
   }, []);
 
   const addToSectionsRef = (el) => {
@@ -74,13 +92,16 @@ export default function Main() {
               </div>
               <div className="inline-flex justify-start items-start gap-4 flex-wrap">
               <div className="min-w-16 inline-flex items-center justify-center px-4 py-3 bg-gray-200/25 rounded-full">
-                <p className="text-white whitespace-nowrap">#DFS</p>
+                <p className="text-white whitespace-nowrap">#깊이 우선 탐색</p>
               </div>
               <div className="min-w-16 inline-flex items-center justify-center px-4 py-3 bg-gray-200/25 rounded-full">
-                <p className="text-white whitespace-nowrap">#BFS</p>
+                <p className="text-white whitespace-nowrap">#너비 우선 탐색</p>
               </div>
               <div className="min-w-16 inline-flex items-center justify-center px-4 py-3 bg-gray-200/25 rounded-full">
-                <p className="text-white whitespace-nowrap">#다이나믹 프로그래밍</p>
+                <p className="text-white whitespace-nowrap">#구현</p>
+              </div>
+              <div className="min-w-16 inline-flex items-center justify-center px-4 py-3 bg-gray-200/25 rounded-full">
+                <p className="text-white whitespace-nowrap">#그래프 탐색</p>
               </div>
             </div>
             </div>
@@ -104,9 +125,9 @@ export default function Main() {
               <p className="text-white text-xl font-extrabold whitespace-nowrap">예측 시간 복잡도</p>
               <MdAccessTimeFilled size="1.5rem" color="white" />
               </div>
-              <div className="text-white text-xl">
-                <p>O(N)</p>
-              </div>
+              <p className="text-white text-lg" ref={mathJaxRef}>
+                $$O(E+V)$$
+              </p>
             </div>
         </div>
         </div>
@@ -118,19 +139,19 @@ export default function Main() {
             <div className="w-2/3 mb-6 p-10 bg-white rounded-xl border border-gray-200 justify-start items-start inline-flex" ref={addToSectionsRef}>
                 <p className="text-gray-600 text-xl mr-2">💡</p>
                 <p className="text-gray-600 longSentence">
-                1. 선분 교차 판별: 두 볼록 다각형의 겹쳐진 부분을 찾기 위해서는 각 다각형의 변들이 서로 교차하는 지점을 찾아야 합니다. 두 선분이 교차하는 지점을 찾는 알고리즘을 구현해야 합니다.
+                먼저 입력으로 주어진 그래프 정보를 인접 리스트 형태로 저장합니다.
                 </p>
             </div>
             <div className="w-2/3 mb-6 p-10 bg-white rounded-xl border border-gray-200 justify-start items-start inline-flex" ref={addToSectionsRef}>
                 <p className="text-gray-600 text-xl mr-2">💡</p>
                 <p className="text-gray-600 longSentence">
-                2. 교차점 정렬: 두 다각형의 모든 변들에 대해 교차점을 찾았다면, 이 교차점들을 x좌표 기준으로 정렬해야 합니다.
+                DFS 탐색은 재귀 함수를 사용하여 구현할 수 있습니다. 현재 노드를 방문한 후, 연결된 노드들을 재귀적으로 탐색합니다.
                 </p>
             </div>
             <div className="w-2/3 mb-6 p-10 bg-white rounded-xl border border-gray-200 justify-start items-start inline-flex" ref={addToSectionsRef}>
                 <p className="text-gray-600 text-xl mr-2">💡</p>
                 <p className="text-gray-600 longSentence">
-                3. 겹쳐진 부분의 넓이 계산: 정렬된 교차점들을 이용하여 두 다각형의 겹쳐진 부분의 넓이를 계산해야 합니다. 겹쳐진 부분은 여러 개의 다각형으로 나눠질 수 있으므로, 각 다각형의 넓이를 구하여 합쳐야 합니다.
+                BFS 탐색은 큐 자료구조를 이용하여 구현할 수 있습니다. 시작 노드를 큐에 넣고, 큐에서 노드를 하나씩 꺼내 방문하면서 연결된 노드들을 큐에 추가합니다.
                 </p>
             </div>
           </div>
@@ -146,7 +167,9 @@ export default function Main() {
                 <p className="text-xl font-medium" ref={addToSectionsRef}>대시보드를 통해 한 눈에 진행사항을 파악하고 코드 리뷰로 함께 성장하는 경험을 만들어가요 🌈</p>
                 </div>
             </div>
-          <img className="w-10/12" src={CrewScreen} ref={addToSectionsRef} alt="CrewScreen"/>
+          <div className="w-10/12" ref={addToSectionsRef}>
+            <img src={images[currentImage]} alt="CrewScreen"/>
+          </div>
         </div>
       </div>
 
