@@ -87,11 +87,11 @@ const CodeReview = ({ members, problems, isLoading }) => {
         </div>
       ) : (
         <div className='flex flex-col'>
-          <div className="w-full grid grid-cols-8">
+          <div className="w-full grid xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2">
             {members.map(member => (
               <div
                 key={member.user_id}
-                className={`relative p-4 rounded-t-2xl ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
+                className={`w-full flex justify-center relative p-4 md:p-2 sm:p-1 rounded-t-2xl ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
                 style={{ opacity: selectedUserId === member.user_id ? 1 : 0.7 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = 1}
                 onMouseLeave={e => e.currentTarget.style.opacity = selectedUserId === member.user_id ? 1 : 0.6}

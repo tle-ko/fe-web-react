@@ -122,17 +122,17 @@ const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
                       <div></div>
                       <div></div>
                       {submissions.map((_, index) => (
-                        <div key={`submission-header-${index}`}>{`${index + 1}`}</div> 
+                        <div className={'w-full max-w-9 sm:w-8 md:w-8 lg:w-9'} key={`submission-header-${index}`}>{`${index + 1}`}</div> 
                       ))}
                     </div>
                     {rankings.map((user, index) => (
                       <div key={`ranking-${index}`} className="w-full h-10 grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
-                        <div>{user.rank}</div>
-                        <div>{user.username}</div>
+                        <div className='flex items-center justify-center'>{user.rank}</div>
+                        <div className='flex items-center justify-center'>{user.username}</div>
                         {user.submissions.map((submission, idx) => (
                           <div key={`submission-${user.userId}-${idx}`} className='flex justify-center items-center'> {/* key 추가 */}
                             <div
-                              className={`w-full h-10 max-w-10 max-h-10 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
+                              className={`w-full h-10 max-w-9 max-h-9 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-9 lg:h-9 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
                             />
                           </div>
                         ))}
