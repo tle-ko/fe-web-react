@@ -19,6 +19,26 @@ export default function AdminActivity() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // 검색 기능을 위한 상태 추가
 
+  // 날짜가 유효한지 확인하는 함수
+  const isValidDate = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
+
+  // 문제 선택을 처리하는 함수
+  const handleProblemSelect = (problem) => {
+    const isSelected = selectedProblems.includes(problem.problem_ref_id);
+
+    if (isSelected) {
+      setSelectedProblems(selectedProblems.filter((id) => id !== problem.problem_ref_id));
+    } else {
+      if (selectedProblems.length < 8) {
+        setSelectedProblems([...selectedProblems, problem.problem_ref_id]);
+      } else {
+        alert('회차 당 최대 8개의 문제만 선택할 수 있습니다.');
+      }
+    }
+  };
+
   // API로 crew activities 데이터 불러오기
   useEffect(() => {
     const fetchActivities = async () => {
@@ -27,7 +47,6 @@ export default function AdminActivity() {
           withCredentials: true,
         });
         if (response.status === 200) {
-          console.log('Fetched Activities Data: ', response.data.activities);
           const activitiesWithDates = response.data.activities.map((activity) => ({
             ...activity,
             startDate: new Date(activity.start_at),
@@ -55,7 +74,6 @@ export default function AdminActivity() {
         withCredentials: true,
       });
       if (response.status === 200) {
-        console.log('문제 데이터 api 200 후 데이터 확인: ', response.data.results);
         setProblems(response.data.results); // 문제 목록 설정
       } else {
         console.error('문제 데이터를 불러오지 못했어요.');
@@ -75,7 +93,6 @@ export default function AdminActivity() {
         withCredentials: true,
       });
       if (response.status === 200) {
-        console.log(`Fetched problems for activity ${activityId}: `, response.data.problems);
         setSequenceProblems((prev) => ({
           ...prev,
           [activityId]: response.data.problems, // 각 activity_id에 맞는 문제 목록 저장
@@ -90,7 +107,6 @@ export default function AdminActivity() {
     }
   }, []);
 
-  // sequences가 로드될 때 각 회차의 문제 목록을 자동으로 불러오기
   useEffect(() => {
     sequences.forEach((sequence) => {
       fetchActivityProblems(sequence.activity_id);
@@ -120,17 +136,13 @@ export default function AdminActivity() {
   const handleAddProblem = async (activityId) => {
     setCurrentSequenceId(activityId);
 
-    // 해당 회차의 문제 목록을 fetch
     const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
       withCredentials: true,
     });
 
     if (response.status === 200) {
       const fetchedProblems = response.data.problems;
-      console.log("Fetched problems from /api/v1/crew/activity/:activityId:", fetchedProblems);
-
       const problemIds = fetchedProblems.map((problem) => problem.problem_ref_id);
-      console.log("Selected problems (problem_ref_id):", problemIds);  // 디버깅용 로그
 
       setSelectedProblems(problemIds);  // 문제 목록 설정
     } else {
@@ -140,37 +152,9 @@ export default function AdminActivity() {
     setIsModalOpen(true);  // 모달 열기
   };
 
-  const handleModalAddProblem = () => {
-    const updatedSequences = sequences.map((sequence) => {
-      if (sequence.activity_id === currentSequenceId) {
-        return {
-          ...sequence,
-          problems: selectedProblems.map((selectedProblemId) => {
-            const problem = problems.find((problem) => problem.problem_ref_id === selectedProblemId);
-            return { problem_id: selectedProblemId, title: problem ? problem.title : '문제 제목 없음' };
-          }),
-          editMode: false,
-        };
-      }
-      return sequence;
-    });
-
-    setSequences(updatedSequences);
-    setIsModalOpen(false);
-  };
-
-  const handleProblemSelect = (problem) => {
-    const isSelected = selectedProblems.includes(problem.problem_ref_id);
-
-    if (isSelected) {
-      setSelectedProblems(selectedProblems.filter((id) => id !== problem.problem_ref_id));
-    } else {
-      if (selectedProblems.length < 8) {
-        setSelectedProblems([...selectedProblems, problem.problem_ref_id]);
-      } else {
-        alert('회차 당 최대 8개의 문제만 선택할 수 있습니다.');
-      }
-    }
+  const handleModalAddProblem = (selectedProblemIds) => {
+    setSelectedProblems(selectedProblemIds);  // 선택된 문제 목록 업데이트
+    setIsModalOpen(false);  // 모달 닫기
   };
 
   const handleFix = async (sequenceId) => {
@@ -178,12 +162,12 @@ export default function AdminActivity() {
 
     if (sequence.editMode) {
       try {
-        await client.post(
-          `/api/v1/crew/${id}/activity`,
+        await client.put(
+          `/api/v1/crew/activity/${sequenceId}`,
           {
             start_at: sequence.startDate.toISOString(),
             end_at: sequence.endDate.toISOString(),
-            problem_refs: selectedProblems,
+            problem_refs: selectedProblems,  // 선택된 problem_ref_id 배열 전달
           },
           {
             withCredentials: true,
@@ -208,13 +192,8 @@ export default function AdminActivity() {
     setSequences(updatedSequences);
   };
 
-  const isValidDate = (date) => {
-    return date instanceof Date && !isNaN(date);
-  };
-
   const renderDisplayProblems = (sequenceProblems) => {
     if (!sequenceProblems || sequenceProblems.length === 0) {
-      console.log('No problems to display');
       return <div>문제가 없습니다.</div>;
     }
     const columns = [[], []];
