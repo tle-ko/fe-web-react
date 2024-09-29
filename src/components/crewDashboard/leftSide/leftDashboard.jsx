@@ -47,7 +47,7 @@ export default function LeftDashboard({ crew, statistics }) {
           {host && (
             <div className="flex items-center gap-4">
               <img
-                src={host.profile_image ? `http://api.tle-kr.com${host.profile_image}` : ProfileImg}
+                src={host.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${host.profile_image}` : ProfileImg}
                 alt={host.username}
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -60,7 +60,7 @@ export default function LeftDashboard({ crew, statistics }) {
           {crewMembers.map((member, index) => (
             <div key={index} className="flex items-center gap-4">
               <img
-                src={member.profile_image ? `http://api.tle-kr.com${member.profile_image}` : ProfileImg}
+                src={member.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${member.profile_image}` : ProfileImg}
                 alt={member.username}
                 className="w-10 h-10 rounded-full object-cover"
               />

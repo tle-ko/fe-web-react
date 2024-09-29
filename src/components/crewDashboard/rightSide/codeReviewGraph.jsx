@@ -4,7 +4,7 @@ import ProfileImg from "../../../assets/images/profile.svg";
 import DataLoadingSpinner from "../../common/dataLoadingSpinner";
 
 const CodeReview = ({ members, problems, isLoading }) => {
-  const { crewId } = useParams(); 
+  const { id } = useParams(); 
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [reviewerImages, setReviewerImages] = useState({});
   const navigate = useNavigate();  
@@ -63,7 +63,7 @@ const CodeReview = ({ members, problems, isLoading }) => {
   };
 
   const handleRowClick = (problemId, submitId) => {
-    navigate(`/crew/${crewId}/problems/${problemId}/submit/${submitId}`);
+    navigate(`/crew/${id}/problems/${problemId}/submit/${submitId}`);
   };
 
   const formatSubmissionDate = (dateString) => {

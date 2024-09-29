@@ -126,14 +126,16 @@ const ProblemSubmitStatus = ({ members, submissions, isLoading }) => {
                       ))}
                     </div>
                     {rankings.map((user, index) => (
-                      <div key={index} className="w-full h-full grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
+                      <div key={index} className="w-full h-10 grid grid-cols-[1fr_4fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-gray-900">
                         <div>{user.rank}</div>
                         <div>{user.username}</div>
                         {user.submissions.map((submission, idx) => (
-                          <div
-                            key={idx}
-                            className={`w-10 h-10 max-w-8 max-h-8 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
-                          />
+                          <div className='flex justify-center items-center'>
+                            <div
+                              key={idx}
+                              className={`w-full h-10 max-w-10 max-h-10 ${submission.is_submitted ? (submission.is_correct ? 'greenBox' : 'redBox') : 'grayBox'}`}
+                            />
+                          </div>
                         ))}
                       </div>
                     ))}
