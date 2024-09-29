@@ -27,6 +27,7 @@ export default function Header() {
   const handleLogout = () => {
     removeToken(); 
     navigate('/');
+    window.location.reload();
   }
 
   const handleProtectedLinkClick = (event, path) => {
