@@ -72,11 +72,11 @@ export default function CrewListContainer() {
             isInitialEmpty={isInitialEmpty} // 초기 데이터 여부 전달
           />
           <div className="w-full">
-            <Pagination 
-              totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
-              currentPage={pageIndex + 1} 
-              setCurrentPage={setPageIndex} 
-            />
+          <Pagination 
+            totalPage={Math.ceil(filteredCrews.length / numOfPage)} 
+            currentPage={pageIndex + 1}  // 1-based로 변환하여 전달
+            setCurrentPage={(page) => setPageIndex(page - 1)}  // 1-based에서 0-based로 변환하여 저장
+          />
           </div>
         </>
       )}

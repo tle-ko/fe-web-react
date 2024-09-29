@@ -25,7 +25,7 @@ const CodeReview = ({ members, problems, isLoading }) => {
             const problemReviewers = userSubmission.reviewers.map((reviewer, index) => (
               <img
                 key={`${reviewer.user_id}-${index}`}
-                src={reviewer.profile_image ? `http://api.tle-kr.com${reviewer.profile_image}` : ProfileImg}
+                src={reviewer.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${reviewer.profile_image}` : ProfileImg}
                 alt={reviewer.username}
                 className="w-6 h-6 rounded-full object-cover"
                 style={{ marginLeft: index === 0 ? '0' : '-6px' }}
@@ -87,17 +87,17 @@ const CodeReview = ({ members, problems, isLoading }) => {
         </div>
       ) : (
         <div className='flex flex-col'>
-          <div className="w-full grid grid-cols-8">
+          <div className="w-full grid xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2">
             {members.map(member => (
               <div
                 key={member.user_id}
-                className={`relative p-4 rounded-t-2xl ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
+                className={`w-full flex justify-center relative p-4 md:p-2 sm:p-1 rounded-t-2xl ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
                 style={{ opacity: selectedUserId === member.user_id ? 1 : 0.7 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = 1}
                 onMouseLeave={e => e.currentTarget.style.opacity = selectedUserId === member.user_id ? 1 : 0.6}
               >
                 <img
-                  src={`http://api.tle-kr.com${member.profile_image}`}
+                  src={`${process.env.REACT_APP_API_BASE_URL}${member.profile_image}`}
                   alt={member.username}
                   className="w-10 h-10 rounded-full cursor-pointer object-cover"
                   onClick={() => handleProfileClick(member.user_id)}

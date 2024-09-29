@@ -90,12 +90,12 @@ export default function RightDashboard({ crew, statistics }) {
       <div className="grid gap-6">
         <ProblemToBeSolved submissions={submissions} isLoading={isLoading} />
       </div>
-      <div className="w-full grid-cols-3 DashboardGrid">
-        <div className="col-span-2 grid gap-6">
+      <div className="w-full ResponsiveGrid">
+        <div className="grid gap-6">
           <ProblemSubmitStatus members={crew.members} submissions={submissions} isLoading={isLoading} />
           <CodeReview members={crew.members} problems={submissions} isLoading={isLoading} />
         </div>
-        <div className="col-span-1">
+        <div className="grid gap-6">
           <ProblemLevelGraph statistics={statistics} />
         </div>
       </div>

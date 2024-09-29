@@ -7,6 +7,38 @@ const ProblemLevelGraph = ({ statistics }) => {
   const [problemCounts, setProblemCounts] = useState([]);
   const [displayData, setDisplayData] = useState([]); // 그래프와 테이블에 표시할 데이터
   const [onlyAnalysis, setOnlyAnalysis] = useState(false); // "분석 중"만 존재하는지 여부
+  const [chartHeight, setChartHeight] = useState('350px'); // 기본 높이 설정
+
+  // 화면 크기에 따라 차트 높이를 동적으로 설정하는 함수
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      // Tailwind의 sm, md, lg에 맞춰 차트 높이를 설정
+      let newHeight;
+      if (width <= 640) {
+        newHeight = '250px'; // 작은 화면에서는 차트 높이 감소
+      } else if (width <= 1024) {
+        newHeight = '300px'; // 중간 화면에서는 차트 높이 중간
+      } else {
+        newHeight = '350px'; // 큰 화면에서는 기본 크기 유지
+      }
+
+      // 음수나 잘못된 값 방지 (예시로 최소 150px 설정)
+      if (parseInt(newHeight, 10) <= 0) {
+        newHeight = '150px';
+      }
+
+      setChartHeight(newHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // 초기 화면 크기 적용
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!statistics) return;
@@ -70,9 +102,9 @@ const ProblemLevelGraph = ({ statistics }) => {
               <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
               <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
             </div>
-            <p className="text-center">문제 난이도가 분석되면<br/>그래프가 표시돼요 😊</p>
+            <p className="text-center">문제 난이도가 분석되면<br />그래프가 표시돼요 😊</p>
           </div>
-          {renderTableData()} 
+          {renderTableData()}
         </>
       );
     }
@@ -81,7 +113,7 @@ const ProblemLevelGraph = ({ statistics }) => {
       chart: {
         type: 'donut',
         fontFamily: 'inherit',
-        height: 350,
+        height: parseInt(chartHeight, 10) > 0 ? chartHeight : '150px', // 최소 높이 설정
       },
       labels: labels,
       legend: {
