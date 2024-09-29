@@ -37,7 +37,6 @@ export default function Signin() {
   };
 
   const handleLogin = async () => {
-    console.log(process.env.REACT_APP_API_BASE_URL);
 
     if (!validateEmail(email) || !validatePassword(password)) {
       setShowWarning(true);
