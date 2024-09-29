@@ -47,7 +47,6 @@ const AddProblemModal = ({ isOpen, onClose, problems, selectedProblems, onSelect
     return levelImages['N'];
   };
 
-  // 기존에 선택된 문제들을 렌더링하는 함수
   const renderSelectedProblems = (problems) => {
     const columns = [[], []];
     problems.forEach((problem, index) => {
@@ -74,7 +73,11 @@ const AddProblemModal = ({ isOpen, onClose, problems, selectedProblems, onSelect
       </div>
     );
   };
-  
+
+  // 저장하기 클릭 시 선택된 problem_ref_id 배열 전달
+  const handleSaveProblems = () => {
+    onAddProblems(selectedProblems);  // 선택된 problem_ref_id 배열 전달
+  };
 
   // 모달의 메인 컨텐츠
   const addProblemModalContent = (
@@ -125,11 +128,9 @@ const AddProblemModal = ({ isOpen, onClose, problems, selectedProblems, onSelect
           풀이할 문제는 회차 당 8개까지 등록 가능합니다.
         </div>
         <div className="mt-4 mb-4">
-          {/* 기존에 선택된 문제들을 미리 렌더링 */}
           {renderSelectedProblems(
             selectedProblems.map(problemId => {
               const selectedProblem = problems.find(problem => problem.problem_ref_id === problemId);
-              console.log("Selected Problem:", selectedProblem);  // 디버깅용 로그
               return selectedProblem;
             }).filter(Boolean) || []
           )}
@@ -145,7 +146,7 @@ const AddProblemModal = ({ isOpen, onClose, problems, selectedProblems, onSelect
       title="문제 추가"
       content={addProblemModalContent}
       buttonText="저장하기"
-      onButtonClick={onAddProblems}
+      onButtonClick={handleSaveProblems}
     />
   );
 };
