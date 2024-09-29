@@ -5,9 +5,9 @@ import { getToken } from './auth';
 
 export const client = axios.create({
   withCredentials: true,
-  baseURL: "http://api.tle-kr.com",
+  baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": process.env.REACT_APP_CONTENT_TYPE
   }
 });
 

@@ -1,16 +1,16 @@
   // 토큰을 로컬 스토리지에 저장  
   export const setToken = (token) => {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(process.env.REACT_APP_ACCESS_TOKEN_KEY, token);
   };
   
   // 토큰을 로컬 스토리지에서 가져오기
   export const getToken = () => {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem(process.env.REACT_APP_ACCESS_TOKEN_KEY);
   };
   
   // 토큰 삭제 (로그아웃 시 사용)
   export const removeToken = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem(process.env.REACT_APP_ACCESS_TOKEN_KEY);
   };
   
   // 토큰이 있는지 확인 (로그인 상태 확인)
