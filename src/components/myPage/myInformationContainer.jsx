@@ -3,7 +3,7 @@ import Input from '../common/input';
 import PasswordInput from '../signup/passwordInput';
 import Button from '../common/button';
 import { client } from '../../utils';
-import { setUserInfo } from '../../auth';
+import { getUserProfile, setUserInfo } from '../../auth';
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
@@ -38,7 +38,7 @@ export default function MyInformationContainer() {
           boj_username: data.boj?.username || '백준 아이디 확인 불가',
           boj_level: data.boj?.level?.name || '티어 확인 불가',
         });
-        setImage(data.profile_image);
+        setImage(`${process.env.REACT_APP_API_BASE_URL}/media/${data.profile_image}`);
         setInitialUsername(data.username);
         setLoading(false);
       })
@@ -122,7 +122,6 @@ export default function MyInformationContainer() {
       .then(response => {
         alert('비밀번호가 성공적으로 변경되었습니다.');
         setPassword('');
-        window.location.href = '/signin';
       })
       .catch(error => console.error('Error changing password:', error));
   };
