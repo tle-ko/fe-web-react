@@ -118,7 +118,7 @@ export default function AdminMember() {
             return (
               <div key={index} className="box flex flex-col gap-6">
                 <div className="w-full flex gap-6">
-                  <img src={`http://api.tle-kr.com${applyData.applicant.profile_image}`} alt="" className="w-12 h-12 rounded-full object-cover" />
+                  <img src={`${process.env.REACT_APP_API_BASE_URL}${applyData.applicant.profile_image}`} alt="" className="w-12 h-12 rounded-full object-cover" />
                   <div className="w-72 flex flex-col gap-4 text-gray-900">
                     <p className="text-base font-bold">{applyData.applicant.username}</p>
                     <div className="flex gap-4 font-medium flex-wrap">
