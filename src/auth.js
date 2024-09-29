@@ -11,6 +11,7 @@
   // 토큰 삭제 (로그아웃 시 사용)
   export const removeToken = () => {
     localStorage.removeItem(process.env.REACT_APP_ACCESS_TOKEN_KEY);
+    document.cookie = 'sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   };
   
   // 토큰이 있는지 확인 (로그인 상태 확인)
