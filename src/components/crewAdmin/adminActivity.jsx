@@ -135,35 +135,59 @@ export default function AdminActivity() {
   // 문제 추가 버튼을 클릭할 때 특정 회차의 문제 목록을 fetch
   const handleAddProblem = async (activityId) => {
     setCurrentSequenceId(activityId);
-
-    const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
-      withCredentials: true,
-    });
-
-    if (response.status === 200) {
-      const fetchedProblems = response.data.problems;
-      const problemIds = fetchedProblems.map((problem) => problem.problem_ref_id);
-
-      setSelectedProblems(problemIds);  // 문제 목록 설정
-    } else {
-      console.error('문제 데이터를 불러오지 못했어요.');
+  
+    if (!activityId) {
+      console.error("유효한 activityId가 없습니다.");
+      return;
     }
-
+  
+    try {
+      const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
+        withCredentials: true,
+      });
+  
+      if (response.status === 200) {
+        const fetchedProblems = response.data.problems;
+        const problemIds = fetchedProblems.map((problem) => problem.problem_ref_id);
+  
+        setSelectedProblems(problemIds);  // 문제 목록 설정
+      } else {
+        console.error('문제 데이터를 불러오지 못했어요.');
+      }
+    } catch (error) {
+      console.error('문제 데이터를 불러오는 중 문제가 발생했어요.', error);
+    }
+  
     setIsModalOpen(true);  // 모달 열기
   };
+  
+  // 새로운 회차 추가
+  const handleAddNewSequence = () => {
+    const newSequence = {
+      activity_id: Date.now(), // 임시 activity_id
+      startDate: new Date(),
+      endDate: new Date(),
+      problems: [],
+      editMode: true, // 새로운 회차는 편집 모드로 시작
+    };
+  
+    setSequences([...sequences, newSequence]); // 새로운 회차 추가
+  };
+  
 
   const handleModalAddProblem = (selectedProblemIds) => {
     setSelectedProblems(selectedProblemIds);  // 선택된 문제 목록 업데이트
     setIsModalOpen(false);  // 모달 닫기
   };
 
+  // 회차 저장
   const handleFix = async (sequenceId) => {
     const sequence = sequences.find((sequence) => sequence.activity_id === sequenceId);
 
     if (sequence.editMode) {
       try {
-        await client.put(
-          `/api/v1/crew/activity/${sequenceId}`,
+        await client.post(
+          `/api/v1/crew/${id}/activity`,
           {
             start_at: sequence.startDate.toISOString(),
             end_at: sequence.endDate.toISOString(),
@@ -173,7 +197,8 @@ export default function AdminActivity() {
             withCredentials: true,
           }
         );
-        console.log('회차가 저장되었습니다.');
+        alert('새로운 회차 정보가 추가되었어요.');
+        window.location.reload(); // 새로고침
       } catch (error) {
         console.error('회차 저장 중 오류가 발생했습니다.', error);
       }
@@ -222,7 +247,7 @@ export default function AdminActivity() {
         <div key={sequence.activity_id} className="items-start w-full mb-4 box">
           <div className="flex flex-col justify-between items-start mb-3 w-full gap-4">
             <div className="font-semibold text-lg">
-              <h2>{sequence.name}</h2>
+              <h2>{sequence.name || "새로운 회차"}</h2>
             </div>
 
             <div className="font-semibold text-base flex flex-col items-start w-full">
@@ -310,7 +335,7 @@ export default function AdminActivity() {
         </div>
       ))}
 
-      <Button buttonSize="formBtn" colorStyle="skyBlue" content="+ 회차추가" width="full" />
+      <Button buttonSize="formBtn" colorStyle="skyBlue" content="+ 회차 추가" width="full" onClick={handleAddNewSequence} />
 
       <AddProblemModal
         isOpen={isModalOpen}
