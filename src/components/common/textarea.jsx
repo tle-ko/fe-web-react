@@ -1,26 +1,26 @@
 import React from 'react';
 
-export default function Textarea({ title, placeholder, width, height, value, onChange}) {
+export default function Textarea({ title, placeholder, width, height, value, onChange }) {
   const textareaClassName = `px-5 py-3 bg-white rounded border border-gray-200 text-gray-800 text-base font-medium outline-none`;
 
   return (
-    <div className={`w-full flex flex-col justify-start items-start gap-2`}>
+    <div className={`flex w-full flex-col items-start justify-start gap-2`}>
       {title && <div className="containerTitle">{title}</div>}
       <textarea
         className={`${textareaClassName} resize-none`}
         placeholder={placeholder}
         rows="1"
-        style={{ 
-          overflowWrap: 'break-word', 
+        style={{
+          overflowWrap: 'break-word',
           whiteSpace: 'pre-wrap',
-          height: height ? (isNaN(height) ? height : `${height}rem`) : 'auto', 
-          width: width ? (isNaN(width) ? width : `${width}rem`) : '100%' 
+          height: height ? (isNaN(height) ? height : `${height}rem`) : 'auto',
+          width: width ? (isNaN(width) ? width : `${width}rem`) : '100%',
         }}
         value={value}
         onChange={onChange}
       />
     </div>
-  )
+  );
 }
 
 /*
@@ -31,5 +31,3 @@ usage
     height="28" //height는 rem 단위로 지정, props로 안주면 auto
   />
  */
-
-  

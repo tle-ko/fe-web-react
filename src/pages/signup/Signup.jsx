@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Step from "../../components/signup/signupStep";
-import Form from "../../components/signup/signupForm";
+import Step from '../../components/signup/signupStep';
+import Form from '../../components/signup/signupForm';
 import { client } from '../../utils';
 import { setToken, setUserInfo } from '../../auth';
 
@@ -20,16 +20,16 @@ export default function Signup() {
   });
 
   const handleInputChange = (name, value) => {
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleNextStep = () => {
     if (getStepValidity()) {
       if (currentStep < 4) {
-        setCurrentStep(prevStep => prevStep + 1);
+        setCurrentStep((prevStep) => prevStep + 1);
       } else if (currentStep === 4) {
         handleSubmit();
       }
@@ -40,7 +40,7 @@ export default function Signup() {
 
   const handlePrevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(prevStep => prevStep - 1);
+      setCurrentStep((prevStep) => prevStep - 1);
     }
   };
 
@@ -61,18 +61,19 @@ export default function Signup() {
 
   const handleSubmit = async () => {
     const isFormValid = getStepValidity();
-  
+
     if (isFormValid) {
       try {
-        const { email, username, password, boj_username, verification_token, profile_image } = formData;
+        const { email, username, password, boj_username, verification_token, profile_image } =
+          formData;
         const submitData = new FormData();
-  
+
         submitData.append('email', email);
         submitData.append('username', username);
         submitData.append('password', password);
         submitData.append('boj_username', boj_username);
         submitData.append('verification_token', verification_token);
-  
+
         if (profile_image) {
           submitData.append('profile_image', profile_image);
         } else {
@@ -89,17 +90,21 @@ export default function Signup() {
         });
 
         if (response.status === 201) {
-          alert("회원가입이 완료되었어요!");
+          alert('회원가입이 완료되었어요!');
 
           // 알림 확인 후 자동 로그인을 요청
-          const loginResponse = await client.post('/api/v1/auth/signin', {
-            email: formData.email,
-            password: formData.password
-          }, {
-            headers: {
-              "Content-Type": "application/json; charset=UTF-8"
+          const loginResponse = await client.post(
+            '/api/v1/auth/signin',
+            {
+              email: formData.email,
+              password: formData.password,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
             }
-          });
+          );
 
           if (loginResponse.status === 200) {
             const { token, id, username, profile_image } = loginResponse.data;
@@ -129,8 +134,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="box min-w-[40rem] py-16 mb-16 items-center">
-      <div className="w-[32rem] flex flex-col gap-12 items-center">
+    <div className="box mb-16 min-w-[40rem] items-center py-16">
+      <div className="flex w-[32rem] flex-col items-center gap-12">
         <Step currentStep={currentStep} onPrevStep={handlePrevStep} handleSubmit={handleSubmit} />
         <Form
           currentStep={currentStep}
@@ -138,7 +143,7 @@ export default function Signup() {
           onInputChange={handleInputChange}
           onNextStep={handleNextStep}
           onPrevStep={handlePrevStep}
-          handleSubmit={handleSubmit} 
+          handleSubmit={handleSubmit}
           getStepValidity={getStepValidity}
         />
       </div>

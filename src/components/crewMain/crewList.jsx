@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Button from "../common/button";
-import LanguageTag from "../common/languageTag";
-import ApplyModal from "./applyModal";
-import DataLoadingSpinner from "../common/dataLoadingSpinner";
-import { client } from "../../utils";
+import React, { useState, useEffect } from 'react';
+import Button from '../common/button';
+import LanguageTag from '../common/languageTag';
+import ApplyModal from './applyModal';
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
+import { client } from '../../utils';
 
 export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isInitialEmpty }) {
   const [pageData, setPageData] = useState([]);
@@ -15,12 +15,15 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
     const endIndex = startIndex + numOfPage;
     setPageData(filters.slice(startIndex, endIndex));
 
-    const initialModalStates = filters.reduce((acc, crew) => ({ ...acc, [crew.crew_id]: false }), {});
+    const initialModalStates = filters.reduce(
+      (acc, crew) => ({ ...acc, [crew.crew_id]: false }),
+      {}
+    );
     setModalStates(initialModalStates);
   }, [filters, pageIndex, numOfPage]);
 
   const handleOpenModal = (crewId) => {
-    setSelectedCrew(filters.find(crew => crew.crew_id === crewId));
+    setSelectedCrew(filters.find((crew) => crew.crew_id === crewId));
     setModalStates((prevState) => ({
       ...prevState,
       [crewId]: true,
@@ -51,7 +54,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
       });
 
       if (response.status === 200 || response.status === 201) {
-        console.log("크루 신청이 완료되었습니다.");
+        console.log('크루 신청이 완료되었습니다.');
         handleCloseModal(selectedCrew.crew_id);
       } else {
         console.error('Failed to apply for the crew:', response.statusText);
@@ -65,42 +68,42 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
     <div className="w-full">
       {isLoading ? (
         <div className="w-full p-12">
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center justify-center">
             <DataLoadingSpinner />
           </div>
         </div>
       ) : isInitialEmpty ? (
         // 초기 데이터가 없을 때
-        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
-          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+        <div className="my-16 flex flex-col items-center gap-3 py-6 text-gray-600">
+          <div className="inline-flex animate-bounce items-center justify-start gap-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
           </div>
           <p>생성된 크루가 없어요 😓</p>
         </div>
       ) : pageData.length === 0 ? (
         // 필터된 데이터가 없을 때
-        <div className="flex flex-col items-center gap-3 py-6 text-gray-600 my-16">
-          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+        <div className="my-16 flex flex-col items-center gap-3 py-6 text-gray-600">
+          <div className="inline-flex animate-bounce items-center justify-start gap-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
           </div>
           <p>조건에 해당되는 크루가 없어요 😓</p>
         </div>
       ) : (
         <div className="cardGrid3">
           {pageData.map((crew) => (
-            <div key={crew.crew_id} className="box justify-center items-start gap-3">
-              <div className="w-full flex-col justify-center items-start gap-4 flex flex-grow">
-                <div className="w-full flex justify-between items-center">
-                  <div className="justify-start items-center gap-2 flex">
+            <div key={crew.crew_id} className="box items-start justify-center gap-3">
+              <div className="flex w-full flex-grow flex-col items-start justify-center gap-4">
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center justify-start gap-2">
                     <div className="text-xl">{crew.icon}</div>
-                    <div className="w-40 containerTitle truncate">{crew.name}</div>
+                    <div className="containerTitle w-40 truncate">{crew.name}</div>
                   </div>
                   <div>
-                    <Button 
+                    <Button
                       buttonSize="detailBtn"
                       colorStyle="skyBlue"
                       content="신청하기"
@@ -116,24 +119,26 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
                     )}
                   </div>
                 </div>
-                <div className="w-full flex-col justify-center items-start gap-4 flex">
-                  <div className="justify-start items-center gap-3 inline-flex text-sm">
+                <div className="flex w-full flex-col items-start justify-center gap-4">
+                  <div className="inline-flex items-center justify-start gap-3 text-sm">
                     <div className="text-color-blue-main ">인원</div>
-                    <div className="text-gray-700">{crew.member_count.count}명 / {crew.member_count.max_count}명</div>
+                    <div className="text-gray-700">
+                      {crew.member_count.count}명 / {crew.member_count.max_count}명
+                    </div>
                   </div>
-                  <div className="w-full justify-start items-center gap-4 inline-flex text-sm ">
-                    <p className=" text-color-blue-main whitespace-nowrap">크루 태그</p>
-                    <div className=" justify-start items-start gap-1 flex hidden-scrollbar overflow-x-auto">
+                  <div className="inline-flex w-full items-center justify-start gap-4 text-sm ">
+                    <p className=" whitespace-nowrap text-color-blue-main">크루 태그</p>
+                    <div className=" hidden-scrollbar flex items-start justify-start gap-1 overflow-x-auto">
                       {crew.tags
-                        .filter(tag => tag.type === "language")
+                        .filter((tag) => tag.type === 'language')
                         .map((tag) => (
                           <LanguageTag key={tag.key} language={tag.name} />
-                      ))}
+                        ))}
                       {crew.tags
-                        .filter(tag => tag.type === "level")
+                        .filter((tag) => tag.type === 'level')
                         .map((tag) => (
                           <LanguageTag key={tag.name} language={tag.name} className="tag border" />
-                      ))}
+                        ))}
                     </div>
                   </div>
                 </div>

@@ -1,26 +1,25 @@
+import { FaCheckCircle } from 'react-icons/fa';
+import { MdCancel } from 'react-icons/md';
+import Button from './button';
 
-import { FaCheckCircle } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
-import Button from "./button";
-
-const AlertContainer = ({ type, content, onButtonClick, buttonContent }) => {
+function AlertContainer({ type, content, onButtonClick, buttonContent }) {
   return (
     <div className="">
-      <div className="w-full my-10 flex-col justify-start items-center gap-6 inline-flex">
+      <div className="my-10 inline-flex w-full flex-col items-center justify-start gap-6">
         {type === 'check' ? (
-          <div className="flex-col justify-start items-center inline-flex gap-[1.5rem]">
+          <div className="inline-flex flex-col items-center justify-start gap-[1.5rem]">
             <FaCheckCircle color="#5383E8" size={48} />
-            <p className="text-gray-600 text-xl font-medium">{content}</p>
+            <p className="text-xl font-medium text-gray-600">{content}</p>
           </div>
         ) : type === 'delete' ? (
-          <div className="flex-col justify-start items-center inline-flex">
-            <div className="flex flex-col justify-start items-center gap-[1.5rem] mb-10">
+          <div className="inline-flex flex-col items-center justify-start">
+            <div className="mb-10 flex flex-col items-center justify-start gap-[1.5rem]">
               <MdCancel color="#e84057" size={48} />
-              <p className="text-gray-600 text-xl font-medium">{content}</p>
+              <p className="text-xl font-medium text-gray-600">{content}</p>
             </div>
             <Button
-              buttonSize={"formBtn"}
-              colorStyle={"redWhite"}
+              buttonSize="formBtn"
+              colorStyle="redWhite"
               content={buttonContent}
               onClick={onButtonClick}
             />
@@ -29,6 +28,6 @@ const AlertContainer = ({ type, content, onButtonClick, buttonContent }) => {
       </div>
     </div>
   );
-};
+}
 
-export default AlertContainer; 
+export default AlertContainer;

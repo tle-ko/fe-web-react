@@ -8,10 +8,9 @@ const SubmitByHeader = ({ id }) => {
       try {
         const response = await fetch('http://localhost:3000/data/userData.json');
         const data = await response.json();
-        console.log('Fetched data:', data); 
+        console.log('Fetched data:', data);
 
-
-        const user = data.find(user => user.id === id);
+        const user = data.find((user) => user.id === id);
 
         if (user) {
           setSubmitter(user.username);
@@ -28,9 +27,9 @@ const SubmitByHeader = ({ id }) => {
   }, [id]);
 
   return (
-    <div className="w-screen h-16 bg-white top-32 left-0 fixed px-28 py-4 flex flex-row gap-2 items-center border border-gray-200 z-10">
-      <div className="flex justify-center items-center">
-        <div className="submitByheader text-lg flex justify-center items-center mr-5">
+    <div className="fixed left-0 top-32 z-10 flex h-16 w-screen flex-row items-center gap-2 border border-gray-200 bg-white px-28 py-4">
+      <div className="flex items-center justify-center">
+        <div className="submitByheader mr-5 flex items-center justify-center text-lg">
           {submitter}
         </div>
       </div>
@@ -39,6 +38,3 @@ const SubmitByHeader = ({ id }) => {
 };
 
 export default SubmitByHeader;
-
-
-

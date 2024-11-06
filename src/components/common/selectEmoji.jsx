@@ -23,13 +23,13 @@ export default function SelectEmoji({ title, initialEmoji, onEmojiChange, disabl
           travel: 'Travel & Places',
           objects: 'Objects',
           symbols: 'Symbols',
-          flags: 'Flags'
+          flags: 'Flags',
         },
-        notFound: 'No emojis found'
-      }
+        notFound: 'No emojis found',
+      },
     });
 
-    picker.on('emoji', emoji => {
+    picker.on('emoji', (emoji) => {
       if (currentButton) {
         currentButton.innerText = emoji.emoji; // 버튼 텍스트 변경
       }
@@ -61,9 +61,12 @@ export default function SelectEmoji({ title, initialEmoji, onEmojiChange, disabl
   }, [initialEmoji, onEmojiChange, disabled]);
 
   return (
-    <div className='flex flex-col justify-start items-start gap-2'>
-      <div className='text-gray-900 text-base font-semibold'>{title}</div>
-      <button className={`bg-white rounded-lg border border-gray-200 w-14 h-14 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`} ref={buttonRef}></button>
+    <div className="flex flex-col items-start justify-start gap-2">
+      <div className="text-base font-semibold text-gray-900">{title}</div>
+      <button
+        className={`h-14 w-14 rounded-lg border border-gray-200 bg-white ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        ref={buttonRef}
+      ></button>
     </div>
   );
 }

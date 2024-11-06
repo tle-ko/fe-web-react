@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 // 자식 url이 포함되어 있다면 route 변경
 const useChildRoute = (childPath) => {

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Modal from "../../components/common/modal";
-import Alert from "../../components/common/alertContainer";
-import Input from "../../components/common/input";
-import Textarea from "../../components/common/textarea";
+import React, { useState } from 'react';
+import Modal from '../../components/common/modal';
+import Alert from '../../components/common/alertContainer';
+import Input from '../../components/common/input';
+import Textarea from '../../components/common/textarea';
 
-import {client} from "../../utils";
+import { client } from '../../utils';
 
 export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   const [showAlert, setShowAlert] = useState(false);
@@ -17,12 +17,15 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   const [outputDescription, setOutputDescription] = useState('');
 
   const isValidUrl = (url) => {
-    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name and extension
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name and extension
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ); // fragment locator
     return !!pattern.test(url);
   };
 
@@ -35,14 +38,21 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
     }
   };
 
-  const handleRegisterProblem = async() => {
-    const requiredFields = [title, timeLimit, memoryLimit, problemDescription, inputDescription, outputDescription]; // 문제 URL은 선택 항목
-    const allFieldsFilled = requiredFields.every(field => field.trim() !== '');
+  const handleRegisterProblem = async () => {
+    const requiredFields = [
+      title,
+      timeLimit,
+      memoryLimit,
+      problemDescription,
+      inputDescription,
+      outputDescription,
+    ]; // 문제 URL은 선택 항목
+    const allFieldsFilled = requiredFields.every((field) => field.trim() !== '');
 
     if (!allFieldsFilled) {
       alert('모든 필수 항목을 작성해 주세요!');
       return;
-    } 
+    }
 
     if (problemUrl && !isValidUrl(problemUrl)) {
       alert('유효한 URL을 입력해 주세요!');
@@ -51,7 +61,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
 
     const parsedTimeLimit = parseFloat(timeLimit);
     const parsedMemoryLimit = parseFloat(memoryLimit);
-  
+
     if (isNaN(parsedTimeLimit) || isNaN(parsedMemoryLimit)) {
       alert('시간 제한과 메모리 제한은 숫자로 입력해 주세요!');
       return;
@@ -91,22 +101,56 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
   };
 
   const formContent = (
-    <div className="w-full flex flex-col gap-10 mt-10">
-      <Input title="문제 제목" placeholder="제목을 작성해 주세요" onChange={(e) => setTitle(e.target.value)}/>
-      <div className="w-full inline-flex flex-wrap items-start gap-6">
+    <div className="mt-10 flex w-full flex-col gap-10">
+      <Input
+        title="문제 제목"
+        placeholder="제목을 작성해 주세요"
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <div className="inline-flex w-full flex-wrap items-start gap-6">
         <div className="w-fit">
-        <Input title="시간 제한" placeholder="초" width="8.875" onChange={(e) => handleInputChange(e, setTimeLimit)} />
+          <Input
+            title="시간 제한"
+            placeholder="초"
+            width="8.875"
+            onChange={(e) => handleInputChange(e, setTimeLimit)}
+          />
         </div>
         <div className="w-fit">
-        <Input title="메모리 제한" placeholder="MB" width="8.875" onChange={(e) => handleInputChange(e, setMemoryLimit)} />
+          <Input
+            title="메모리 제한"
+            placeholder="MB"
+            width="8.875"
+            onChange={(e) => handleInputChange(e, setMemoryLimit)}
+          />
         </div>
         <div className="w-fit">
-        <Input title="문제 URL" placeholder="백준 URL을 작성해 주세요 (선택)" width="21" onChange={(e) => setProblemUrl(e.target.value)} />
+          <Input
+            title="문제 URL"
+            placeholder="백준 URL을 작성해 주세요 (선택)"
+            width="21"
+            onChange={(e) => setProblemUrl(e.target.value)}
+          />
         </div>
       </div>
-      <Textarea title="문제" placeholder="문제를 작성해 주세요" height="12" onChange={(e) => setProblemDescription(e.target.value)} />
-      <Textarea title="입력" placeholder="입력 조건을 작성해 주세요" height="12" onChange={(e) => setInputDescription(e.target.value)}/>
-      <Textarea title="출력" placeholder="출력 조건을 작성해 주세요" height="12" onChange={(e) => setOutputDescription(e.target.value)}/>
+      <Textarea
+        title="문제"
+        placeholder="문제를 작성해 주세요"
+        height="12"
+        onChange={(e) => setProblemDescription(e.target.value)}
+      />
+      <Textarea
+        title="입력"
+        placeholder="입력 조건을 작성해 주세요"
+        height="12"
+        onChange={(e) => setInputDescription(e.target.value)}
+      />
+      <Textarea
+        title="출력"
+        placeholder="출력 조건을 작성해 주세요"
+        height="12"
+        onChange={(e) => setOutputDescription(e.target.value)}
+      />
     </div>
   );
 
@@ -118,7 +162,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
       onClose={handleClose}
       title="문제 등록하기"
       content={showAlert ? alertContent : formContent}
-      buttonText={showAlert ? "" : "문제 등록하기"}
+      buttonText={showAlert ? '' : '문제 등록하기'}
       onButtonClick={handleRegisterProblem}
     />
   );
