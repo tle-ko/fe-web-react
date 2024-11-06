@@ -4,9 +4,9 @@ import { RiBarChart2Fill } from 'react-icons/ri';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import ReactMarkdown from 'react-markdown';
 import Button from '../common/button.jsx';
-import DataLoadingSpinner from "../common/dataLoadingSpinner";
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
 import AnalysisLoading from './problemAnalysisLoading.jsx';
-import '../../styles/animation.css'
+import '../../styles/animation.css';
 
 export default function ProblemAnalysisContainer({ analysisData, setActiveContainer }) {
   const [visibleHintCards, setVisibleHintCards] = useState([]);
@@ -29,11 +29,11 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   if (!analysisData) {
     return (
       <div className="w-full p-20">
-        <div className="flex flex-col justify-center items-center m-10">
+        <div className="m-10 flex flex-col items-center justify-center">
           <DataLoadingSpinner />
         </div>
       </div>
-    )
+    );
   }
 
   // 난이도 및 태그 관련 데이터
@@ -80,12 +80,12 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const hints = analysisData.hints;
   const visibleHintContent = (index, hintItems) => {
     return (
-      <div className='bg-white text-gray-900 animate-fade-in'>
-        <div className='inline-flex gap-2 items-center'>
+      <div className="animate-fade-in bg-white text-gray-900">
+        <div className="inline-flex items-center gap-2">
           <p className="text-xl">💡</p>
-          <div className='longSentence' ref={(el) => (hintRefs.current[index] = el)}>
+          <div className="longSentence" ref={(el) => (hintRefs.current[index] = el)}>
             <ReactMarkdown
-              className='h-fit'
+              className="h-fit"
               components={{
                 p: ({ node, ...props }) => <p className="whitespace-pre-wrap" {...props} />,
                 ol: ({ node, ...props }) => <ol className="select-text" {...props} />,
@@ -102,11 +102,11 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
 
   const viewHintButton = (index) => {
     return (
-      <div className='inline-flex justify-center'>
+      <div className="inline-flex justify-center">
         <Button
-          buttonSize={"detailBtn"}
-          colorStyle={"whiteBlack"}
-          content={"힌트 보기"}
+          buttonSize={'detailBtn'}
+          colorStyle={'whiteBlack'}
+          content={'힌트 보기'}
           onClick={() => toggleHintVisibility(index)}
         />
       </div>
@@ -119,84 +119,97 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
 
   return (
     <>
-      <div className="flex mt-24 gap-10 w-full items-start">
-        <button className="flex flex-col items-center gap-4 cursor-pointer group hover-scale"
-          onClick={() => setActiveContainer('detail')}>
-          <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-main cursor-pointer">
+      <div className="mt-24 flex w-full items-start gap-10">
+        <button
+          className="hover-scale group flex cursor-pointer flex-col items-center gap-4"
+          onClick={() => setActiveContainer('detail')}
+        >
+          <div className="mt-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-200 group-hover:bg-color-blue-main">
             <FaChevronLeft size="1.5rem" color="white" />
           </div>
-          <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-main">문제<br />보기</p>
+          <p className="text-center text-lg font-semibold text-gray-600 group-hover:text-color-blue-main">
+            문제
+            <br />
+            보기
+          </p>
         </button>
 
-      {difficultyValue === 0 ? (
-        <AnalysisLoading />
+        {difficultyValue === 0 ? (
+          <AnalysisLoading />
         ) : (
-        <div className='w-full MainGrid1to3 min-w-96'>
-          {/* 문제 분석 컨테이너 */}
-          <div className="flex flex-col items-start gap-6 mb-6 col-span-2">
-            <div className="w-full p-10 flex flex-col justify-start items-start gap-6 rounded-3xl bg-color-blue-main ">
-              <div className="inline-flex items-center gap-3">
-                <p className="text-white text-xl font-extrabold">알고리즘 태그</p>
-                <FaTag size="1.25rem" color="white" />
+          <div className="MainGrid1to3 w-full min-w-96">
+            {/* 문제 분석 컨테이너 */}
+            <div className="col-span-2 mb-6 flex flex-col items-start gap-6">
+              <div className="flex w-full flex-col items-start justify-start gap-6 rounded-3xl bg-color-blue-main p-10 ">
+                <div className="inline-flex items-center gap-3">
+                  <p className="text-xl font-extrabold text-white">알고리즘 태그</p>
+                  <FaTag size="1.25rem" color="white" />
+                </div>
+                <div className="inline-flex flex-wrap items-start justify-start gap-4">
+                  {AnalysisTags.map((tag, index) => (
+                    <div
+                      key={index}
+                      className="inline-flex min-w-16 items-center justify-center rounded-full bg-gray-200/25 px-4 py-3"
+                    >
+                      <p className="text-white">#{tag.name_ko}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="inline-flex justify-start items-start gap-4 flex-wrap">
-                {AnalysisTags.map((tag, index) => (
-                  <div key={index} className="min-w-16 inline-flex items-center justify-center px-4 py-3 bg-gray-200/25 rounded-full">
-                    <p className="text-white">#{tag.name_ko}</p>
-                  </div>
-                ))}
+              <div
+                className="flex w-full flex-col items-start justify-start gap-3 rounded-3xl p-10"
+                style={{ backgroundColor: difficultyColor }}
+              >
+                {/* 난이도 데이터 */}
+                <div className="inline-flex items-center gap-3">
+                  <p className="text-xl font-extrabold text-white">난이도</p>
+                  <RiBarChart2Fill size="1.5rem" color="white" />
+                </div>
+                {/* 레벨 데이터 */}
+                <div className="flex flex-col items-start gap-3">
+                  <p className="text-xl font-bold text-white">
+                    레벨 {difficultyValue} ({difficultyText})
+                  </p>
+                  {/* 난이도 설명 */}
+                  <p className="whitespace-normal font-medium text-white">
+                    {difficultyDescription}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="w-full p-10 flex flex-col justify-start items-start gap-3 rounded-3xl"
-              style={{ backgroundColor: difficultyColor }}>
-              {/* 난이도 데이터 */}
-              <div className="inline-flex items-center gap-3">
-                <p className="text-white text-xl font-extrabold">난이도</p>
-                <RiBarChart2Fill size="1.5rem" color="white" />
+              {/* 시간 복잡도 데이터 */}
+              <div className="flex w-full flex-col items-start justify-start gap-3 rounded-3xl bg-color-blue-main p-10 ">
+                <div className="inline-flex items-center gap-3">
+                  <p className="text-xl font-extrabold text-white">예측 시간 복잡도</p>
+                  <MdAccessTimeFilled size="1.5rem" color="white" />
+                </div>
+                <p className="text-lg text-white" ref={timeComplexityRef}>
+                  $$O({timeComplexity})$$
+                </p>
               </div>
-              {/* 레벨 데이터 */}
-              <div className="flex flex-col items-start gap-3">
-                <p className="text-white text-xl font-bold">레벨 {difficultyValue} ({difficultyText})</p>
-                {/* 난이도 설명 */}
-                <p className="text-white font-medium whitespace-normal">{difficultyDescription}</p>
-              </div>
-            </div>
-            {/* 시간 복잡도 데이터 */}
-            <div className="w-full p-10 flex flex-col justify-start items-start gap-3 rounded-3xl bg-color-blue-main ">
-              <div className="inline-flex items-center gap-3">
-                <p className="text-white text-xl font-extrabold">예측 시간 복잡도</p>
-                <MdAccessTimeFilled size="1.5rem" color="white" />
-              </div>
-              <p className="text-white text-lg"
-                ref={timeComplexityRef}>
-                $$O({timeComplexity})$$
-              </p>
-            </div>
-          </div>
-          
-          {/* 문제 힌트 컨테이너 */}
-          <div className="flex flex-col items-start gap-6 col-span-2">
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-900 text-xl font-bold">힌트가 더 필요하다면, AI가 제공해 주는 힌트😎</p>
-              <p className="text-gray-600 text-md">효과적인 문제 풀이를 위해 순차적으로 제공돼요</p>
             </div>
 
-            {hints.map((hintItems, index) => (
-              <div
-                className="box w-full"
-                key={index}
-              >
-                {visibleHintCards.includes(index) ? (
-                  visibleHintContent(index, hintItems)
-                ) : (
-                  viewHintButton(index)
-                )}
+            {/* 문제 힌트 컨테이너 */}
+            <div className="col-span-2 flex flex-col items-start gap-6">
+              <div className="flex flex-col gap-2">
+                <p className="text-xl font-bold text-gray-900">
+                  힌트가 더 필요하다면, AI가 제공해 주는 힌트😎
+                </p>
+                <p className="text-md text-gray-600">
+                  효과적인 문제 풀이를 위해 순차적으로 제공돼요
+                </p>
               </div>
-            ))}
+
+              {hints.map((hintItems, index) => (
+                <div className="box w-full" key={index}>
+                  {visibleHintCards.includes(index)
+                    ? visibleHintContent(index, hintItems)
+                    : viewHintButton(index)}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </>
   );
 }

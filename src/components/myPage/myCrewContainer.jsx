@@ -5,7 +5,7 @@ import LanguageTag from '../common/languageTag';
 const formatDate = (submissionTime) => {
   const date = new Date(submissionTime);
   const year = date.getFullYear();
-  const month = date.getMonth() + 1; 
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -25,7 +25,8 @@ export default function MyCrewContainer() {
         { type: 'level', name: '실버 5 이상' },
         { type: 'custom', name: '알고리즘' },
       ],
-      message: '저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요',
+      message:
+        '저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요 저 진짜 열심히 할 자신있습니다. 받아주세요',
     },
     {
       id: 2,
@@ -62,70 +63,78 @@ export default function MyCrewContainer() {
         { type: 'custom', name: '해커톤' },
       ],
       message: '열심히하겠습니다.',
-    }
+    },
   ];
 
   const approveMessage = () => {
     return alert('선장님의 승인/거절 여부에 따라 이메일로 결과가 전송돼요!');
-  }
+  };
 
   return (
-    <div className='col-span-3 box min-w-fit'>
-      <div className='w-full flex flex-col gap-6'>
-        <p className='boxTitle w-fit'>크루 가입 신청 현황</p>
-        
-        {crewData.map(crew => (
-          <div key={crew.id} className='box'>
-            <div className='w-full flex-col justify-end items-end gap-6 inline-flex'>
-              <div className='w-full flex-col justify-start items-start gap-6 inline-flex'>
-                <div className='inline-flex gap-6 justify-start items-start'>
-                  <p className='text-5xl font-bold'>{crew.icon}</p>
-                  
-                  <div className='flex-col justify-start items-start gap-4 flex'>
-                    <p className='text-gray-900 font-bold'>{crew.name}</p>
-                    <div className='justify-between items-center inline-flex gap-6'>
-                      <p className='font-medium text-base-15'>신청 시각</p>
-                      <p className='font-normal text-base-15'>{formatDate(crew.created_at)}</p>
+    <div className="box col-span-3 min-w-fit">
+      <div className="flex w-full flex-col gap-6">
+        <p className="boxTitle w-fit">크루 가입 신청 현황</p>
+
+        {crewData.map((crew) => (
+          <div key={crew.id} className="box">
+            <div className="inline-flex w-full flex-col items-end justify-end gap-6">
+              <div className="inline-flex w-full flex-col items-start justify-start gap-6">
+                <div className="inline-flex items-start justify-start gap-6">
+                  <p className="text-5xl font-bold">{crew.icon}</p>
+
+                  <div className="flex flex-col items-start justify-start gap-4">
+                    <p className="font-bold text-gray-900">{crew.name}</p>
+                    <div className="inline-flex items-center justify-between gap-6">
+                      <p className="text-base-15 font-medium">신청 시각</p>
+                      <p className="text-base-15 font-normal">{formatDate(crew.created_at)}</p>
                     </div>
-                    <div className='justify-between items-center inline-flex gap-6'>
-                      <p className='font-medium'>크루 태그</p>
-                      <div className="justify-start items-center gap-2 inline-flex flex-wrap">
+                    <div className="inline-flex items-center justify-between gap-6">
+                      <p className="font-medium">크루 태그</p>
+                      <div className="inline-flex flex-wrap items-center justify-start gap-2">
                         {crew.tags
-                          .filter(tag => tag.type === "language")
+                          .filter((tag) => tag.type === 'language')
                           .map((tag, index) => (
                             <LanguageTag key={index} language={tag.name} />
-                        ))}
+                          ))}
                         {crew.tags
-                          .filter(tag => tag.type === "level")
+                          .filter((tag) => tag.type === 'level')
                           .map((tag, index) => (
-                            <LanguageTag key={index} language={tag.name} className="tag border bg-gray-600 text-white" />
-                        ))}
+                            <LanguageTag
+                              key={index}
+                              language={tag.name}
+                              className="tag border bg-gray-600 text-white"
+                            />
+                          ))}
                         {crew.tags
-                          .filter(tag => tag.type === "custom")
+                          .filter((tag) => tag.type === 'custom')
                           .map((tag, index) => (
-                            <LanguageTag key={index} language={tag.name} className="bg-white text-gray-600 border border-gray-600" />
-                        ))}
+                            <LanguageTag
+                              key={index}
+                              language={tag.name}
+                              className="border border-gray-600 bg-white text-gray-600"
+                            />
+                          ))}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className='w-full flex flex-col gap-2'>
-                  <p className='text-gray-900 text-base-14 font-medium'>신청 메시지</p>
-                  <div className='w-full p-5 bg-gray-50 justify-start items-start h-fit'>
-                    <p className='text-gray-900 whitespace-normal'>{crew.message}</p>
+                <div className="flex w-full flex-col gap-2">
+                  <p className="text-base-14 font-medium text-gray-900">신청 메시지</p>
+                  <div className="h-fit w-full items-start justify-start bg-gray-50 p-5">
+                    <p className="whitespace-normal text-gray-900">{crew.message}</p>
                   </div>
                 </div>
               </div>
-              
+
               <Button
                 buttonSize={'detailBtn'}
                 colorStyle={'whiteBlack'}
                 content={'수락 대기중'}
                 onClick={approveMessage}
               />
-            </div>  
-          </div> 
+            </div>
+          </div>
         ))}
       </div>
     </div>

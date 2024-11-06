@@ -25,7 +25,7 @@ const CodeReview = ({ members, problems, isLoading }) => {
             const problemReviewers = userSubmission.reviewers.map((reviewer, index) => (
               <img
                 key={`${reviewer.user_id}-${index}`}
-                src={reviewer.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${reviewer.profile_image}` : ProfileImg}
+                src={reviewer.profile_image ? `${process.env.REACT_APP_API_BASE_URL}/media/${reviewer.profile_image}` : ProfileImg}
                 alt={reviewer.username}
                 className="w-6 h-6 rounded-full object-cover"
                 style={{ marginLeft: index === 0 ? '0' : '-6px' }}
@@ -97,7 +97,7 @@ const CodeReview = ({ members, problems, isLoading }) => {
                 onMouseLeave={e => e.currentTarget.style.opacity = selectedUserId === member.user_id ? 1 : 0.6}
               >
                 <img
-                  src={`${process.env.REACT_APP_API_BASE_URL}${member.profile_image}`}
+                  src={member.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${member.profile_image}` : ProfileImg}
                   alt={member.username}
                   className="w-10 h-10 rounded-full cursor-pointer object-cover"
                   onClick={() => handleProfileClick(member.user_id)}

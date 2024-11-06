@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-import ProblemHeader from "../../components/Header/problemHeader";
-import ProblemDetailNav from "../../components/nav/problemDetailNav";
+import { useParams } from 'react-router-dom';
+import ProblemHeader from '../../components/Header/problemHeader';
+import ProblemDetailNav from '../../components/nav/problemDetailNav';
 import ProblemDetailContainer from '../../components/problemDetail/problemDetailContainer';
 import ProblemDetailModal from '../../components/problemDetail/problemDetailModal';
-import DataLoadingSpinner from "../../components/common/dataLoadingSpinner";
-import { client } from "../../utils";
+import DataLoadingSpinner from '../../components/common/dataLoadingSpinner';
+import { client } from '../../utils';
 
 export default function ProblemDetail() {
   const { id } = useParams();
@@ -17,7 +17,7 @@ export default function ProblemDetail() {
     const fetchProblemDetail = async () => {
       try {
         const response = await client.get(`/api/v1/problem/${id}/detail`, {
-          withCredentials: true
+          withCredentials: true,
         });
         if (response.status === 200) {
           setProblemData(response.data);
@@ -48,35 +48,30 @@ export default function ProblemDetail() {
   if (!problemData) {
     return (
       <div className="w-full p-20">
-      <div className="flex flex-col justify-center items-center m-10">
-        <DataLoadingSpinner />
+        <div className="m-10 flex flex-col items-center justify-center">
+          <DataLoadingSpinner />
+        </div>
       </div>
-      </div>
-    )
+    );
   }
 
   return (
     <>
-    <div className="fixed top-16 left-0 w-full z-10">
-    <ProblemHeader 
-      title={problemData.title} 
-    />
-    <ProblemDetailNav 
-      problemData={problemData}
-      onEditClick={handleEditClick}
-      onDeleteClick={handleDeleteClick}
-    />
-    </div>
-      <ProblemDetailContainer 
-      problemData={problemData}
-      />
-      <ProblemDetailModal 
+      <div className="fixed left-0 top-16 z-10 w-full">
+        <ProblemHeader title={problemData.title} />
+        <ProblemDetailNav
+          problemData={problemData}
+          onEditClick={handleEditClick}
+          onDeleteClick={handleDeleteClick}
+        />
+      </div>
+      <ProblemDetailContainer problemData={problemData} />
+      <ProblemDetailModal
         isOpen={isModalOpen || isDeleteOpen}
         onClose={handleCloseModal}
         problemData={problemData}
         isDeleteModal={isDeleteOpen}
       />
     </>
-
   );
 }

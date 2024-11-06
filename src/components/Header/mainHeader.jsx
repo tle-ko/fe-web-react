@@ -22,23 +22,23 @@ export default function Header() {
 
   const openDropdown = () => {
     setDropdownVisible(!dropdownVisible);
-  }
+  };
 
   const handleLogout = () => {
-    removeToken(); 
+    removeToken();
     navigate('/');
     window.location.reload();
-  }
+  };
 
   const handleProtectedLinkClick = (event, path) => {
     if (!loggedIn) {
       event.preventDefault();
-      alert("로그인이 필요해요!");
+      alert('로그인이 필요해요!');
       navigate('/signin');
     } else {
       navigate(path);
     }
-  }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,47 +54,72 @@ export default function Header() {
   }, [dropdownRef]);
 
   return (
-    <div className="w-full h-16 fixed top-0 left-0 z-20 py-3 bg-color-blue-main text-white text-xl flex justify-center items-center min-w-[48rem]">
-      <div className='w-full flex justify-between items-center px-[128px] gap-12'>
-        <Link className="w-14 hover-scale" to="/"><img src={logoWhite} alt='logo' /></Link>
-        <div className='flex flex-row justify-between items-center w-full'>
+    <div className="fixed left-0 top-0 z-20 flex h-16 w-full min-w-[48rem] items-center justify-center bg-color-blue-main py-3 text-xl text-white">
+      <div className="flex w-full items-center justify-between gap-12 px-[128px]">
+        <Link className="hover-scale w-14" to="/">
+          <img src={logoWhite} alt="logo" />
+        </Link>
+        <div className="flex w-full flex-row items-center justify-between">
           <div className="flex gap-8">
-            <p className='font-cafe24 cursor-pointer hover-scale' 
-               onClick={(e) => handleProtectedLinkClick(e, '/problem')}>
+            <p
+              className="hover-scale cursor-pointer font-cafe24"
+              onClick={(e) => handleProtectedLinkClick(e, '/problem')}
+            >
               Problem
             </p>
-            <Link className='font-cafe24 hover-scale' to="/crew">
+            <Link className="hover-scale font-cafe24" to="/crew">
               Crew
             </Link>
           </div>
 
           {loggedIn ? (
             <div className="relative" ref={dropdownRef}>
-              <div className="justify-start items-center gap-6 inline-flex cursor-pointer"
-                onClick={openDropdown}>
-                <div className="justify-start items-center gap-3 flex cursor-pointer">
-                  <p className="text-right text-white text-base font-medium cursor-pointer">{username} 님</p>
+              <div
+                className="inline-flex cursor-pointer items-center justify-start gap-6"
+                onClick={openDropdown}
+              >
+                <div className="flex cursor-pointer items-center justify-start gap-3">
+                  <p className="cursor-pointer text-right text-base font-medium text-white">
+                    {username} 님
+                  </p>
                 </div>
-                <img className="w-9 h-9 rounded-full object-cover" src={profileImage} alt="profile"/>
+                <img
+                  className="h-9 w-9 rounded-full object-cover"
+                  src={profileImage}
+                  alt="profile"
+                />
               </div>
               {dropdownVisible && (
-                <div className="absolute top-full mt-2 p-4 bg-white opacity-90 border-color-gray-200 flex flex-col justify-start rounded-xl animate-drop-down">
-                  <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
-                  to="/myPortfolio">
-                    마이 포트폴리오</Link>
-                  <Link className="text-gray-600 text-sm whitespace-nowrap p-2 hover:text-color-blue-main" 
-                  to="/myPage">
-                    마이 페이지</Link>
-                  <p className="text-gray-600 text-sm p-2 underline whitespace-nowrap cursor-pointer hover:text-color-blue-main"
-                  onClick={handleLogout}>
-                    로그아웃</p>
+                <div className="border-color-gray-200 animate-drop-down absolute top-full mt-2 flex flex-col justify-start rounded-xl bg-white p-4 opacity-90">
+                  <Link
+                    className="whitespace-nowrap p-2 text-sm text-gray-600 hover:text-color-blue-main"
+                    to="/myPortfolio"
+                  >
+                    마이 포트폴리오
+                  </Link>
+                  <Link
+                    className="whitespace-nowrap p-2 text-sm text-gray-600 hover:text-color-blue-main"
+                    to="/myPage"
+                  >
+                    마이 페이지
+                  </Link>
+                  <p
+                    className="cursor-pointer whitespace-nowrap p-2 text-sm text-gray-600 underline hover:text-color-blue-main"
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </p>
                 </div>
               )}
             </div>
           ) : (
-            <div className='flex gap-6'>
-              <Link className="underline whitespace-nowrap hover-scale" to="/signin">sign in</Link>
-              <Link className="whitespace-nowrap hover-scale" to="/signup">sign up</Link>
+            <div className="flex gap-6">
+              <Link className="hover-scale whitespace-nowrap underline" to="/signin">
+                sign in
+              </Link>
+              <Link className="hover-scale whitespace-nowrap" to="/signup">
+                sign up
+              </Link>
             </div>
           )}
         </div>

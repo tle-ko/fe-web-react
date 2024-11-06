@@ -19,7 +19,7 @@ export default function CodeReview() {
       try {
         const [codeResponse, userResponse] = await Promise.all([
           fetch('/data/codeData.json'),
-          fetch('/data/userData.json')
+          fetch('/data/userData.json'),
         ]);
         const codeData = await codeResponse.json();
         const userData = await userResponse.json();
@@ -53,7 +53,7 @@ export default function CodeReview() {
 
   return (
     <div>
-      <div className="fixed top-16 left-0 w-full z-10">
+      <div className="fixed left-0 top-16 z-10 w-full">
         <ProblemHeader problemId={parseInt(problemId, 10)} />
         <SubmitProblemHeader submitData={codeData} />
       </div>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import SelectEmoji from '../common/selectEmoji';
 import Dropdown from '../common/dropDown';
 import Input from '../common/input';
 import Button from '../common/button';
 import Modal from '../common/modal';
-import { client } from "../../utils";  // API 호출용
+import { client } from '../../utils'; // API 호출용
 import LanguageTag from '../common/languageTag';
 import { languageMapping, tiers, getBojLevelTag } from '../../utils';
 import AlertContainer from '../common/alertContainer';
@@ -13,7 +13,7 @@ import TagDetailContent from '../common/tagDetailContent';
 import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
 export default function AdminCrew() {
-  const { id } = useParams();  // crew_id를 가져옴
+  const { id } = useParams(); // crew_id를 가져옴
   const navigate = useNavigate();
 
   // 상태 관리
@@ -38,7 +38,7 @@ export default function AdminCrew() {
     const fetchCrewData = async () => {
       try {
         const response = await client.get(`api/v1/crew/${id}`, {
-          withCredentials: true
+          withCredentials: true,
         });
         if (response.status === 200) {
           const crew = response.data;
@@ -49,9 +49,11 @@ export default function AdminCrew() {
           setHeadcountLimit(crew.member_count.max_count);
           setIcon(crew.icon);
           const tierString = getBojLevelTag(crew.required_boj_level);
-          setTierValue(tiers.indexOf(tierString.replace(" 이상", "")));
-          setSelectedLanguages(crew.tags.filter(tag => tag.type === 'language').map(tag => tag.name));
-          setTags(crew.tags.filter(tag => tag.type === 'custom').map(tag => tag.name));
+          setTierValue(tiers.indexOf(tierString.replace(' 이상', '')));
+          setSelectedLanguages(
+            crew.tags.filter((tag) => tag.type === 'language').map((tag) => tag.name)
+          );
+          setTags(crew.tags.filter((tag) => tag.type === 'custom').map((tag) => tag.name));
         } else {
           alert('크루 데이터를 불러오지 못했습니다.');
         }
@@ -76,10 +78,10 @@ export default function AdminCrew() {
       is_recruiting: recruiting,
       is_active: true,
       custom_tags: tags,
-      languages: selectedLanguages.map(lang => languageMapping[lang])
+      languages: selectedLanguages.map((lang) => languageMapping[lang]),
     };
 
-    console.log("Update Data:", updateData); 
+    console.log('Update Data:', updateData);
 
     try {
       const response = await client.patch(`api/v1/crew/${id}`, updateData);
@@ -128,8 +130,8 @@ export default function AdminCrew() {
 
   // 언어 선택 처리
   const handleLanguageClick = (language) => {
-    setSelectedLanguages(prev =>
-      prev.includes(language) ? prev.filter(lang => lang !== language) : [...prev, language]
+    setSelectedLanguages((prev) =>
+      prev.includes(language) ? prev.filter((lang) => lang !== language) : [...prev, language]
     );
   };
 
@@ -142,79 +144,137 @@ export default function AdminCrew() {
   };
 
   if (isLoading) {
-    return <div className="w-full p-20">
-        <div className="flex flex-col justify-center items-center m-10">
+    return (
+      <div className="w-full p-20">
+        <div className="m-10 flex flex-col items-center justify-center">
           <DataLoadingSpinner />
         </div>
-      </div>;
+      </div>
+    );
   }
 
   return (
     <div className="col-span-3 flex flex-col gap-6">
       {/* 정보 설정 섹션 */}
       <section className="box flex flex-col gap-6">
-        <h2 className="font-bold text-lg font-cafe24">정보 설정</h2>
+        <h2 className="font-cafe24 text-lg font-bold">정보 설정</h2>
         <div className="flex flex-col gap-6">
-          <SelectEmoji title="크루 이모지" initialEmoji={icon} onEmojiChange={setIcon} disabled={!isEditingInfo} />
-          <Input title="크루 이름" placeholder="20자 이내로 입력해주세요." width="50%" value={crewName} onChange={(e) => setCrewName(e.target.value)} readOnly={!isEditingInfo} />
-          <div className="w-1/2 flex flex-col gap-2">
+          <SelectEmoji
+            title="크루 이모지"
+            initialEmoji={icon}
+            onEmojiChange={setIcon}
+            disabled={!isEditingInfo}
+          />
+          <Input
+            title="크루 이름"
+            placeholder="20자 이내로 입력해주세요."
+            width="50%"
+            value={crewName}
+            onChange={(e) => setCrewName(e.target.value)}
+            readOnly={!isEditingInfo}
+          />
+          <div className="flex w-1/2 flex-col gap-2">
             <p className="containerTitle">모집 여부</p>
-            <Dropdown options={['모집중', '모집마감']} selected={recruiting ? '모집중' : '모집마감'} onChange={(e) => setRecruiting(e.target.value === '모집중')} disabled={!isEditingInfo} />
+            <Dropdown
+              options={['모집중', '모집마감']}
+              selected={recruiting ? '모집중' : '모집마감'}
+              onChange={(e) => setRecruiting(e.target.value === '모집중')}
+              disabled={!isEditingInfo}
+            />
           </div>
-          <div className="w-1/2 flex flex-col gap-2">
+          <div className="flex w-1/2 flex-col gap-2">
             <p className="containerTitle">모집 인원</p>
-            <Dropdown options={Array.from({ length: 8 }, (_, i) => (i + 1).toString())} selected={headcountLimit.toString()} onChange={(e) => setHeadcountLimit(Number(e.target.value))} disabled={!isEditingInfo} />
+            <Dropdown
+              options={Array.from({ length: 8 }, (_, i) => (i + 1).toString())}
+              selected={headcountLimit.toString()}
+              onChange={(e) => setHeadcountLimit(Number(e.target.value))}
+              disabled={!isEditingInfo}
+            />
           </div>
         </div>
-        <div className="w-full flex justify-end">
-          <Button buttonSize="detailBtn" colorStyle={isEditingInfo ? 'blueWhite' : 'whiteBlack'} content={isEditingInfo ? '저장' : '수정'} onClick={isEditingInfo ? handleUpdateInfo : () => setIsEditingInfo(true)} />
+        <div className="flex w-full justify-end">
+          <Button
+            buttonSize="detailBtn"
+            colorStyle={isEditingInfo ? 'blueWhite' : 'whiteBlack'}
+            content={isEditingInfo ? '저장' : '수정'}
+            onClick={isEditingInfo ? handleUpdateInfo : () => setIsEditingInfo(true)}
+          />
         </div>
       </section>
 
       {/* 공지 설정 섹션 */}
       <section className="box flex flex-col gap-6">
-        <h2 className="font-bold text-lg font-cafe24">공지 설정</h2>
-        <Input title="" placeholder="크루들에게 전달할 공지사항을 입력해 주세요." value={notice} onChange={(e) => setNotice(e.target.value)} readOnly={!isEditingNotice} />
-        <div className="w-full flex justify-end">
-          <Button buttonSize="detailBtn" colorStyle={isEditingNotice ? 'blueWhite' : 'whiteBlack'} content={isEditingNotice ? '저장' : '수정'} onClick={isEditingNotice ? handleUpdateNotice : () => setIsEditingNotice(true)} />
+        <h2 className="font-cafe24 text-lg font-bold">공지 설정</h2>
+        <Input
+          title=""
+          placeholder="크루들에게 전달할 공지사항을 입력해 주세요."
+          value={notice}
+          onChange={(e) => setNotice(e.target.value)}
+          readOnly={!isEditingNotice}
+        />
+        <div className="flex w-full justify-end">
+          <Button
+            buttonSize="detailBtn"
+            colorStyle={isEditingNotice ? 'blueWhite' : 'whiteBlack'}
+            content={isEditingNotice ? '저장' : '수정'}
+            onClick={isEditingNotice ? handleUpdateNotice : () => setIsEditingNotice(true)}
+          />
         </div>
       </section>
 
       {/* 태그 설정 섹션 */}
       <section className="box flex flex-col gap-6">
-        <h2 className="font-bold text-lg font-cafe24">태그 설정</h2>
-        <div className="justify-start items-center gap-2 inline-flex flex-wrap">
+        <h2 className="font-cafe24 text-lg font-bold">태그 설정</h2>
+        <div className="inline-flex flex-wrap items-center justify-start gap-2">
           {currentCrew?.tags
-            ?.filter(tag => tag.type === "language")
+            ?.filter((tag) => tag.type === 'language')
             .map((tag, index) => (
               <LanguageTag key={index} language={tag.name} />
-          ))}
+            ))}
           {currentCrew?.tags
-            ?.filter(tag => tag.type === "level")
+            ?.filter((tag) => tag.type === 'level')
             .map((tag, index) => (
-              <LanguageTag key={index} language={tag.name} className="tag border bg-gray-600 text-white" />
-          ))}
+              <LanguageTag
+                key={index}
+                language={tag.name}
+                className="tag border bg-gray-600 text-white"
+              />
+            ))}
           {currentCrew?.tags
-            ?.filter(tag => tag.type === "custom")
+            ?.filter((tag) => tag.type === 'custom')
             .map((tag, index) => (
-              <LanguageTag key={index} language={tag.name} className="bg-white text-gray-600 border border-gray-600" />
-          ))}
+              <LanguageTag
+                key={index}
+                language={tag.name}
+                className="border border-gray-600 bg-white text-gray-600"
+              />
+            ))}
         </div>
-        <div className="w-full flex justify-end">
-          <Button buttonSize="detailBtn" colorStyle="whiteBlack" content="수정" onClick={() => setIsTierModalOpen(true)} />
+        <div className="flex w-full justify-end">
+          <Button
+            buttonSize="detailBtn"
+            colorStyle="whiteBlack"
+            content="수정"
+            onClick={() => setIsTierModalOpen(true)}
+          />
         </div>
       </section>
 
       {/* 활동 종료 설정 섹션 */}
       <section className="box flex flex-col gap-6">
-        <h2 className="font-bold text-lg font-cafe24">활동 설정</h2>
-        <div className="w-full flex justify-end">
-          <Button buttonSize="formBtn" colorStyle="redWhite" content="그룹 활동 종료하기" onClick={() => setIsEndActivityModalOpen(true)} />
+        <h2 className="font-cafe24 text-lg font-bold">활동 설정</h2>
+        <div className="flex w-full justify-end">
+          <Button
+            buttonSize="formBtn"
+            colorStyle="redWhite"
+            content="그룹 활동 종료하기"
+            onClick={() => setIsEndActivityModalOpen(true)}
+          />
         </div>
       </section>
 
       {/* 태그 설정 모달 */}
-      <Modal 
+      <Modal
         isOpen={isTierModalOpen}
         onClose={() => setIsTierModalOpen(false)}
         title="태그 설정"
@@ -234,7 +294,7 @@ export default function AdminCrew() {
       />
 
       {/* 활동 종료 모달 */}
-      <Modal 
+      <Modal
         isOpen={isEndActivityModalOpen}
         onClose={() => setIsEndActivityModalOpen(false)}
         content={

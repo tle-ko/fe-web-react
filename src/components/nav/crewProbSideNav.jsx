@@ -10,13 +10,13 @@ export default function SideNav({ elements, setSelectedElement, selectedElement 
     if (selectedFromUrl) {
       setSelectedElement(Number(selectedFromUrl));
     } else if (!selectedElement && elements.length > 0) {
-      setSelectedElement(elements[0].order);
+      setSelectedElement(elements[0].id); // 요소의 'id' 사용
     }
   }, [elements, setSelectedElement, selectedElement, searchParams]);
 
-  const handleClick = (order) => {
-    setSelectedElement(order);
-    setSearchParams({ order });
+  const handleClick = (id) => {
+    setSelectedElement(id); // 클릭 시 'id'를 사용
+    setSearchParams({ selected: id }); // URL 쿼리 파라미터에 'selected'로 설정
   };
 
   return (
@@ -25,11 +25,11 @@ export default function SideNav({ elements, setSelectedElement, selectedElement 
         {elements.map((element, index) => (
           <div
             key={index}
-            className={`flex w-full cursor-pointer flex-col items-start justify-start ${selectedElement === element.order ? 'w-full rounded bg-color-blue-w25 text-blue-500' : 'group text-black hover:text-blue-500'}`}
-            onClick={() => handleClick(element.order)}
+            className={`flex w-full cursor-pointer flex-col items-start justify-start ${selectedElement === element.id ? 'w-full rounded bg-color-blue-w25 text-blue-500' : 'group text-black hover:text-blue-500'}`}
+            onClick={() => handleClick(element.id)} // 'id' 사용
           >
             <div
-              className={`inline-flex min-w-[20rem] cursor-pointer items-start justify-start rounded px-4 py-3 ${selectedElement === element.order ? 'text-blue-500' : 'text-black group-hover:text-blue-500'}`}
+              className={`inline-flex min-w-[20rem] cursor-pointer items-start justify-start rounded px-4 py-3 ${selectedElement === element.id ? 'text-blue-500' : 'text-black group-hover:text-blue-500'}`}
             >
               <p className="text-base font-semibold group-hover:text-blue-500">{element.label}</p>
             </div>

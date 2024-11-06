@@ -4,41 +4,58 @@
 
 @font-face {
   font-family: 'Cafe24Ssurround';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff')
+    format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @layer base {
   body {
-    @apply font-pretendard bg-color-bg pt-32 px-[7.5rem] text-md 2xl:text-base xl:text-md xs:text-sm;
+    @apply bg-color-bg px-[7.5rem] pt-32 font-pretendard text-md xs:text-sm xl:text-md 2xl:text-base;
   }
 
-  h1, h2, h3, p, input, button, fieldset, textarea, ol, ul, li, img, a, button {
+  h1,
+  h2,
+  h3,
+  p,
+  input,
+  button,
+  fieldset,
+  textarea,
+  ol,
+  ul,
+  li,
+  img,
+  a,
+  button {
     @apply m-0 p-0;
   }
 
   p {
     @apply whitespace-nowrap;
   }
-  
+
   div {
-    @apply select-none cursor-default;
+    @apply cursor-default select-none;
   }
 
-  ol, ul, li {
+  ol,
+  ul,
+  li {
     @apply list-none;
   }
 
   img {
-    @apply max-w-full h-auto align-top;
+    @apply h-auto max-w-full align-top;
   }
 
   a {
@@ -46,43 +63,42 @@
   }
 
   button {
-    @apply cursor-pointer text-inherit border-0 tracking-m1 transition duration-300 ease-out;
+    @apply cursor-pointer border-0 tracking-m1 text-inherit transition duration-300 ease-out;
   }
 }
 
 @layer components {
   .box {
-    @apply p-10 bg-white rounded-lg border border-gray-200 flex flex-col;
+    @apply flex flex-col rounded-lg border border-gray-200 bg-white p-10;
   }
 
   .notice {
-    @apply px-6 py-3 rounded-lg;
+    @apply rounded-lg px-6 py-3;
     background-color: rgba(255, 202, 65, 0.5);
   }
 
   .greenBox {
-    @apply px-1 py-2 rounded-lg;
+    @apply rounded-lg px-1 py-2;
     background-color: rgba(3, 187, 163, 0.6);
   }
 
   .redBox {
-    @apply px-1 py-2 rounded-lg;
+    @apply rounded-lg px-1 py-2;
     background-color: rgba(232, 64, 87, 0.6);
   }
 
   .grayBox {
-    @apply px-1 py-2 rounded-lg bg-gray-100;
+    @apply rounded-lg bg-gray-100 px-1 py-2;
   }
 
-
   .containerTitle {
-    @apply text-gray-900 text-base font-bold;
+    @apply text-base font-bold text-gray-900;
   }
 
   .boxTitle {
-    @apply text-gray-900 text-lg font-bold font-cafe24;
+    @apply font-cafe24 text-lg font-bold text-gray-900;
   }
-  
+
   .cardGrid2 {
     @apply grid gap-y-6;
     grid-template-columns: repeat(1, 1fr);
@@ -96,7 +112,7 @@
   }
 
   .cardGrid3 {
-    @apply grid gap-6 mb-6;
+    @apply mb-6 grid gap-6;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   }
 
@@ -111,9 +127,9 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
-  
+
   .cardGrid4 {
-    @apply grid gap-6 mb-6;
+    @apply mb-6 grid gap-6;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   }
 
@@ -128,9 +144,9 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
-  
+
   .problemGrid3 {
-    @apply grid grid-cols-3 gap-x-10 gap-y-1 auto-rows-fr bg-gray-100 whitespace-nowrap overflow-x-auto;
+    @apply grid auto-rows-fr grid-cols-3 gap-x-10 gap-y-1 overflow-x-auto whitespace-nowrap bg-gray-100;
   }
 
   .MainGrid1to3 {
@@ -139,16 +155,16 @@
   }
 
   @screen md {
-      .MainGrid1to3 {
-          grid-template-columns: repeat(1, 1fr);
-      }
+    .MainGrid1to3 {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
   @screen lg {
-      .MainGrid1to3 {
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.5rem;
-      }
+    .MainGrid1to3 {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
   }
 
   .DashboardGrid {
@@ -156,7 +172,7 @@
     grid-template-rows: auto;
     grid-template-columns: 1fr;
   }
-  
+
   @media (min-width: 1000px) {
     .DashboardGrid {
       grid-template-columns: 2fr 5fr;
@@ -164,7 +180,6 @@
       gap: 1.5rem;
     }
   }
-
 
   /* 기본 2열 구조 */
   .ResponsiveGrid {
@@ -178,26 +193,25 @@
     }
   }
 
-
   .icon {
-    @apply p-0 justify-center items-center text-2xl;
+    @apply items-center justify-center p-0 text-2xl;
   }
 
   .tag {
-    @apply  border-gray-500 bg-white font-semibold inline-flex items-center py-1 px-3 rounded-full text-gray-600 text-sm;
+    @apply inline-flex items-center rounded-full border-gray-500 bg-white px-3 py-1 text-sm font-semibold text-gray-600;
   }
-  
+
   .hidden-scrollbar::-webkit-scrollbar {
     display: none; /* 웹킷 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
   }
-  
+
   .hidden-scrollbar {
-    -ms-overflow-style: none;  /* 인터넷 익스플로러에서 스크롤바 숨기기 */
-    scrollbar-width: none;  /* 파이어폭스에서 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
+    scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
   }
 
   .longSentence {
-    @apply text-gray-900 leading-7 select-text whitespace-pre-wrap;
+    @apply select-text whitespace-pre-wrap leading-7 text-gray-900;
   }
 
   .tooltip {
@@ -205,7 +219,7 @@
     display: inline-block;
     cursor: pointer;
   }
-  
+
   .tooltip .tooltiptext {
     visibility: hidden;
     width: 20rem;
@@ -223,10 +237,9 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  
+
   .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
   }
-
 }
