@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
 import { FaChevronRight } from 'react-icons/fa';
 
-export default function ProblemDetailContainer({ problemData, activeContainer, setActiveContainer }) {
+export default function ProblemDetailContainer({ problemData }) {
+  const [activeContainer, setActiveContainer] = useState('detail');
   const descriptionRef = useRef(null);
   const inputDescriptionRef = useRef(null);
   const outputDescriptionRef = useRef(null);
@@ -32,7 +33,7 @@ export default function ProblemDetailContainer({ problemData, activeContainer, s
 
   const handleActiveContainer = useCallback(() => {
     setActiveContainer('analysis');
-  }, [setActiveContainer]);
+  }, []);
 
   // 기본값 설정
   const timeLimit = problemData?.time_limit?.value || 'N/A';
