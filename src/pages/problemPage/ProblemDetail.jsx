@@ -12,6 +12,7 @@ export default function ProblemDetail() {
   const [problemData, setProblemData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [activeContainer, setActiveContainer] = useState('detail');
 
   useEffect(() => {
     const fetchProblemDetail = async () => {
@@ -30,6 +31,8 @@ export default function ProblemDetail() {
     };
 
     fetchProblemDetail();
+    const intervalId = setInterval(fetchProblemDetail, 5000); 
+    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 폴링 중지
   }, [id]);
 
   const handleEditClick = () => {
@@ -65,7 +68,11 @@ export default function ProblemDetail() {
           onDeleteClick={handleDeleteClick}
         />
       </div>
-      <ProblemDetailContainer problemData={problemData} />
+      <ProblemDetailContainer
+        problemData={problemData}
+        activeContainer={activeContainer}
+        setActiveContainer={setActiveContainer}
+      />
       <ProblemDetailModal
         isOpen={isModalOpen || isDeleteOpen}
         onClose={handleCloseModal}
