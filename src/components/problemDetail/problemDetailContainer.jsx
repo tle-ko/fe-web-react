@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import AnalysisContainer from '../../components/problemDetail/problemAnalysisContainer';
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronRight } from 'react-icons/fa';
 
-export default function ProblemDetailContainer({ problemData }) {
-  const [activeContainer, setActiveContainer] = useState("detail");
+export default function ProblemDetailContainer({ problemData, activeContainer, setActiveContainer }) {
   const descriptionRef = useRef(null);
   const inputDescriptionRef = useRef(null);
   const outputDescriptionRef = useRef(null);
@@ -11,13 +10,13 @@ export default function ProblemDetailContainer({ problemData }) {
 
   const typeset = useCallback((element) => {
     if (window.MathJax && element) {
-      window.MathJax.typesetPromise([element])
+      window.MathJax.typesetPromise([element]);
     }
   }, []);
 
   useEffect(() => {
     if (problemData) {
-      [descriptionRef, inputDescriptionRef, outputDescriptionRef].forEach(ref => {
+      [descriptionRef, inputDescriptionRef, outputDescriptionRef].forEach((ref) => {
         if (ref.current) {
           typeset(ref.current);
         }
@@ -26,14 +25,14 @@ export default function ProblemDetailContainer({ problemData }) {
   }, [problemData, typeset]);
 
   useEffect(() => {
-    if (activeContainer === "analysis" && analysisRef.current) {
+    if (activeContainer === 'analysis' && analysisRef.current) {
       typeset(analysisRef.current);
     }
   }, [activeContainer, typeset]);
 
   const handleActiveContainer = useCallback(() => {
-    setActiveContainer("analysis");
-  }, []);
+    setActiveContainer('analysis');
+  }, [setActiveContainer]);
 
   // 기본값 설정
   const timeLimit = problemData?.time_limit?.value || 'N/A';
@@ -44,51 +43,70 @@ export default function ProblemDetailContainer({ problemData }) {
 
   return (
     <>
-      {activeContainer === "detail" ? (
-        <div className="flex mt-24 gap-6 min-w-100">
-          <div className="box w-full flex-col inline-flex min-w-96">
-            <div className="w-full mb-6 justify-start items-center gap-6 inline-flex">
-              <div className="mb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
-                <p className="text-gray-900 text-lg font-bold">시간 제한</p>
+      {activeContainer === 'detail' ? (
+        <div className="min-w-100 mt-24 flex gap-6">
+          <div className="box inline-flex w-full min-w-96 flex-col">
+            <div className="mb-6 inline-flex w-full items-center justify-start gap-6">
+              <div className="mb-3 inline-flex flex-col items-start justify-start gap-3 border-b border-gray-200">
+                <p className="text-lg font-bold text-gray-900">시간 제한</p>
                 <div className="inline-flex pb-3">
-                  <p className="text-gray-900 leading-relaxed select-text">{timeLimit}</p>
-                  <p className="text-gray-900 leading-relaxed"> 초</p>
+                  <p className="select-text leading-relaxed text-gray-900">{timeLimit}</p>
+                  <p className="leading-relaxed text-gray-900"> 초</p>
                 </div>
               </div>
-              <div className="mb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
-                <p className="text-gray-900 text-lg font-bold">메모리 제한</p> 
+              <div className="mb-3 inline-flex flex-col items-start justify-start gap-3 border-b border-gray-200">
+                <p className="text-lg font-bold text-gray-900">메모리 제한</p>
                 <div className="inline-flex pb-3">
-                  <p className="text-gray-900 leading-relaxed select-text">{memoryLimit}</p>
-                  <p className="text-gray-900 leading-relaxed"> MB</p>
+                  <p className="select-text leading-relaxed text-gray-900">{memoryLimit}</p>
+                  <p className="leading-relaxed text-gray-900"> MB</p>
                 </div>
               </div>
             </div>
-            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
-              <p className="text-gray-900 text-lg font-bold">문제</p> 
-              <p className="longSentence" ref={descriptionRef} dangerouslySetInnerHTML={{ __html: description }}></p>
+            <div className="mb-6 inline-flex w-full flex-col items-start justify-start gap-3 border-b border-gray-200 pb-3">
+              <p className="text-lg font-bold text-gray-900">문제</p>
+              <p
+                className="longSentence"
+                ref={descriptionRef}
+                dangerouslySetInnerHTML={{ __html: description }}
+              ></p>
             </div>
-            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
-              <p className="text-gray-900 text-lg font-bold">입력</p> 
-              <p className="longSentence" ref={inputDescriptionRef} dangerouslySetInnerHTML={{ __html: inputDescription }}></p>
+            <div className="mb-6 inline-flex w-full flex-col items-start justify-start gap-3 border-b border-gray-200 pb-3">
+              <p className="text-lg font-bold text-gray-900">입력</p>
+              <p
+                className="longSentence"
+                ref={inputDescriptionRef}
+                dangerouslySetInnerHTML={{ __html: inputDescription }}
+              ></p>
             </div>
-            <div className="w-full mb-6 pb-3 flex-col justify-start items-start gap-3 inline-flex border-b border-gray-200">
-              <p className="text-gray-900 text-lg font-bold">출력</p> 
-              <p className="longSentence" ref={outputDescriptionRef} dangerouslySetInnerHTML={{ __html: outputDescription }}></p>
+            <div className="mb-6 inline-flex w-full flex-col items-start justify-start gap-3 border-b border-gray-200 pb-3">
+              <p className="text-lg font-bold text-gray-900">출력</p>
+              <p
+                className="longSentence"
+                ref={outputDescriptionRef}
+                dangerouslySetInnerHTML={{ __html: outputDescription }}
+              ></p>
             </div>
           </div>
-          <button className="flex flex-col h-fit items-center gap-4 cursor-pointer group hover-scale" onClick={handleActiveContainer}>
-            <div className="mt-10 w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-color-blue-main cursor-pointer">
-              <FaChevronRight size="1.5rem" color="white" />    
+          <button
+            className="hover-scale group flex h-fit cursor-pointer flex-col items-center gap-4"
+            onClick={handleActiveContainer}
+          >
+            <div className="mt-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-200 group-hover:bg-color-blue-main">
+              <FaChevronRight size="1.5rem" color="white" />
             </div>
-            <p className="text-center text-gray-600 text-lg font-semibold group-hover:text-color-blue-main">문제<br/>분석</p>
+            <p className="text-center text-lg font-semibold text-gray-600 group-hover:text-color-blue-main">
+              문제
+              <br />
+              분석
+            </p>
           </button>
         </div>
       ) : (
-            <AnalysisContainer 
-              setActiveContainer={setActiveContainer} 
-              analysisData={problemData.analysis}
-            />
-          )}
+        <AnalysisContainer
+          setActiveContainer={setActiveContainer}
+          analysisData={problemData.analysis}
+        />
+      )}
     </>
   );
 }

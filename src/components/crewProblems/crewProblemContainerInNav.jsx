@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { client } from "../../utils"; 
+import { client } from '../../utils';
 import SideNav from '../nav/crewProbSideNav';
-import Button from "../common/button";
-import Level1 from "../../assets/images/lv1.svg";
-import Level2 from "../../assets/images/lv2.svg";
-import Level3 from "../../assets/images/lv3.svg";
-import Leveln from "../../assets/images/lvN.svg";
-import DataLoadingSpinner from "../common/dataLoadingSpinner"; 
+import Button from '../common/button';
+import Level1 from '../../assets/images/lv1.svg';
+import Level2 from '../../assets/images/lv2.svg';
+import Level3 from '../../assets/images/lv3.svg';
+import Leveln from '../../assets/images/lvN.svg';
+import DataLoadingSpinner from '../common/dataLoadingSpinner';
 
-const CrewDashProblem = () => { // userId 제거
+const CrewDashProblem = () => {
+  // userId 제거
   const { id } = useParams();
   const [activityId, setActivityId] = useState(null);
   const [activities, setActivities] = useState([]);
@@ -20,45 +21,45 @@ const CrewDashProblem = () => { // userId 제거
 
   useEffect(() => {
     if (!id) return;
-  
+
     const fetchActivities = async () => {
       setIsLoadingActivities(true);
       try {
         const response = await client.get(`/api/v1/crew/${id}`);
-  
+
         if (response.status === 200) {
-          const group = response.data; 
-  
+          const group = response.data;
+
           if (!group || !group.activities) {
-            console.error("크루의 활동 데이터를 찾을 수 없습니다.");
+            console.error('크루의 활동 데이터를 찾을 수 없습니다.');
             setActivities([]);
             return;
           }
-  
-          const allActivities = group.activities.map(activity => ({
+
+          const allActivities = group.activities.map((activity) => ({
             id: activity.activity_id,
             name: activity.name,
             label: `${activity.name}`,
           }));
-  
+
           setActivities(allActivities);
           if (allActivities.length > 0 && !activityId) {
             setActivityId(allActivities[0].id); // 첫 번째 활동 ID 설정
           }
         } else {
-          console.error("크루 데이터를 불러오지 못했어요.", response.statusText);
+          console.error('크루 데이터를 불러오지 못했어요.', response.statusText);
         }
       } catch (error) {
-        console.error("크루 데이터를 불러오는데 문제가 발생했어요.", error);
+        console.error('크루 데이터를 불러오는데 문제가 발생했어요.', error);
         setError('데이터를 가져오는 중 오류가 발생했어요.');
         setActivities([]);
       } finally {
         setIsLoadingActivities(false);
       }
     };
-  
+
     fetchActivities();
-  }, [id]); 
+  }, [id]);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -69,7 +70,7 @@ const CrewDashProblem = () => { // userId 제거
         const response = await client.get(`/api/v1/crew/activity/${activityId}`);
 
         const activityData = response.data;
-        const problems = activityData.problems.map(problem => ({
+        const problems = activityData.problems.map((problem) => ({
           ...problem,
           activity_id: activityId,
         }));
@@ -93,7 +94,7 @@ const CrewDashProblem = () => { // userId 제거
   };
 
   const getLastSubmissionDate = (submissions) => {
-    const userSubmission = submissions.find(submission => submission.submitted_by.user_id === id); // userId 삭제
+    const userSubmission = submissions.find((submission) => submission.submitted_by.user_id === id); // userId 삭제
     return userSubmission ? formatDate(userSubmission.submitted_at) : null;
   };
 
@@ -106,11 +107,11 @@ const CrewDashProblem = () => { // userId 제거
   }
 
   return (
-    <div className="w-full MainGrid1to3">
+    <div className="MainGrid1to3 w-full">
       <div className="col-span-1">
         {isLoadingActivities ? (
           <div className="w-full p-20">
-            <div className="flex flex-col justify-center items-center m-10">
+            <div className="m-10 flex flex-col items-center justify-center">
               <DataLoadingSpinner />
             </div>
           </div>
@@ -127,56 +128,60 @@ const CrewDashProblem = () => { // userId 제거
 
       {isLoadingProblems ? (
         <div className="w-full p-20">
-          <div className="flex flex-col justify-center items-center m-10">
+          <div className="m-10 flex flex-col items-center justify-center">
             <DataLoadingSpinner />
           </div>
         </div>
       ) : problemsData.length > 0 ? (
         <div className="cardGrid3 col-span-3 mb-16">
           {problemsData.map((problem) => {
-            const lastSubmittedDate = problem.submissions ? getLastSubmissionDate(problem.submissions) : null;
+            const lastSubmittedDate = problem.submissions
+              ? getLastSubmissionDate(problem.submissions)
+              : null;
             return (
-              <div key={problem.problem_id} className="box min-w-20rem flex-col justify-between items-start inline-flex gap-6 overflow-x-auto">
-                <div className="flex justify-between items-center w-full flex-wrap whitespace-nowrap">
-                  <p className='text-gray-600 text-base'>문제 {problem.problem_id}</p>
-                  <p className='text-gray-600 text-sm'>
-                    {lastSubmittedDate ? 
-                      <div className="flex flex-wrap gap-1 items-center text-red-600">
+              <div
+                key={problem.problem_id}
+                className="box min-w-20rem inline-flex flex-col items-start justify-between gap-6 overflow-x-auto"
+              >
+                <div className="flex w-full flex-wrap items-center justify-between whitespace-nowrap">
+                  <p className="text-base text-gray-600">문제 {problem.problem_id}</p>
+                  <p className="text-sm text-gray-600">
+                    {lastSubmittedDate ? (
+                      <div className="flex flex-wrap items-center gap-1 text-red-600">
                         <span>마지막 제출 </span>
                         <span>{lastSubmittedDate}</span>
                       </div>
-                      : '제출 전'}
+                    ) : (
+                      '제출 전'
+                    )}
                   </p>
                 </div>
-                <div className="w-full containerTitle justify-start items-center gap-3 inline-flex">
+                <div className="containerTitle inline-flex w-full items-center justify-start gap-3">
                   <img
-                    className='w-6 h-8'
+                    className="h-8 w-6"
                     src={
-                      problem.analysis && problem.analysis.difficulty ? (
-                        problem.analysis.difficulty.value === 1 ? Level1 :
-                          problem.analysis.difficulty.value === 2 ? Level2 :
-                            problem.analysis.difficulty.value === 3 ? Level3 :
-                              Leveln
-                      ) : Leveln
+                      problem.analysis && problem.analysis.difficulty
+                        ? problem.analysis.difficulty.value === 1
+                          ? Level1
+                          : problem.analysis.difficulty.value === 2
+                            ? Level2
+                            : problem.analysis.difficulty.value === 3
+                              ? Level3
+                              : Leveln
+                        : Leveln
                     }
                     alt="Level Icon"
                   />
-                  <p className='w-full text-gray-900 text-2xl font-bold truncate'>{problem.title}</p>
+                  <p className="w-full truncate text-2xl font-bold text-gray-900">
+                    {problem.title}
+                  </p>
                 </div>
-                <div className='flex justify-end gap-3 ml-auto flex-wrap'>
+                <div className="ml-auto flex flex-wrap justify-end gap-3">
                   <Link to={`/crew/${id}/problems/${problem.problem_id}`}>
-                    <Button
-                      buttonSize="detailBtn"
-                      colorStyle="whiteBlack"
-                      content="문제 상세"
-                    />
+                    <Button buttonSize="detailBtn" colorStyle="whiteBlack" content="문제 상세" />
                   </Link>
                   <Link to={`/crew/${id}/problems/${problem.problem_id}/submit`}>
-                    <Button
-                      buttonSize="detailBtn"
-                      colorStyle="skyBlue"
-                      content="문제 제출"
-                    />
+                    <Button buttonSize="detailBtn" colorStyle="skyBlue" content="문제 제출" />
                   </Link>
                 </div>
               </div>
@@ -184,11 +189,11 @@ const CrewDashProblem = () => { // userId 제거
           })}
         </div>
       ) : (
-        <div className="flex flex-col items-center col-span-3 gap-3 py-6 text-gray-600 flex-1 mt-24">
-          <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+        <div className="col-span-3 mt-24 flex flex-1 flex-col items-center gap-3 py-6 text-gray-600">
+          <div className="inline-flex animate-bounce items-center justify-start gap-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
           </div>
           <p>선장님이 해당 회차에 문제를 등록하지 않았어요 😓</p>
         </div>

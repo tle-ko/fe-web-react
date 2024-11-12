@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Input from "../../components/common/input";
-import PasswordInput from "./passwordInput";   
-import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
+import Input from '../../components/common/input';
+import PasswordInput from './passwordInput';
+import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
 import { client } from '../../utils';
 
 const defaultProfileImage = 'https://i.ibb.co/xDxmBXd/defult-profile-image.png';
 
-export default function SignupForm({ currentStep, formData, onInputChange, onNextStep, onPrevStep }) {
+export default function SignupForm({
+  currentStep,
+  formData,
+  onInputChange,
+  onNextStep,
+  onPrevStep,
+}) {
   const [emailVerified, setEmailVerified] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [codeVerified, setCodeVerified] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [codeButtonLabel, setCodeButtonLabel] = useState('인증번호 발송');
-  const [codeColor, setCodeButtonColor] = useState('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
+  const [codeColor, setCodeButtonColor] = useState(
+    'text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50'
+  );
   const [codeCursor, setCodeCursor] = useState('cursor-pointer');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [usernameVerified, setUsernameVerified] = useState(false);
@@ -51,7 +59,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   }, []);
 
-
   // 3초 간격으로 이메일이 사용 가능한 지 확인
   useEffect(() => {
     if (formData.email && validateEmail(formData.email)) {
@@ -66,7 +73,6 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
     }
   }, [formData.email, checkEmailAvailability]);
 
-
   // 인증번호 전송 요청
   const sendValidateCode = async (email) => {
     try {
@@ -75,53 +81,62 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
         setEmailVerified(true);
         setCodeButtonLabel('인증번호 재발송');
         setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
-        alert("입력한 이메일로 인증번호가 발송되었습니다!");
+        alert('입력한 이메일로 인증번호가 발송되었습니다!');
       } else {
-        alert("이메일 인증번호 발송에 실패했습니다. 다시 시도해주세요.");
+        alert('이메일 인증번호 발송에 실패했습니다. 다시 시도해주세요.');
         setEmailVerified(false);
       }
     } catch (error) {
       console.error('Error sending verification code:', error);
-      alert("이메일 인증번호 발송 중 오류가 발생했습니다. 다시 시도해주세요.");
+      alert('이메일 인증번호 발송 중 오류가 발생했습니다. 다시 시도해주세요.');
       setEmailVerified(false);
     }
   };
 
-  const getValidateCode = useCallback(async (email, verification_code) => {
-    if (isVerifying || verificationSuccess) return; // 요청 중이거나 성공했으면 추가 요청을 막습니다.
-    setIsVerifying(true); // 요청 시작
-    try {
-      const response = await client.post('api/v1/auth/verification', { email, verification_code });
-      if (response.status === 200) {
-        alert("이메일 인증 성공!");
-        setCodeVerified(true);
-        setVerificationSuccess(true); // 요청 성공
-        onInputChange('verification_token', response.data.verification_token);
-      } else {
-        alert("인증번호 확인에 실패했습니다. 다시 시도해주세요.");
-        setCodeVerified(false);
-      }
-    } catch (error) {
-      console.error('Error verifying code:', error);
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        if (error.response.status === 400 && error.response.data[0] === '인증 코드가 만료되었습니다.') {
-          alert("인증 코드가 만료되었습니다. 새로운 인증 코드를 요청해주세요.");
-          setCodeButtonLabel('인증번호 재발송');
-          setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
-          setCodeCursor('cursor-pointer');
-          setEmailVerified(true);
-          setCodeVerified(false);
+  const getValidateCode = useCallback(
+    async (email, verification_code) => {
+      if (isVerifying || verificationSuccess) return; // 요청 중이거나 성공했으면 추가 요청을 막습니다.
+      setIsVerifying(true); // 요청 시작
+      try {
+        const response = await client.post('api/v1/auth/verification', {
+          email,
+          verification_code,
+        });
+        if (response.status === 200) {
+          alert('이메일 인증 성공!');
+          setCodeVerified(true);
+          setVerificationSuccess(true); // 요청 성공
+          onInputChange('verification_token', response.data.verification_token);
         } else {
-          alert("인증번호 확인 중 오류가 발생했습니다. 다시 시도해주세요.");
+          alert('인증번호 확인에 실패했습니다. 다시 시도해주세요.');
+          setCodeVerified(false);
         }
+      } catch (error) {
+        console.error('Error verifying code:', error);
+        if (error.response) {
+          console.error('Response data:', error.response.data);
+          console.error('Response status:', error.response.status);
+          if (
+            error.response.status === 400 &&
+            error.response.data[0] === '인증 코드가 만료되었습니다.'
+          ) {
+            alert('인증 코드가 만료되었습니다. 새로운 인증 코드를 요청해주세요.');
+            setCodeButtonLabel('인증번호 재발송');
+            setCodeButtonColor('text-color-blue-main bg-color-blue-w25 hover:bg-color-blue-w50');
+            setCodeCursor('cursor-pointer');
+            setEmailVerified(true);
+            setCodeVerified(false);
+          } else {
+            alert('인증번호 확인 중 오류가 발생했습니다. 다시 시도해주세요.');
+          }
+        }
+        setCodeVerified(false);
+      } finally {
+        setIsVerifying(false); // 요청 완료
       }
-      setCodeVerified(false);
-    } finally {
-      setIsVerifying(false); // 요청 완료
-    }
-  }, [onInputChange, isVerifying, verificationSuccess]);
+    },
+    [onInputChange, isVerifying, verificationSuccess]
+  );
 
   // 5초 간격으로 인증번호가 올바른 지 확인
   useEffect(() => {
@@ -145,16 +160,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const handleCodeInputChange = () => {
     if (!formData.email) {
-      alert("이메일을 입력해주세요!");
+      alert('이메일을 입력해주세요!');
       return;
     }
-  
+
     if (emailVerified) {
       sendValidateCode(formData.email);
       setCodeButtonLabel('인증번호 재발송');
     }
   };
-  
+
   useEffect(() => {
     if (codeVerified) {
       setCodeButtonLabel('인증완료');
@@ -166,8 +181,8 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   // 닉네임 중복 검사
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await client.get('api/v1/auth/usability', { params: {username} });
-  
+      const response = await client.get('api/v1/auth/usability', { params: { username } });
+
       if (response.status === 200) {
         setUsernameVerified(response.data.username.is_usable);
       } else {
@@ -178,7 +193,7 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
       setUsernameVerified(false);
     }
   };
-  
+
   // 3초 간격으로 닉네임이 사용 가능한 지 확인
   useEffect(() => {
     if (formData.username && validateUsername(formData.username)) {
@@ -205,15 +220,15 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   };
 
   const renderFeedback = (isValid, validMessage, invalidMessage) => (
-    <div className="flex gap-2 items-center mt-2">
+    <div className="mt-2 flex items-center gap-2">
       {isValid ? (
         <>
-          <FaCircleCheck size={16} color="#5383E8"/>
+          <FaCircleCheck size={16} color="#5383E8" />
           <p className="text-color-blue-main">{validMessage}</p>
         </>
       ) : (
         <>
-          <FaCircleExclamation size={16} color="#E84057"/>
+          <FaCircleExclamation size={16} color="#E84057" />
           <p className="text-color-red-main">{invalidMessage}</p>
         </>
       )}
@@ -222,15 +237,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const renderStep1 = () => (
     <>
-      <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
-        <p className="text-gray-900 text-2xl font-bold">
-          아이디와 비밀번호를<br />
+      <div className="inline-flex w-full flex-col items-start justify-start gap-6">
+        <p className="text-2xl font-bold text-gray-900">
+          아이디와 비밀번호를
+          <br />
           입력해주세요
         </p>
-        <div className="w-full flex flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <div className="flex flex-col gap-6">
             <div>
-              <div className="w-full inline-flex gap-6 items-end">
+              <div className="inline-flex w-full items-end gap-6">
                 <Input
                   title="이메일"
                   placeholder="이메일 입력"
@@ -238,11 +254,16 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                   onChange={(e) => onInputChange('email', e.target.value)}
                 />
               </div>
-              {formData.email && renderFeedback(emailVerified, "사용 가능한 이메일입니다.", "사용 불가능한 이메일입니다. 다시 입력해주세요.")}
+              {formData.email &&
+                renderFeedback(
+                  emailVerified,
+                  '사용 가능한 이메일입니다.',
+                  '사용 불가능한 이메일입니다. 다시 입력해주세요.'
+                )}
             </div>
-  
+
             <div>
-              <div className="w-full inline-flex items-end">
+              <div className="inline-flex w-full items-end">
                 <Input
                   title="이메일 인증번호"
                   placeholder="인증번호 입력"
@@ -253,46 +274,53 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
                   disabled={!emailVerified}
                   style={{ textTransform: 'uppercase' }}
                 />
-                <button 
-                  className={`w-44 h-[50px] px-5 py-3 rounded-lg whitespace-nowrap ${codeCursor} ${codeColor}`}
+                <button
+                  className={`h-[50px] w-44 whitespace-nowrap rounded-lg px-5 py-3 ${codeCursor} ${codeColor}`}
                   onClick={handleCodeInputChange}
                   disabled={!emailVerified || codeVerified}
                 >
                   {codeButtonLabel}
                 </button>
               </div>
-              {verificationCode && renderFeedback(codeVerified, "인증번호가 확인되었습니다.", "인증번호가 올바르지 않습니다. 다시 입력해주세요.")}
+              {verificationCode &&
+                renderFeedback(
+                  codeVerified,
+                  '인증번호가 확인되었습니다.',
+                  '인증번호가 올바르지 않습니다. 다시 입력해주세요.'
+                )}
             </div>
           </div>
           <form className="flex flex-col gap-6">
-          <div>
-            <PasswordInput
-              title="비밀번호"
-              placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
-              type="password"
-              value={formData.password}
-              onChange={(e) => onInputChange('password', e.target.value)}
-            />
-            {formData.password && renderFeedback(
-              validatePassword(formData.password),
-              "사용 가능한 비밀번호입니다.",
-              "8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다."
-            )}
-          </div>
-          <div>
-            <PasswordInput
-              title="비밀번호 확인"
-              placeholder="비밀번호를 다시 입력해주세요"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {confirmPassword && renderFeedback(
-              formData.password === confirmPassword,
-              "비밀번호가 일치합니다.",
-              "비밀번호가 일치하지 않습니다. 다시 입력해주세요."
-            )}
-          </div>
+            <div>
+              <PasswordInput
+                title="비밀번호"
+                placeholder="8~24자 이내, 영문 대소문자, 숫자, 특수기호 조합"
+                type="password"
+                value={formData.password}
+                onChange={(e) => onInputChange('password', e.target.value)}
+              />
+              {formData.password &&
+                renderFeedback(
+                  validatePassword(formData.password),
+                  '사용 가능한 비밀번호입니다.',
+                  '8~24자 이내, 영문 대소문자, 숫자, 특수기호를 모두 포함해야 합니다.'
+                )}
+            </div>
+            <div>
+              <PasswordInput
+                title="비밀번호 확인"
+                placeholder="비밀번호를 다시 입력해주세요"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {confirmPassword &&
+                renderFeedback(
+                  formData.password === confirmPassword,
+                  '비밀번호가 일치합니다.',
+                  '비밀번호가 일치하지 않습니다. 다시 입력해주세요.'
+                )}
+            </div>
           </form>
         </div>
       </div>
@@ -301,25 +329,27 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const renderStep2 = () => (
     <>
-      <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
-        <p className="text-gray-900 text-2xl font-bold">
-          서비스 이용을 위해<br/>
+      <div className="inline-flex w-full flex-col items-start justify-start gap-6">
+        <p className="text-2xl font-bold text-gray-900">
+          서비스 이용을 위해
+          <br />
           회원님의 정보를 입력해주세요
         </p>
-        <div className="w-full flex flex-col gap-6">
-            <div>
+        <div className="flex w-full flex-col gap-6">
+          <div>
             <Input
               title="닉네임"
               placeholder="2글자 이상 8글자 이내 입력"
               value={formData.username}
               onChange={(e) => onInputChange('username', e.target.value)}
             />
-          {formData.username && renderFeedback(
-            usernameVerified,
-            "사용 가능한 닉네임입니다.",
-            "사용 불가능한 닉네임입니다. 다시 입력해주세요."
-          )}
-            </div>
+            {formData.username &&
+              renderFeedback(
+                usernameVerified,
+                '사용 가능한 닉네임입니다.',
+                '사용 불가능한 닉네임입니다. 다시 입력해주세요.'
+              )}
+          </div>
           <div>
             <Input
               title="백준 아이디"
@@ -327,11 +357,12 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
               value={formData.boj_username}
               onChange={(e) => onInputChange('boj_username', e.target.value)}
             />
-            {formData.boj_username && renderFeedback(
-              validateBojUsername(formData.boj_username),
-              "올바른 형식의 아이디입니다.",
-              "영문자와 숫자만 사용 가능합니다. 다시 입력해주세요."
-            )}
+            {formData.boj_username &&
+              renderFeedback(
+                validateBojUsername(formData.boj_username),
+                '올바른 형식의 아이디입니다.',
+                '영문자와 숫자만 사용 가능합니다. 다시 입력해주세요.'
+              )}
           </div>
         </div>
       </div>
@@ -339,29 +370,36 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   );
 
   const renderStep3 = () => (
-    <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
-      <div className="w-full flex-col justify-start items-start gap-4 inline-flex">
-        <p className="text-gray-900 text-2xl font-bold">
-          서비스 이용을 위해<br/>
+    <div className="inline-flex w-full flex-col items-start justify-start gap-6">
+      <div className="inline-flex w-full flex-col items-start justify-start gap-4">
+        <p className="text-2xl font-bold text-gray-900">
+          서비스 이용을 위해
+          <br />
           프로필 사진을 등록해주세요
         </p>
-        <p className="text-gray-600 text-base font-normal">프로필 사진 등록은 선택이며, 미등록 시 기본 프로필 사진을 사용합니다.</p>
+        <p className="text-base font-normal text-gray-600">
+          프로필 사진 등록은 선택이며, 미등록 시 기본 프로필 사진을 사용합니다.
+        </p>
       </div>
-  
-      <div className="w-full flex-col justify-center items-center gap-6 flex"> 
-        <div className="relative w-32 h-32">
-          <img src={profileImage} alt="profile_image" className="w-full h-full rounded-full object-cover"/>
-          <input 
+
+      <div className="flex w-full flex-col items-center justify-center gap-6">
+        <div className="relative h-32 w-32">
+          <img
+            src={profileImage}
+            alt="profile_image"
+            className="h-full w-full rounded-full object-cover"
+          />
+          <input
             type="file"
             className="hidden"
-            accept='image/jpg,image/png,image/jpeg'
+            accept="image/jpg,image/png,image/jpeg"
             onChange={handleImageUpload}
             ref={fileInput}
           />
         </div>
-        <button 
-          type="button" 
-          className="px-4 py-2 rounded-lg justify-center items-center inline-flex bg-color-blue-main hover:bg-color-blue-hover cursor-pointer text-center text-white text-sm font-semibold"
+        <button
+          type="button"
+          className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-color-blue-main px-4 py-2 text-center text-sm font-semibold text-white hover:bg-color-blue-hover"
           onClick={() => {
             if (fileInput.current) {
               fileInput.current.click();
@@ -376,14 +414,19 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
 
   const renderStep4 = () => (
     <>
-      <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
-        <p className="text-gray-900 text-2xl font-bold">
-          {formData.username}님이 입력하신<br/>
+      <div className="inline-flex w-full flex-col items-start justify-start gap-6">
+        <p className="text-2xl font-bold text-gray-900">
+          {formData.username}님이 입력하신
+          <br />
           회원가입 정보를 확인해주세요
         </p>
-        <div className="w-full flex flex-col gap-6 items-center justify-center">
-          <div className="relative w-32 h-32">
-            <img src={profileImage} alt="profile_image" className="w-full h-full rounded-full object-cover"/>
+        <div className="flex w-full flex-col items-center justify-center gap-6">
+          <div className="relative h-32 w-32">
+            <img
+              src={profileImage}
+              alt="profile_image"
+              className="h-full w-full rounded-full object-cover"
+            />
           </div>
           <Input
             title="이메일"
@@ -456,12 +499,12 @@ export default function SignupForm({ currentStep, formData, onInputChange, onNex
   };
 
   return (
-    <div className="w-full flex flex-col gap-12">
+    <div className="flex w-full flex-col gap-12">
       {renderCurrentStep()}
       <button
-        className={`w-full p-4 rounded-lg justify-center items-center inline-flex ${
+        className={`inline-flex w-full items-center justify-center rounded-lg p-4 ${
           getStepValidity() ? 'bg-color-blue-main hover:bg-color-blue-hover' : 'bg-gray-200'
-        } text-center text-white text-lg font-semibold`}
+        } text-center text-lg font-semibold text-white`}
         onClick={onNextStep}
         disabled={!getStepValidity()}
       >

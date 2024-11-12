@@ -6,13 +6,11 @@ function Pagination({ totalPage, currentPage, setCurrentPage }) {
   const [showingNum, setShowingNum] = useState({ start: 1, end: PAGES_PER_LIST });
 
   const changePageNumbersBackward = () => {
-    currentPage > PAGES_PER_LIST &&
-      setShowingNum(prev => arrowHandler(prev, -1, totalPage));
+    currentPage > PAGES_PER_LIST && setShowingNum((prev) => arrowHandler(prev, -1, totalPage));
   };
 
   const changePageNumberForward = () => {
-    showingNum.end < totalPage &&
-      setShowingNum(prev => arrowHandler(prev, 1, totalPage));
+    showingNum.end < totalPage && setShowingNum((prev) => arrowHandler(prev, 1, totalPage));
   };
 
   useEffect(() => {
@@ -24,22 +22,25 @@ function Pagination({ totalPage, currentPage, setCurrentPage }) {
 
   const isFirstPage = showingNum.start === 1;
   const isLastPage = showingNum.end >= totalPage;
-  const pages = Array.from({ length: showingNum.end - showingNum.start + 1 }, (_, idx) => showingNum.start + idx);
+  const pages = Array.from(
+    { length: showingNum.end - showingNum.start + 1 },
+    (_, idx) => showingNum.start + idx
+  );
 
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex justify-center gap-2">
       <button
         onClick={changePageNumbersBackward}
         disabled={isFirstPage}
-        className={`flex items-center justify-center w-10 h-10 bg-white rounded border border-gray-200 text-sm text-gray-500 ${isFirstPage ? '' : 'cursor-pointer'}`}
+        className={`flex h-10 w-10 items-center justify-center rounded border border-gray-200 bg-white text-sm text-gray-500 ${isFirstPage ? '' : 'cursor-pointer'}`}
       >
         <FaChevronLeft />
       </button>
-      {pages.map(page => (
+      {pages.map((page) => (
         <button
           key={page}
           onClick={() => setCurrentPage(page)}
-          className={`flex items-center justify-center w-10 h-10 text-sm rounded ${page === currentPage ? 'bg-color-blue-main text-white ' : 'bg-white text-gray-500 border border-gray-200'}`}
+          className={`flex h-10 w-10 items-center justify-center rounded text-sm ${page === currentPage ? 'bg-color-blue-main text-white ' : 'border border-gray-200 bg-white text-gray-500'}`}
         >
           {page}
         </button>
@@ -47,7 +48,7 @@ function Pagination({ totalPage, currentPage, setCurrentPage }) {
       <button
         onClick={changePageNumberForward}
         disabled={isLastPage}
-        className={`flex items-center justify-center w-10 h-10 bg-white rounded border border-gray-200 text-sm text-gray-500 ${isLastPage ? '' : 'cursor-pointer'}`}
+        className={`flex h-10 w-10 items-center justify-center rounded border border-gray-200 bg-white text-sm text-gray-500 ${isLastPage ? '' : 'cursor-pointer'}`}
       >
         <FaChevronRight />
       </button>

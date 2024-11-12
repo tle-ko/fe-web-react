@@ -135,32 +135,32 @@ export default function AdminActivity() {
   // 문제 추가 버튼을 클릭할 때 특정 회차의 문제 목록을 fetch
   const handleAddProblem = async (activityId) => {
     setCurrentSequenceId(activityId);
-  
+
     if (!activityId) {
-      console.error("유효한 activityId가 없습니다.");
+      console.error('유효한 activityId가 없습니다.');
       return;
     }
-  
+
     try {
       const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
         withCredentials: true,
       });
-  
+
       if (response.status === 200) {
         const fetchedProblems = response.data.problems;
         const problemIds = fetchedProblems.map((problem) => problem.problem_ref_id);
-  
-        setSelectedProblems(problemIds);  // 문제 목록 설정
+
+        setSelectedProblems(problemIds); // 문제 목록 설정
       } else {
         console.error('문제 데이터를 불러오지 못했어요.');
       }
     } catch (error) {
       console.error('문제 데이터를 불러오는 중 문제가 발생했어요.', error);
     }
-  
-    setIsModalOpen(true);  // 모달 열기
+
+    setIsModalOpen(true); // 모달 열기
   };
-  
+
   // 새로운 회차 추가
   const handleAddNewSequence = () => {
     const newSequence = {
@@ -170,14 +170,13 @@ export default function AdminActivity() {
       problems: [],
       editMode: true, // 새로운 회차는 편집 모드로 시작
     };
-  
+
     setSequences([...sequences, newSequence]); // 새로운 회차 추가
   };
-  
 
   const handleModalAddProblem = (selectedProblemIds) => {
-    setSelectedProblems(selectedProblemIds);  // 선택된 문제 목록 업데이트
-    setIsModalOpen(false);  // 모달 닫기
+    setSelectedProblems(selectedProblemIds); // 선택된 문제 목록 업데이트
+    setIsModalOpen(false); // 모달 닫기
   };
 
   // 회차 저장
@@ -191,7 +190,7 @@ export default function AdminActivity() {
           {
             start_at: sequence.startDate.toISOString(),
             end_at: sequence.endDate.toISOString(),
-            problem_refs: selectedProblems,  // 선택된 problem_ref_id 배열 전달
+            problem_refs: selectedProblems, // 선택된 problem_ref_id 배열 전달
           },
           {
             withCredentials: true,
@@ -226,7 +225,10 @@ export default function AdminActivity() {
       const columnIndex = index < 4 ? 0 : 1;
 
       columns[columnIndex].push(
-        <div key={problem.problem_ref_id} className="w-full h-10 m-2 gap-1 rounded-lg flex items-center justify-start border border-gray-200 p-6">
+        <div
+          key={problem.problem_ref_id}
+          className="m-2 flex h-10 w-full items-center justify-start gap-1 rounded-lg border border-gray-200 p-6"
+        >
           <span className="font-semibold">문제 {index + 1}</span>
           <span className="ml-8 font-medium text-gray-800">{problem.title}</span>
         </div>
@@ -235,8 +237,8 @@ export default function AdminActivity() {
 
     return (
       <div className="flex w-full gap-10">
-        <div className="flex flex-col w-1/2">{columns[0]}</div>
-        <div className="flex flex-col w-1/2">{columns[1]}</div>
+        <div className="flex w-1/2 flex-col">{columns[0]}</div>
+        <div className="flex w-1/2 flex-col">{columns[1]}</div>
       </div>
     );
   };
@@ -244,23 +246,23 @@ export default function AdminActivity() {
   return (
     <div className="col-span-3 flex flex-col items-center">
       {sequences.map((sequence) => (
-        <div key={sequence.activity_id} className="items-start w-full mb-4 box">
-          <div className="flex flex-col justify-between items-start mb-3 w-full gap-4">
-            <div className="font-semibold text-lg">
-              <h2>{sequence.name || "새로운 회차"}</h2>
+        <div key={sequence.activity_id} className="box mb-4 w-full items-start">
+          <div className="mb-3 flex w-full flex-col items-start justify-between gap-4">
+            <div className="text-lg font-semibold">
+              <h2>{sequence.name || '새로운 회차'}</h2>
             </div>
 
-            <div className="font-semibold text-base flex flex-col items-start w-full">
+            <div className="flex w-full flex-col items-start text-base font-semibold">
               <div className="mb-3">
                 <span>기간</span>
               </div>
 
-              <div className="relative w-1/2 h-10 border flex items-center rounded">
+              <div className="relative flex h-10 w-1/2 items-center rounded border">
                 <input
                   type="text"
                   value={`${isValidDate(sequence.startDate) ? sequence.startDate.toISOString().split('T')[0] : ''} ~ ${isValidDate(sequence.endDate) ? sequence.endDate.toISOString().split('T')[0] : ''}`}
                   readOnly
-                  className="w-full h-full p-2 cursor-default"
+                  className="h-full w-full cursor-default p-2"
                   onClick={() => {
                     if (sequence.editMode) {
                       setCurrentSequenceId(sequence.activity_id);
@@ -270,7 +272,7 @@ export default function AdminActivity() {
                 />
 
                 <FaCalendarAlt
-                  className={`w-4 h-4 absolute right-2 cursor-pointer ${!sequence.editMode ? 'hidden' : ''}`}
+                  className={`absolute right-2 h-4 w-4 cursor-pointer ${!sequence.editMode ? 'hidden' : ''}`}
                   onClick={() => {
                     if (sequence.editMode) {
                       setCurrentSequenceId(sequence.activity_id);
@@ -293,9 +295,9 @@ export default function AdminActivity() {
               </div>
             </div>
 
-            <div className="w-1/2 flex items-center justify-between">
+            <div className="flex w-1/2 items-center justify-between">
               <div className="flex flex-col">
-                <span className="font-semibold text-base gap-2 py-2">
+                <span className="gap-2 py-2 text-base font-semibold">
                   <p> 풀이할 문제</p>
                 </span>
               </div>
@@ -304,8 +306,12 @@ export default function AdminActivity() {
                 <div className="self-end">
                   <Button
                     buttonSize="detailBtn"
-                    colorStyle={sequence.problems && sequence.problems.length > 0 ? 'whiteBlack' : 'skyBlue'}
-                    content={sequence.problems && sequence.problems.length > 0 ? '문제 수정' : '문제 추가'}
+                    colorStyle={
+                      sequence.problems && sequence.problems.length > 0 ? 'whiteBlack' : 'skyBlue'
+                    }
+                    content={
+                      sequence.problems && sequence.problems.length > 0 ? '문제 수정' : '문제 추가'
+                    }
                     onClick={() => {
                       handleAddProblem(sequence.activity_id);
                     }}
@@ -317,7 +323,9 @@ export default function AdminActivity() {
             <div className="w-full">
               {/* 각 회차에 대한 문제 목록 표시 */}
               {sequenceProblems[sequence.activity_id] && (
-                <div className="w-full rounded-lg gap-2">{renderDisplayProblems(sequenceProblems[sequence.activity_id])}</div>
+                <div className="w-full gap-2 rounded-lg">
+                  {renderDisplayProblems(sequenceProblems[sequence.activity_id])}
+                </div>
               )}
             </div>
 
@@ -335,7 +343,13 @@ export default function AdminActivity() {
         </div>
       ))}
 
-      <Button buttonSize="formBtn" colorStyle="skyBlue" content="+ 회차 추가" width="full" onClick={handleAddNewSequence} />
+      <Button
+        buttonSize="formBtn"
+        colorStyle="skyBlue"
+        content="+ 회차 추가"
+        width="full"
+        onClick={handleAddNewSequence}
+      />
 
       <AddProblemModal
         isOpen={isModalOpen}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-import ProblemHeader from "../../components/Header/problemHeader";
-import CrewProblemDetailNav from "./crewProblemDetailNav";
+import { useParams } from 'react-router-dom';
+import ProblemHeader from '../../components/Header/problemHeader';
+import CrewProblemDetailNav from './crewProblemDetailNav';
 import ProblemDetailContainer from '../../components/problemDetail/problemDetailContainer';
 import { client } from '../../utils';
 import DataLoadingSpinner from '../common/dataLoadingSpinner';
@@ -18,10 +18,10 @@ export default function CrewProblemDetail() {
         if (response.status === 200) {
           setProblemData(response.data);
         } else {
-          console.error("크루 문제 데이터를 불러오지 못했어요.", response.statusText);
+          console.error('크루 문제 데이터를 불러오지 못했어요.', response.statusText);
         }
       } catch (error) {
-        console.error("크루 문제 데이터를 불러오는데 문제가 발생했어요.", error);
+        console.error('크루 문제 데이터를 불러오는데 문제가 발생했어요.', error);
       }
     };
 
@@ -29,26 +29,22 @@ export default function CrewProblemDetail() {
   }, [problemId]);
 
   if (!problemData) {
-    return <div className="w-full p-20">
-    <div className="flex flex-col justify-center items-center m-10">
-      <DataLoadingSpinner />
-    </div>
-  </div>;
+    return (
+      <div className="w-full p-20">
+        <div className="m-10 flex flex-col items-center justify-center">
+          <DataLoadingSpinner />
+        </div>
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="fixed top-16 left-0 w-full z-10">
-        <ProblemHeader 
-          title={problemData.title} 
-        />
-        <CrewProblemDetailNav
-          problemData={problemData} 
-        />
+      <div className="fixed left-0 top-16 z-10 w-full">
+        <ProblemHeader title={problemData.title} />
+        <CrewProblemDetailNav problemData={problemData} />
       </div>
-      <ProblemDetailContainer 
-        problemData={problemData} 
-      />
+      <ProblemDetailContainer problemData={problemData} />
     </>
   );
 }
