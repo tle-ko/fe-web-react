@@ -78,11 +78,9 @@ export default function Header() {
                 className="inline-flex cursor-pointer items-center justify-start gap-6"
                 onClick={openDropdown}
               >
-                <div className="flex cursor-pointer items-center justify-start gap-3">
-                  <p className="cursor-pointer text-right text-base font-medium text-white">
-                    {username} 님
-                  </p>
-                </div>
+                <p className="cursor-pointer text-right text-base font-medium text-white">
+                  {username} 님
+                </p>
                 <img
                   className="h-9 w-9 rounded-full object-cover"
                   src={profileImage}
