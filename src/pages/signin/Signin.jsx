@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/common/input';
 import PasswordInput from '../../components/signup/passwordInput';
-import { FaCircleExclamation } from "react-icons/fa6";
+import { FaCircleExclamation } from 'react-icons/fa6';
 import { client } from '../../utils';
 import { setToken, setUserInfo } from '../../auth';
 import useForm from '../../hooks/useForm';
@@ -11,25 +11,20 @@ import { validateLogin } from '../../hooks/validate';
 export default function Signin() {
   const navigate = useNavigate();
 
-  const {
-    values,
-    errors,
-    touched,
-    getTestInputProps
-  } = useForm({
+  const { values, errors, touched, getTestInputProps } = useForm({
     initialValue: {
       email: '',
-      password: ''
+      password: '',
     },
-    validate: validateLogin
+    validate: validateLogin,
   });
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
-        document.querySelector('form').dispatchEvent(
-          new Event('submit', { cancelable: true, bubbles: true })
-        );
+        document
+          .querySelector('form')
+          .dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }
     };
 
@@ -50,14 +45,18 @@ export default function Signin() {
 
   const loginUser = async () => {
     try {
-      const response = await client.post('/api/v1/auth/signin', {
-        email: values.email,
-        password: values.password
-      }, {
-        headers: {
-          "Content-Type": process.env.REACT_APP_CONTENT_TYPE
+      const response = await client.post(
+        '/api/v1/auth/signin',
+        {
+          email: values.email,
+          password: values.password,
+        },
+        {
+          headers: {
+            'Content-Type': process.env.REACT_APP_CONTENT_TYPE,
+          },
         }
-      });
+      );
 
       if (response.status === 200) {
         const { token, id, username, profile_image } = response.data;
@@ -77,29 +76,28 @@ export default function Signin() {
 
   return (
     <div className="w-full">
-      <div className="cardGrid2 items-center mb-12">
-        <div className="col-span-1 relative pl-12 pt-12 flex flex-col flex-wrap bg-color-blue-main rounded-lg justify-between min-w-[32rem]">
-          <div className="w-fit flex flex-col gap-6">
-            <p className="text-gray-50 text-2xl font-extrabold">
-              알고리즘 문제 해결 도우미<br />
+      <div className="cardGrid2 mb-12 items-center">
+        <div className="relative col-span-1 flex min-w-[32rem] flex-col flex-wrap justify-between rounded-lg bg-color-blue-main pl-12 pt-12">
+          <div className="flex w-fit flex-col gap-6">
+            <p className="text-2xl font-extrabold text-gray-50">
+              알고리즘 문제 해결 도우미
+              <br />
               TLE와 함께 최적의 해결책을 찾아가요!
             </p>
             <button
-              className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-w75 text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
+              className="inline-flex w-full items-center justify-center rounded-lg bg-color-blue-w75 p-4 text-center text-lg font-semibold text-white hover:bg-color-blue-hover"
               onClick={handleSignup}
             >
               회원가입
             </button>
           </div>
-          <div className="relative mt-12 left-44 max-w-72">
+          <div className="relative left-44 mt-12 max-w-72">
             <img src="../assets/signin/boat.svg" alt="boat" />
           </div>
         </div>
-        <div className="col-span-1 box h-full flex flex-col gap-6 min-w-[32rem]">
+        <div className="box col-span-1 flex h-full min-w-[32rem] flex-col gap-6">
           <form onSubmit={handleLogin} className="flex flex-col gap-6">
-            <p className="font-cafe24 text-gray-900 text-lg font-bold">
-              로그인
-            </p>
+            <p className="font-cafe24 text-lg font-bold text-gray-900">로그인</p>
             <Input
               title="아이디"
               placeholder="이메일 입력"
@@ -114,19 +112,17 @@ export default function Signin() {
               onChange={getTestInputProps('password').onChange}
               onBlur={getTestInputProps('password').onBlur}
             />
-            <div className="flex flex-col gap-6 mt-16">
+            <div className="mt-16 flex flex-col gap-6">
               <button
                 type="submit"
-                className="w-full p-4 rounded-lg justify-center items-center inline-flex bg-color-blue-main text-center text-white text-lg font-semibold hover:bg-color-blue-hover"
+                className="inline-flex w-full items-center justify-center rounded-lg bg-color-blue-main p-4 text-center text-lg font-semibold text-white hover:bg-color-blue-hover"
               >
                 로그인
               </button>
               {errors.login && touched.email && touched.password && (
-                <div className="inline-flex justify-start items-center gap-2">
+                <div className="inline-flex items-center justify-start gap-2">
                   <FaCircleExclamation color="#e84057" />
-                  <p className="text-color-red-main text-base">
-                    {errors.login}
-                  </p>
+                  <p className="text-base text-color-red-main">{errors.login}</p>
                 </div>
               )}
             </div>
