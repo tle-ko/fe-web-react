@@ -20,10 +20,13 @@ export default function Footer({ color }) {
         <div
           className={`flex flex-col items-start justify-center gap-1 text-${FooterColor} md:items-end`}
         >
-          <div className={`inline-flex text-${FooterColor} items-center justify-end gap-1`}>
-            <p className="text-sm font-bold">time limit exceeded,</p>
+          <div className={`inline-flex text-${FooterColor} items-end justify-end gap-2`}>
+            <div className="flex flex-col items-end">
+              <p className="text-sm font-bold">time limit exceeded,</p>
+              <p className="text-sm font-bold">LLM을 활용한 코딩 테스트 스터디 플랫폼</p>
+            </div>
             <Link to="/">
-              <img className="w-12" src={logo} alt="TLELOGO" />
+              <img className="w-16" src={logo} alt="TLELOGO" />
             </Link>
           </div>
           <p className="text-sm font-semibold">Copyright 2024. TLE. All rights reserved.</p>
