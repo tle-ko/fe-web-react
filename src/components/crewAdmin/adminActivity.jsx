@@ -43,7 +43,7 @@ export default function AdminActivity() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/${id}`, {
+        const response = await client.get(`/crew/${id}`, {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -67,7 +67,7 @@ export default function AdminActivity() {
   const fetchProblems = useCallback(async (query) => {
     setLoading(true);
     try {
-      const response = await client.get('/api/v1/problems', {
+      const response = await client.get('/problems', {
         params: {
           q: query,
         },
@@ -89,7 +89,7 @@ export default function AdminActivity() {
   const fetchActivityProblems = useCallback(async (activityId) => {
     setLoading(true);
     try {
-      const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
+      const response = await client.get(`/crew/activity/${activityId}`, {
         withCredentials: true,
       });
       if (response.status === 200) {
@@ -142,7 +142,7 @@ export default function AdminActivity() {
     }
 
     try {
-      const response = await client.get(`/api/v1/crew/activity/${activityId}`, {
+      const response = await client.get(`/crew/activity/${activityId}`, {
         withCredentials: true,
       });
 
@@ -186,7 +186,7 @@ export default function AdminActivity() {
     if (sequence.editMode) {
       try {
         await client.post(
-          `/api/v1/crew/${id}/activity`,
+          `/crew/${id}/activity`,
           {
             start_at: sequence.startDate.toISOString(),
             end_at: sequence.endDate.toISOString(),

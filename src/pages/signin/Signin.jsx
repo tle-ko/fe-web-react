@@ -46,7 +46,7 @@ export default function Signin() {
   const loginUser = async () => {
     try {
       const response = await client.post(
-        '/api/v1/auth/signin',
+        '/auth/signin',
         {
           email: values.email,
           password: values.password,

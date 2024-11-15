@@ -17,7 +17,7 @@ export default function ProblemDetail() {
   useEffect(() => {
     const fetchProblemDetail = async () => {
       try {
-        const response = await client.get(`/api/v1/problem/${id}/detail`, {
+        const response = await client.get(`/problem/${id}/detail`, {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -31,7 +31,7 @@ export default function ProblemDetail() {
     };
 
     fetchProblemDetail();
-    const intervalId = setInterval(fetchProblemDetail, 5000); 
+    const intervalId = setInterval(fetchProblemDetail, 5000);
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 폴링 중지
   }, [id]);
 

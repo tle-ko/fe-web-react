@@ -35,7 +35,7 @@ export default function ReviewContainer({
     const fetchReviewData = async () => {
       setIsLoading(true);
       try {
-        const response = await client.get(`/api/v1/crew/activity/problem/submission/${submitId}`, {
+        const response = await client.get(`/crew/activity/problem/submission/${submitId}`, {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -73,7 +73,7 @@ export default function ReviewContainer({
 
     try {
       const response = await client.post(
-        `/api/v1/crew/activity/problem/submission/${submitId}/comment`,
+        `/crew/activity/problem/submission/${submitId}/comment`,
         newReview,
         submitId,
         {
@@ -130,7 +130,7 @@ export default function ReviewContainer({
     if (currentUserId === comment.created_by.user_id) {
       try {
         const response = await client.delete(
-          `/api/v1/crew/activity/problem/submission/comment/${commentId}`,
+          `/crew/activity/problem/submission/comment/${commentId}`,
           {
             withCredentials: true,
           }
@@ -205,7 +205,7 @@ export default function ReviewContainer({
                     </div>
                     <div className="mb-2 flex items-center">
                       <img
-                        src={`${process.env.REACT_APP_API_BASE_URL}${item.created_by.profile_image}`}
+                        src={`${process.env.REACT_APP_API_URL}${item.created_by.profile_image}`}
                         alt="profile_image"
                         className="mr-2 h-6 w-6 rounded-full object-cover"
                       />

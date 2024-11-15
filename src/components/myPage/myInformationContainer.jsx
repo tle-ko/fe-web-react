@@ -29,7 +29,7 @@ export default function MyInformationContainer() {
 
   useEffect(() => {
     client
-      .get('api/v1/user/manage')
+      .get('/user/manage')
       .then((response) => {
         const data = response.data;
         setMypageUserInfo({
@@ -39,7 +39,7 @@ export default function MyInformationContainer() {
           boj_username: data.boj?.username || '백준 아이디 확인 불가',
           boj_level: data.boj?.level?.name || '티어 확인 불가',
         });
-        setImage(`${process.env.REACT_APP_API_BASE_URL}/media/${data.profile_image}`);
+        setImage(`${process.env.REACT_APP_API_URL}/media/${data.profile_image}`);
         setInitialUsername(data.username);
         setLoading(false);
       })
@@ -84,7 +84,7 @@ export default function MyInformationContainer() {
     }
 
     client
-      .patch('api/v1/user/manage', updateData, {
+      .patch('/user/manage', updateData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -121,7 +121,7 @@ export default function MyInformationContainer() {
     }
 
     client
-      .patch('api/v1/user/manage', { password })
+      .patch('/user/manage', { password })
       .then((response) => {
         alert('비밀번호가 성공적으로 변경되었습니다.');
         setPassword('');
@@ -149,7 +149,7 @@ export default function MyInformationContainer() {
       }
 
       try {
-        const response = await client.get('api/v1/auth/usability', { params: { username } });
+        const response = await client.get('/auth/usability', { params: { username } });
 
         if (response.status === 200) {
           setUsernameVerified(response.data.username.is_usable);

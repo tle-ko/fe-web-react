@@ -51,7 +51,7 @@ export default function SignupForm({
   // 이메일 중복 검사
   const checkEmailAvailability = useCallback(async (email) => {
     try {
-      const response = await client.get('api/v1/auth/usability', { params: { email } });
+      const response = await client.get('/auth/usability', { params: { email } });
       setEmailVerified(response.status === 200 && response.data.email.is_usable);
     } catch (error) {
       console.error('Error checking email availability:', error);
@@ -76,7 +76,7 @@ export default function SignupForm({
   // 인증번호 전송 요청
   const sendValidateCode = async (email) => {
     try {
-      const response = await client.post('api/v1/auth/verification', { email });
+      const response = await client.post('/auth/verification', { email });
       if (response.status === 200) {
         setEmailVerified(true);
         setCodeButtonLabel('인증번호 재발송');
@@ -98,7 +98,7 @@ export default function SignupForm({
       if (isVerifying || verificationSuccess) return; // 요청 중이거나 성공했으면 추가 요청을 막습니다.
       setIsVerifying(true); // 요청 시작
       try {
-        const response = await client.post('api/v1/auth/verification', {
+        const response = await client.post('/auth/verification', {
           email,
           verification_code,
         });
@@ -181,7 +181,7 @@ export default function SignupForm({
   // 닉네임 중복 검사
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await client.get('api/v1/auth/usability', { params: { username } });
+      const response = await client.get('/auth/usability', { params: { username } });
 
       if (response.status === 200) {
         setUsernameVerified(response.data.username.is_usable);

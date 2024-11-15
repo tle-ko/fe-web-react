@@ -83,7 +83,7 @@ export default function Signup() {
           submitData.append('profile_image', blob, 'default-profile-image.png');
         }
 
-        const response = await client.post('api/v1/auth/signup', submitData, {
+        const response = await client.post('/auth/signup', submitData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -94,7 +94,7 @@ export default function Signup() {
 
           // 알림 확인 후 자동 로그인을 요청
           const loginResponse = await client.post(
-            '/api/v1/auth/signin',
+            '/auth/signin',
             {
               email: formData.email,
               password: formData.password,

@@ -37,7 +37,7 @@ export default function AdminCrew() {
     setIsLoading(true);
     const fetchCrewData = async () => {
       try {
-        const response = await client.get(`api/v1/crew/${id}`, {
+        const response = await client.get(`/crew/${id}`, {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -84,7 +84,7 @@ export default function AdminCrew() {
     console.log('Update Data:', updateData);
 
     try {
-      const response = await client.patch(`api/v1/crew/${id}`, updateData);
+      const response = await client.patch(`/crew/${id}`, updateData);
       if (response.status === 200) {
         setIsEditingInfo(false);
         alert('크루 정보가 수정되었습니다.');
@@ -101,7 +101,7 @@ export default function AdminCrew() {
     const updateData = { notice };
 
     try {
-      const response = await client.patch(`api/v1/crew/${id}`, updateData);
+      const response = await client.patch(`/crew/${id}`, updateData);
       if (response.status === 200) {
         setIsEditingNotice(false);
         alert('공지사항이 수정되었습니다.');
@@ -116,7 +116,7 @@ export default function AdminCrew() {
   // 활동 종료 처리
   const endOfActivity = async () => {
     try {
-      const response = await client.patch(`api/v1/crew/${id}`, { is_active: false });
+      const response = await client.patch(`/crew/${id}`, { is_active: false });
       if (response.status === 200) {
         alert('크루의 모든 활동이 종료되었어요. 지금까지 수고하셨어요!😊');
         navigate('/');

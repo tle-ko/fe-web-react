@@ -13,7 +13,7 @@ export default function CodeContainer({ onLineSelect, highlightedLines }) {
     const fetchCodeData = async () => {
       try {
         setIsLoading(true);
-        const response = await client.get(`/api/v1/crew/activity/problem/submission/${submitId}`, {
+        const response = await client.get(`/crew/activity/problem/submission/${submitId}`, {
           withCredentials: true,
         });
         if (response.status === 200) {

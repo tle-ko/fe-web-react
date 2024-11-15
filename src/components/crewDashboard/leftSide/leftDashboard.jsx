@@ -57,7 +57,7 @@ export default function LeftDashboard({ crew, statistics }) {
               <img
                 src={
                   host.profile_image
-                    ? `${process.env.REACT_APP_API_BASE_URL}${host.profile_image}`
+                    ? `${process.env.REACT_APP_API_URL}${host.profile_image}`
                     : ProfileImg
                 }
                 alt={host.username}
@@ -76,7 +76,7 @@ export default function LeftDashboard({ crew, statistics }) {
               <img
                 src={
                   member.profile_image
-                    ? `${process.env.REACT_APP_API_BASE_URL}${member.profile_image}`
+                    ? `${process.env.REACT_APP_API_URL}${member.profile_image}`
                     : ProfileImg
                 }
                 alt={member.username}

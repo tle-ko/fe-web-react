@@ -25,7 +25,7 @@ const CrewDashProblem = () => {
     const fetchActivities = async () => {
       setIsLoadingActivities(true);
       try {
-        const response = await client.get(`/api/v1/crew/${id}`);
+        const response = await client.get(`/crew/${id}`);
 
         if (response.status === 200) {
           const group = response.data;
@@ -67,7 +67,7 @@ const CrewDashProblem = () => {
 
       setIsLoadingProblems(true);
       try {
-        const response = await client.get(`/api/v1/crew/activity/${activityId}`);
+        const response = await client.get(`/crew/activity/${activityId}`);
 
         const activityData = response.data;
         const problems = activityData.problems.map((problem) => ({

@@ -16,7 +16,15 @@ export default function Header() {
   useEffect(() => {
     if (loggedIn) {
       setUsername(getUserName());
-      setProfileImage(getUserProfile());
+
+      const profile = getUserProfile();
+      const apiUrl = process.env.REACT_APP_API_URL;
+
+      if (profile.startsWith(apiUrl)) {
+        setProfileImage(profile);
+      } else {
+        setProfileImage(`${apiUrl}/media/${profile}`);
+      }
     }
   }, [loggedIn]);
 

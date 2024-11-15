@@ -26,7 +26,7 @@ export default function MyPortfolio() {
 
   useEffect(() => {
     client
-      .get('api/v1/user/manage')
+      .get('/user/manage')
       .then((response) => {
         const data = response.data;
         setMyPortfolioUserInfo({
@@ -49,13 +49,17 @@ export default function MyPortfolio() {
       </div>
 
       <div className="relative">
-        <div className="absolute inset-0 flex items-center justify-center bg-white/75 z-10 rounded-lg">
+        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/75">
           <p className="text-2xl font-extrabold text-gray-900">현재 서비스 개발 중이에요 🛠</p>
         </div>
 
-        <div className="grid w-full grid-cols-6 gap-6 relative z-0">
+        <div className="relative z-0 grid w-full grid-cols-6 gap-6">
           <div className="box col-span-2 flex items-center justify-center gap-6">
-            <img src={profile_image} alt="profile" className="h-32 w-32 rounded-full object-cover" />
+            <img
+              src={profile_image}
+              alt="profile"
+              className="h-32 w-32 rounded-full object-cover"
+            />
             <div className="flex w-full flex-col items-start gap-3 text-left">
               <p className="text-2xl font-extrabold text-gray-900">{userInfo.username}</p>
               <p className="text-xl font-bold text-gray-900">{userInfo.boj_username}</p>

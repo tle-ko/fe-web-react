@@ -44,7 +44,7 @@ const CrewProblemSubmit = () => {
 
     try {
       const response = await client.post(
-        `/api/v1/crew/activity/problem/${problemId}/submission`,
+        `/crew/activity/problem/${problemId}/submission`,
         submitData,
         {
           headers: {

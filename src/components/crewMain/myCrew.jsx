@@ -16,7 +16,7 @@ export default function MyCrew() {
     const fetchData = async () => {
       setIsLoading(true); // 데이터를 불러오기 시작할 때 로딩 상태로 설정
       try {
-        const response = await client.get('api/v1/crews/my', {
+        const response = await client.get('/crews/my', {
           withCredentials: true,
         });
         if (response.status === 200) {

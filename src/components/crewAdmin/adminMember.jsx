@@ -14,7 +14,7 @@ export default function AdminMember() {
     setLoading(true);
     const fetchApplicationData = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/${id}/applications`, {
+        const response = await client.get(`/crew/${id}/applications`, {
           withCredentials: true,
         });
         if (response.status === 200 && Array.isArray(response.data)) {
@@ -36,7 +36,7 @@ export default function AdminMember() {
   const handleAccept = async (applicationId, index) => {
     try {
       const response = await client.post(
-        `/api/v1/crew/application/${applicationId}/accept`,
+        `/crew/application/${applicationId}/accept`,
         {},
         {
           withCredentials: true,
@@ -65,7 +65,7 @@ export default function AdminMember() {
   const handleReject = async (applicationId, index) => {
     try {
       const response = await client.post(
-        `/api/v1/crew/application/${applicationId}/reject`,
+        `/crew/application/${applicationId}/reject`,
         {},
         {
           withCredentials: true,
@@ -129,7 +129,7 @@ export default function AdminMember() {
               <div key={index} className="box flex flex-col gap-6">
                 <div className="flex w-full gap-6">
                   <img
-                    src={`${process.env.REACT_APP_API_BASE_URL}${applyData.applicant.profile_image}`}
+                    src={`${process.env.REACT_APP_API_URL}${applyData.applicant.profile_image}`}
                     alt=""
                     className="h-12 w-12 rounded-full object-cover"
                   />
