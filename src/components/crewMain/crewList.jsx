@@ -46,7 +46,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
         message: message, // 사용자 메시지 전달
       };
 
-      const response = await client.post(`/api/v1/crew/application`, payload, {
+      const response = await client.post(`/crew/application`, payload, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function CrewList({ pageIndex, numOfPage, filters, isLoading, isI
       });
 
       if (response.status === 200 || response.status === 201) {
-        console.log('크루 신청이 완료되었습니다.');
+        alert('크루 신청이 완료되었습니다.');
         handleCloseModal(selectedCrew.crew_id);
       } else {
         console.error('Failed to apply for the crew:', response.statusText);

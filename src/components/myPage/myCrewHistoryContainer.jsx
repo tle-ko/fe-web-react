@@ -14,7 +14,7 @@ export default function MyCrewHistoryContainer() {
     const fetchData = async () => {
       setIsLoading(true); // 데이터를 불러오기 시작할 때 로딩 상태로 설정
       try {
-        const response = await client.get('api/v1/crews/my', {
+        const response = await client.get('/crews/my', {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -44,7 +44,7 @@ export default function MyCrewHistoryContainer() {
           // 각 크루의 통계를 가져옵니다.
           const statisticsPromises = response.data.map((crew) =>
             client
-              .get(`api/v1/crew/${crew.id}/statistics`, {
+              .get(`/crew/${crew.id}/statistics`, {
                 withCredentials: true,
               })
               .then((statResponse) => ({

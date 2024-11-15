@@ -78,7 +78,7 @@ export default function SubmitProblemModal({ isOpen, onClose, onSubmit }) {
     };
 
     try {
-      const response = await client.post('/api/v1/problem', problemData, {
+      const response = await client.post('/problem', problemData, {
         headers: {
           'Content-Type': 'application/json',
         },

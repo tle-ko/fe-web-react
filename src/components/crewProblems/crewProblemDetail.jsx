@@ -9,12 +9,14 @@ import DataLoadingSpinner from '../common/dataLoadingSpinner';
 export default function CrewProblemDetail() {
   const { problemId } = useParams(); // problem_id를 가져옴
   const [problemData, setProblemData] = useState(null);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [activeContainer, setActiveContainer] = useState('detail');
 
   // 문제 데이터를 불러오는 useEffect
   useEffect(() => {
     const fetchProblemDetail = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/activity/problem/${problemId}`);
+        const response = await client.get(`/crew/activity/problem/${problemId}`);
         if (response.status === 200) {
           setProblemData(response.data);
         } else {
@@ -44,7 +46,11 @@ export default function CrewProblemDetail() {
         <ProblemHeader title={problemData.title} />
         <CrewProblemDetailNav problemData={problemData} />
       </div>
-      <ProblemDetailContainer problemData={problemData} />
+      <ProblemDetailContainer
+        problemData={problemData}
+        activeContainer={activeContainer}
+        setActiveContainer={setActiveContainer}
+      />
     </>
   );
 }

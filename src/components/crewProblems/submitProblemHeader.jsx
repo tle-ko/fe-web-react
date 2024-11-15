@@ -10,7 +10,7 @@ export default function SubmitProblemHeader() {
   useEffect(() => {
     const fetchSubmissionData = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/activity/problem/submission/${submitId}`, {
+        const response = await client.get(`/crew/activity/problem/submission/${submitId}`, {
           withCredentials: true,
         });
         if (response.status === 200) {

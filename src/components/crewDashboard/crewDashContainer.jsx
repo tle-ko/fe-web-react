@@ -14,7 +14,7 @@ export default function CrewDashContainer() {
   useEffect(() => {
     const fetchCrewData = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/${id}`, {
+        const response = await client.get(`/crew/${id}`, {
           withCredentials: true,
         });
         if (response.status === 200) {
@@ -29,7 +29,7 @@ export default function CrewDashContainer() {
 
     const fetchStatisticsData = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/${id}/statistics`, {
+        const response = await client.get(`/crew/${id}/statistics`, {
           withCredentials: true,
         });
         if (response.status === 200) {

@@ -12,7 +12,7 @@ function CrewHeaderWithNav() {
   useEffect(() => {
     const fetchCrewData = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/${id}`, {
+        const response = await client.get(`/crew/${id}`, {
           withCredentials: true,
         });
         if (response.status === 200) {

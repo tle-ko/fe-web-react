@@ -11,7 +11,7 @@ export default function CrewHeaderProblem() {
   useEffect(() => {
     const fetchProblemDetail = async () => {
       try {
-        const response = await client.get(`/api/v1/crew/activity/problem/${problemId}`);
+        const response = await client.get(`/crew/activity/problem/${problemId}`);
         if (response.status === 200) {
           setProblem(response.data);
         } else {

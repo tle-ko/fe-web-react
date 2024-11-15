@@ -16,12 +16,12 @@ export default function ProblemDetailNav({ problemData, onEditClick, onDeleteCli
     <div className="left-0 inline-flex w-full justify-center border-b border-gray-200 bg-white px-[7.5rem] py-3">
       <div className="min-w-100 flex w-full items-center justify-between">
         <div className="inline-flex min-w-52 items-center justify-start gap-1">
-          <Link
-            className="flex items-center justify-center rounded bg-gray-50 px-4 py-3 text-center text-sm font-semibold text-gray-600 hover:bg-color-blue-w25 hover:text-color-blue-main"
-            to={problemData.link}
+          <div
+            className="flex cursor-pointer items-center justify-center rounded bg-gray-50 px-4 py-3 text-center text-sm font-semibold text-gray-600 hover:bg-color-blue-w25 hover:text-color-blue-main"
+            onClick={() => (window.location.href = problemData.link)}
           >
             문제 링크
-          </Link>
+          </div>
           <button
             className="flex items-center justify-center rounded bg-gray-50 px-4 py-3 text-center text-sm font-semibold text-gray-600 hover:bg-color-blue-w25 hover:text-color-blue-main"
             onClick={onEditClick}

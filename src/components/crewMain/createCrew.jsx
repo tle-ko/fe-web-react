@@ -49,7 +49,7 @@ export default function CreateCrew() {
     };
 
     try {
-      const response = await client.post('/api/v1/crew', crewData, {
+      const response = await client.post('/crew', crewData, {
         headers: {
           'Content-Type': 'application/json',
         },

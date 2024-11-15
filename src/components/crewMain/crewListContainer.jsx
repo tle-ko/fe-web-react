@@ -20,7 +20,7 @@ export default function CrewListContainer() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await client.get('api/v1/crews/recruiting', {
+        const response = await client.get('/crews/recruiting', {
           withCredentials: true,
         });
         if (response.status === 200) {
