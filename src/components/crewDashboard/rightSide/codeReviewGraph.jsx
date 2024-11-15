@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ProfileImg from "../../../assets/images/profile.svg";
-import DataLoadingSpinner from "../../common/dataLoadingSpinner";
+import ProfileImg from '../../../assets/images/profile.svg';
+import DataLoadingSpinner from '../../common/dataLoadingSpinner';
 
 const CodeReview = ({ members, problems, isLoading }) => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [reviewerImages, setReviewerImages] = useState({});
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (members?.length > 0) {
@@ -18,21 +18,28 @@ const CodeReview = ({ members, problems, isLoading }) => {
   useEffect(() => {
     if (selectedUserId !== null && problems) {
       const reviewerImagesMap = {};
-      problems.forEach(problem => {
+      problems.forEach((problem) => {
         if (problem?.submissions) {
-          const userSubmission = problem.submissions.find(sub => sub.submitted_by.user_id === selectedUserId);
+          const userSubmission = problem.submissions.find(
+            (sub) => sub.submitted_by.user_id === selectedUserId
+          );
           if (userSubmission) {
             const problemReviewers = userSubmission.reviewers.map((reviewer, index) => (
               <img
                 key={`${reviewer.user_id}-${index}`}
-                src={reviewer.profile_image ? `${process.env.REACT_APP_API_BASE_URL}/media/${reviewer.profile_image}` : ProfileImg}
+                src={
+                  reviewer.profile_image
+                    ? `${process.env.REACT_APP_API_URL}/media/${reviewer.profile_image}`
+                    : ProfileImg
+                }
                 alt={reviewer.username}
-                className="w-6 h-6 rounded-full object-cover"
+                className="h-6 w-6 rounded-full object-cover"
                 style={{ marginLeft: index === 0 ? '0' : '-6px' }}
                 title={reviewer.username}
               />
             ));
-            reviewerImagesMap[problem.problem_id] = problemReviewers.length > 0 ? problemReviewers : [null];
+            reviewerImagesMap[problem.problem_id] =
+              problemReviewers.length > 0 ? problemReviewers : [null];
           } else {
             reviewerImagesMap[problem.problem_id] = [null];
           }
@@ -46,7 +53,7 @@ const CodeReview = ({ members, problems, isLoading }) => {
 
   const handleProfileClick = (userId) => {
     setSelectedUserId(userId);
-    setReviewerImages({});  // 초기화
+    setReviewerImages({}); // 초기화
   };
 
   const firstMemberId = members[0]?.user_id;
@@ -73,33 +80,41 @@ const CodeReview = ({ members, problems, isLoading }) => {
   return (
     <div className="box flex flex-col gap-6">
       <div className="flex gap-4">
-        <div className="text-gray-900 text-lg font-bold font-cafe24">
+        <div className="font-cafe24 text-lg font-bold text-gray-900">
           <p>코드 리뷰</p>
         </div>
-        <p className="text-gray-900 text-base font-normal">동료의 프로필을 클릭해서 코드 리뷰를 할 수 있어요</p>
+        <p className="text-base font-normal text-gray-900">
+          동료의 프로필을 클릭해서 코드 리뷰를 할 수 있어요
+        </p>
       </div>
-      
+
       {isLoading ? (
         <div className="w-full p-10">
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center justify-center">
             <DataLoadingSpinner />
           </div>
         </div>
       ) : (
-        <div className='flex flex-col'>
-          <div className="w-full grid xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2">
-            {members.map(member => (
+        <div className="flex flex-col">
+          <div className="grid w-full xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8">
+            {members.map((member) => (
               <div
                 key={member.user_id}
-                className={`w-full flex justify-center relative p-4 md:p-2 sm:p-1 rounded-t-2xl ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
+                className={`relative flex w-full justify-center rounded-t-2xl p-4 sm:p-1 md:p-2 ${selectedUserId === member.user_id ? 'bg-gray-50' : ''}`}
                 style={{ opacity: selectedUserId === member.user_id ? 1 : 0.7 }}
-                onMouseEnter={e => e.currentTarget.style.opacity = 1}
-                onMouseLeave={e => e.currentTarget.style.opacity = selectedUserId === member.user_id ? 1 : 0.6}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.opacity = selectedUserId === member.user_id ? 1 : 0.6)
+                }
               >
                 <img
-                  src={member.profile_image ? `${process.env.REACT_APP_API_BASE_URL}${member.profile_image}` : ProfileImg}
+                  src={
+                    member.profile_image
+                      ? `${process.env.REACT_APP_API_URL}${member.profile_image}`
+                      : ProfileImg
+                  }
                   alt={member.username}
-                  className="w-10 h-10 rounded-full cursor-pointer object-cover"
+                  className="h-10 w-10 cursor-pointer rounded-full object-cover"
                   onClick={() => handleProfileClick(member.user_id)}
                   title={member.username}
                 />
@@ -107,36 +122,42 @@ const CodeReview = ({ members, problems, isLoading }) => {
             ))}
           </div>
           {selectedUserId && (
-            <div className={`pt-4 pb-6 bg-gray-50 ${getContentStyle()} overflow-x-auto`}>
-              {(!problems || problems.length === 0) ? (  // problems 데이터가 비어 있을 때 예외 처리
+            <div className={`bg-gray-50 pb-6 pt-4 ${getContentStyle()} overflow-x-auto`}>
+              {!problems || problems.length === 0 ? ( // problems 데이터가 비어 있을 때 예외 처리
                 <div className="mt-2 flex flex-col items-center gap-3 py-6 text-gray-600">
-                  <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+                  <div className="inline-flex animate-bounce items-center justify-start gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
                   </div>
                   <p>선장님이 문제를 등록하지 않았어요 😓</p>
                 </div>
-              ) : problems.some(problem => problem.submissions.some(sub => sub.submitted_by.user_id === selectedUserId)) ? (
+              ) : problems.some((problem) =>
+                  problem.submissions.some((sub) => sub.submitted_by.user_id === selectedUserId)
+                ) ? (
                 <>
-                  <div className="grid grid-cols-4 gap-4 text-center text-gray-900 text-base border-b pb-2">
+                  <div className="grid grid-cols-4 gap-4 border-b pb-2 text-center text-base text-gray-900">
                     <div>문제 번호</div>
                     <div>제목</div>
                     <div>제출일</div>
                     <div>코드 리뷰어</div>
                   </div>
-                  {problems.map(problem => {
-                    const submission = problem.submissions.find(sub => sub.submitted_by.user_id === selectedUserId);
+                  {problems.map((problem) => {
+                    const submission = problem.submissions.find(
+                      (sub) => sub.submitted_by.user_id === selectedUserId
+                    );
                     return submission ? (
                       <div
                         key={problem.problem_id}
-                        className="grid grid-cols-4 gap-4 items-center text-center text-gray-800 text-sm py-2 border-b bg-white hover:bg-gray-50 cursor-pointer"
+                        className="grid cursor-pointer grid-cols-4 items-center gap-4 border-b bg-white py-2 text-center text-sm text-gray-800 hover:bg-gray-50"
                         onClick={() => handleRowClick(problem.problem_id, submission.submission_id)}
                       >
-                        <div className='cursor-pointer'>{problem.order}</div>
-                        <div className='cursor-pointer'>{problem.title}</div>
-                        <div className='cursor-pointer'>{formatSubmissionDate(submission.submitted_at)}</div>
-                        <div className="flex justify-start relative cursor-pointer overflow-x-auto hidden-scrollbar">
+                        <div className="cursor-pointer">{problem.order}</div>
+                        <div className="cursor-pointer">{problem.title}</div>
+                        <div className="cursor-pointer">
+                          {formatSubmissionDate(submission.submitted_at)}
+                        </div>
+                        <div className="hidden-scrollbar relative flex cursor-pointer justify-start overflow-x-auto">
                           {reviewerImages[problem.problem_id]}
                         </div>
                       </div>
@@ -145,10 +166,10 @@ const CodeReview = ({ members, problems, isLoading }) => {
                 </>
               ) : (
                 <div className="mt-2 flex flex-col items-center gap-3 py-6 text-gray-600">
-                  <div className="justify-start items-center gap-2 inline-flex animate-bounce">
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+                  <div className="inline-flex animate-bounce items-center justify-start gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-600" />
                   </div>
                   <p>동료가 문제를 풀이하지 않았어요 😓</p>
                 </div>
