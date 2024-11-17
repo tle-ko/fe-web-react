@@ -17,7 +17,7 @@ export default function ProblemDetail() {
   useEffect(() => {
     const fetchProblemDetail = async () => {
       try {
-        const response = await client.get(`/problem/${id}/detail`, {
+        const response = await client.get(`/problem_ref/${id}`, {
           withCredentials: true,
         });
         if (response.status === 200) {

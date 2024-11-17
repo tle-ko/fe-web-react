@@ -65,7 +65,7 @@ export default function ProblemListContainer() {
   const fetchData = useCallback(async (query) => {
     setLoading(true);
     try {
-      const response = await client.get('/problems', {
+      const response = await client.get('/problem_refs', {
         params: {
           q: query,
         },

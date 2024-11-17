@@ -3,7 +3,6 @@ import Modal from '../../components/common/modal';
 import Alert from '../../components/common/alertContainer';
 import Input from '../../components/common/input';
 import Textarea from '../../components/common/textarea';
-
 import { client } from '../../utils';
 
 export default function ProblemDetailModal({ isOpen, onClose, problemData, isDeleteModal }) {
@@ -86,7 +85,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
     };
 
     try {
-      const response = await client.patch(`/problem/${problemData.problem_ref_id}/detail`, data, {
+      const response = await client.patch(`/problem_ref/${problemData.problem_ref_id}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -170,7 +169,7 @@ export default function ProblemDetailModal({ isOpen, onClose, problemData, isDel
 
   const handleDelete = async () => {
     try {
-      const response = await client.delete(`/problem/${problemData.problem_ref_id}/detail`, {
+      const response = await client.delete(`/problem_ref/${problemData.problem_ref_id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
