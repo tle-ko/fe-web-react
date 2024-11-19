@@ -77,7 +77,7 @@ export default function ProblemAnalysisContainer({ analysisData, setActiveContai
   const timeComplexity = analysisData.time_complexity;
 
   // 힌트 관련
-  const hints = analysisData.hints;
+  const hints = analysisData.hints.filter((hint) => hint.trim() !== '');
   const visibleHintContent = (index, hintItems) => {
     return (
       <div className="animate-fade-in bg-white text-gray-900">
